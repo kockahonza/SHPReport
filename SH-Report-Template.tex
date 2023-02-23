@@ -1,6 +1,29 @@
 \documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc}
 \usepackage{fullpage}
+\usepackage[style=phys]{biblatex}
 \usepackage[pdftex]{graphicx}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage{cleveref}
+\usepackage{physics}
+\usepackage{siunitx}
+
+
+\addbibresource{references.bib}
+
+
+\newcommand{\Mu}{$\mu$}
+\newcommand{\Tau}{$\tau$}
+
+\newcommand{\Ne}{$\nu_e$}
+\newcommand{\Nm}{$\nu_\mu$}
+\newcommand{\Nt}{$\nu_\tau$}
+
+\newcommand{\Wp}{$W^+$}
+\newcommand{\Wm}{$W^-$}
+\newcommand{\pip}{$\pi^+$}
+\newcommand{\pim}{$\pi^-$}
 
 
 \begin{document}
@@ -51,15 +74,56 @@ Signature:\hspace*{8cm}Date:  31/10/2021
 
 \newpage
 
-\section{Introduction}
+\section{Background and Motivation}
+This project concerns neutrinos and their properties and so a brief description of the relevant properties and their scientific significance is presented.
+Neutrinos are 3 uncharged leptons of different flavours (each corresponding to the other 3, charged, leptons -- electron, \Mu\ and \Tau\ of ascending masses).
+Neutrinos interact only via the weak force, the possible Feynman diagrams of their interactions with the other fundamental particles through the W and Z bosons are shown in \cref{fig:nu_feyn}.
+Their existence was originally proposed by Pauli in the 1930s to explain the beta decay, and their mass was long though to be 0, most notably the standard model assumes this.
+However at the end of the last century neutrinos have been theorized and experimentally observed to undergo oscillations which implies non-zero mass which making then very interesting particles to study.
 
-\section{Background}
-\subsection{Neutrino oscillations and masses}
+\begin{figure}[h]
+    \centering
+    \includegraphics{figures/NeutrinoFeynman.jpg}
+    \caption{
+        Summary of the necessary fundamental interactions of neutrinos, all other such interactions can be achieved by suitably "rotating" these vertices.
+        This may involve switching some particles for their antiparticles (including the \Wm becoming a \Wp), say the first could be changed to represent a $e^-$ being converted to a \Ne\ by an incoming \Wp.
+    }\label{fig:nu_feyn}
+\end{figure}
+
+\subsection{Neutrino oscillations}
+In particle physics particle oscillations is a phenomenon that takes place when the particle mass eigenstates which govern its evolution in time are not the same as the state in which it is observed.
+This might seem a bit abstract, but as we know from basic quantum mechanics when we make an observation, the observed system will collapse into some particular state depending on the result of our observation.
+
+In the case of neutrinos, we say there are 3 flavours and the way we differentiate them is by the weak interaction, so say an electron capture takes place when an electron interacts with a proton to form a neutron and a neutrino.
+This is a weak interaction process and so far all interactions we have observed conserve the 3 separate lepton numbers (electron, \Mu\ and \Tau\ again) thus we observe that neutrino to be an electron neutrino, so we say it has collapsed into the electron neutrino eigenstate.
+However if the mass eigenstates aren't the same as the weak eigenstates, in quantum mechanics terms that eigenstate can be expanded in the eigenstates of mass.
+Then as the neutrino has definite energy $E$ and through the relativistic relation $E^2 = m^2 + p^2$ this means the different mass eigenstates have different momenta and so different speeds.
+The result is that if a neutrino is measured to be of some known flavour the probability of measuring it at a later time in any of the other flavour states changes and it might later be measured to be of a different flavour.
+
+I won't cover the derivation here as it has been done many times(see \cite{zuberNeutrinoPhysics2020}), but the resulting relations are as follows.
+If your flavour and mass eigenstates are denoted as $\ket{\nu_\alpha}$ (using greek letters) and $\ket{\nu_i}$ (using i and j) and they are related to each other using the unitary PMNS\footnotemark\ matrix $U$,
+\footnotetext{Stands for Pontecorvo–Maki–Nakagawa–Sakata matrix, it is the equivalent of the CKM matrix for the mixing of quarks.}
+\begin{equation}
+    \ket{\nu_\alpha} = \sum_i U_{\alpha i} \ket{\nu_i}, \text{ and }
+    \ket{\nu_i} = \sum_\alpha U^\dag_{i \alpha} \ket{\nu_\alpha}
+\end{equation}
+Then if the neutrino is measured the $\alpha$ state at energy $E$ then the probability of measuring it later, at a distance $L$ away along its path, in the $\beta$ flavour state is
+\begin{equation}
+    P(\alpha \rightarrow \beta) = \sum_i |U_{\alpha i} U^\dag_{i \beta}|^2 + 2\Re \sum_{j>i} U_{\alpha i} U^\dag_{i \beta} (U_{\alpha j} U^\dag_{j \beta})^* \exp(-i\frac{\Delta m^2_{ij}}{2})\frac{L}{E}
+\end{equation}
+which is a fairly long expression, but the main point is that depends on the PMNS matrix elements, the squares of mass differences of the neutrino mass eigenstates, the neutrino energy and the distance at which it is measured again.
+We can then do experiments to measure these probabilities between neutrino flavours with known $L$ and deduced $E$s to get insight into the neutrino mass differences and the matrix elements.
+
+Determining these quantities would be of immense value to modern physics as the PMNS matrix determines whether neutrinos are their own antiparticles, whether they violate charge-parity symmetry and knowing that they have small but non-zero mass already contradicts the standard model.
+
+
+\newpage
+
 
 \section{Results \& Discussion}
 
 \section{Conclusion}
 
-\section{References}
+\printbibliography
 
 \end{document}
