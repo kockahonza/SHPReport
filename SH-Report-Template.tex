@@ -12,6 +12,7 @@
 
 \addbibresource{references.bib}
 
+\newcommand{\efn}{e4$\nu$}
 
 \newcommand{\Mu}{$\mu$}
 \newcommand{\Tau}{$\tau$}
@@ -79,7 +80,9 @@ This project concerns neutrinos and their properties and so a brief description 
 Neutrinos are 3 uncharged leptons of different flavours (each corresponding to the other 3, charged, leptons -- electron, \Mu\ and \Tau\ of ascending masses).
 Neutrinos interact only via the weak force, the possible Feynman diagrams of their interactions with the other fundamental particles through the W and Z bosons are shown in \cref{fig:nu_feyn}.
 Their existence was originally proposed by Pauli in the 1930s to explain the beta decay, and their mass was long though to be 0, most notably the standard model assumes this.
-However at the end of the last century neutrinos have been theorized and experimentally observed to undergo oscillations which implies non-zero mass which making then very interesting particles to study.
+However at the end of the last century neutrinos have been observed to undergo oscillations which implies non-zero mass.
+Since then they have been at the forefront of research, nowadays they are accepted to have mass and there are questions about them being their own antiparticles (Majorana) and possibly violating charge-parity symmetry.
+The answers to these questions could significantly further our understanding of the universe and explain the dominance of matter over antimatter.
 
 \begin{figure}[h]
     \centering
@@ -87,34 +90,57 @@ However at the end of the last century neutrinos have been theorized and experim
     \caption{
         Summary of the necessary fundamental interactions of neutrinos, all other such interactions can be achieved by suitably "rotating" these vertices.
         This may involve switching some particles for their antiparticles (including the \Wm becoming a \Wp), say the first could be changed to represent a $e^-$ being converted to a \Ne\ by an incoming \Wp.
+        Figures taken from \cite{potterFeynmanDiagramsParticlea}.
     }\label{fig:nu_feyn}
 \end{figure}
 
 \subsection{Neutrino oscillations}
 In particle physics particle oscillations is a phenomenon that takes place when the particle mass eigenstates which govern its evolution in time are not the same as the state in which it is observed.
-This might seem a bit abstract, but as we know from basic quantum mechanics when we make an observation, the observed system will collapse into some particular state depending on the result of our observation.
+This phenomenon is not exclusive to neutrinos, the neutral Kaon is known to oscillate to its own antiparticle and vice-versa \cite{burkhardtWavelengthNeutrinoNeutral2003}.
+% However it might seem a bit abstract, but as we know from basic quantum mechanics when we make an observation, the observed system will collapse into some particular state depending on the result of our observation.
 
 In the case of neutrinos, we say there are 3 flavours and the way we differentiate them is by the weak interaction, so say an electron capture takes place when an electron interacts with a proton to form a neutron and a neutrino.
-This is a weak interaction process and so far all interactions we have observed conserve the 3 separate lepton numbers (electron, \Mu\ and \Tau\ again) thus we observe that neutrino to be an electron neutrino, so we say it has collapsed into the electron neutrino eigenstate.
-However if the mass eigenstates aren't the same as the weak eigenstates, in quantum mechanics terms that eigenstate can be expanded in the eigenstates of mass.
-Then as the neutrino has definite energy $E$ and through the relativistic relation $E^2 = m^2 + p^2$ this means the different mass eigenstates have different momenta and so different speeds.
-The result is that if a neutrino is measured to be of some known flavour the probability of measuring it at a later time in any of the other flavour states changes and it might later be measured to be of a different flavour.
+This is a weak interaction process and so far all interactions we have observed conserve the 3 separate lepton numbers (electron, \Mu\ and \Tau\ again) thus we observe that neutrino to be an electron neutrino, so we say it is collapsed into the electron neutrino eigenstate.
 
-I won't cover the derivation here as it has been done many times(see \cite{zuberNeutrinoPhysics2020}), but the resulting relations are as follows.
-If your flavour and mass eigenstates are denoted as $\ket{\nu_\alpha}$ (using greek letters) and $\ket{\nu_i}$ (using i and j) and they are related to each other using the unitary PMNS\footnotemark\ matrix $U$,
-\footnotetext{Stands for Pontecorvo–Maki–Nakagawa–Sakata matrix, it is the equivalent of the CKM matrix for the mixing of quarks.}
+Further, that electron eigenstate can be expressed in terms of the mass eigenstates, and if the 2 eigenstate sets aren't identical it will have multiple non-zero components.
+Then as the mass eigenstates travel differently (the neutrino has a definite $E$ and so through $E^2 = m^2 + p^2$ we get that the mass eigenstates have different momenta and so speeds), the relative components of the state at different positions as it travels will change periodically -- oscillate.
+Thus the probabilities of measuring the neutrino in any of the 3 flavour states also oscillates.
+% The result is that if a neutrino is measured to be of some known flavour the probability of measuring it at a later time in any of the other flavour states changes and it might later be measured to be of a different flavour.
+
+A very important property resulting from the two eigenstate sets being different is the transformation matrix between them.
+For neutrinos this is the PMNS\footnotemark\ matrix, it is referred to as $U$ and is such that 
 \begin{equation}
     \ket{\nu_\alpha} = \sum_i U_{\alpha i} \ket{\nu_i}, \text{ and }
     \ket{\nu_i} = \sum_\alpha U^\dag_{i \alpha} \ket{\nu_\alpha}
 \end{equation}
-Then if the neutrino is measured the $\alpha$ state at energy $E$ then the probability of measuring it later, at a distance $L$ away along its path, in the $\beta$ flavour state is
+where $\ket{\nu_\alpha}$ are the 3 flavour eigenstates and $\ket{\nu_i}$ the mass eigenstates.
+The exact form of this matrix then determines many of the neutrino properties, notably if all the matrix elements are real than they maintain Charge-Parity (CP) symmetry.
+\footnotetext{Stands for Pontecorvo–Maki–Nakagawa–Sakata matrix, it is the analogue of the CKM matrix for the mixing of quarks.}
+
+Finally to complete the picture, the probability of a neutrino measured to be of flavour $\alpha$ to be measured again in the flavour $\beta$ is given by 
 \begin{equation}
     P(\alpha \rightarrow \beta) = \sum_i |U_{\alpha i} U^\dag_{i \beta}|^2 + 2\Re \sum_{j>i} U_{\alpha i} U^\dag_{i \beta} (U_{\alpha j} U^\dag_{j \beta})^* \exp(-i\frac{\Delta m^2_{ij}}{2})\frac{L}{E}
 \end{equation}
-which is a fairly long expression, but the main point is that depends on the PMNS matrix elements, the squares of mass differences of the neutrino mass eigenstates, the neutrino energy and the distance at which it is measured again.
-We can then do experiments to measure these probabilities between neutrino flavours with known $L$ and deduced $E$s to get insight into the neutrino mass differences and the matrix elements.
+where $E$ is it's energy, $L$ the distance between our measurements and $\Delta m^2_{ij}$ the mass difference of the mass eigenstates $i, j$ squared (for more detail see \cite{zuberNeutrinoPhysics2020}).
 
-Determining these quantities would be of immense value to modern physics as the PMNS matrix determines whether neutrinos are their own antiparticles, whether they violate charge-parity symmetry and knowing that they have small but non-zero mass already contradicts the standard model.
+Finally, these probabilities are something we can measure, there are many active experiments working on this  from Super-Kamiokande to MINOS, DUNE, Hyper-Kamiokande and many more.
+Which is where \efn\ comes in, in all of these experiments the neutrinos are either from the sun, microwave cosmic radiation or secondary sources from accelerators\cite{zuberNeutrinoPhysics2020}.
+None of these 
+
+% I won't cover the derivation here as it has been done many times(see \cite{zuberNeutrinoPhysics2020}), but the resulting relations are as follows.
+% If your flavour and mass eigenstates are denoted as $\ket{\nu_\alpha}$ (using greek letters) and $\ket{\nu_i}$ (using i and j) and they are related to each other using the unitary PMNS matrix $U$,
+% \begin{equation}
+%     \ket{\nu_\alpha} = \sum_i U_{\alpha i} \ket{\nu_i}, \text{ and }
+%     \ket{\nu_i} = \sum_\alpha U^\dag_{i \alpha} \ket{\nu_\alpha}
+% \end{equation}
+% Then if the neutrino is measured the $\alpha$ state at energy $E$ then the probability of measuring it later, at a distance $L$ away along its path, in the $\beta$ flavour state is
+% \begin{equation}
+%     P(\alpha \rightarrow \beta) = \sum_i |U_{\alpha i} U^\dag_{i \beta}|^2 + 2\Re \sum_{j>i} U_{\alpha i} U^\dag_{i \beta} (U_{\alpha j} U^\dag_{j \beta})^* \exp(-i\frac{\Delta m^2_{ij}}{2})\frac{L}{E}
+% \end{equation}
+% which is a fairly long expression, but the main point is that depends on the PMNS matrix elements, the squares of mass differences of the neutrino mass eigenstates, the neutrino energy and the distance at which it is measured again.
+% We can then do experiments to measure these probabilities between neutrino flavours with known $L$ and deduced $E$s to get insight into the neutrino mass differences and the matrix elements.
+
+% Determining these quantities would be of immense value to modern physics as the PMNS matrix determines whether neutrinos are their own antiparticles, whether they violate charge-parity symmetry and knowing that they have small but non-zero mass already contradicts the standard model.
 
 
 \newpage
