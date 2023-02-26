@@ -52,7 +52,7 @@
 
 \begin{abstract}
     In this project we continue the work on data from \efn.
-    We further inspect the data generated with GENIE, mainly looking at the Delta resonances and compare then to data from the CLAS experiment.
+    We further inspect the data generated with GENIE, mainly looking at the events producing 1 pion and comparing then to data from the CLAS experiment.
 \end{abstract}
 
 \vspace*{1cm}
@@ -72,12 +72,12 @@ Signature:\hspace*{8cm}Date:  31/10/2021
 10 Weeks
 \newpage
 
-\pagestyle{plain}
-\setcounter{page}{1}
-
 \tableofcontents
 
 \newpage
+
+\pagestyle{plain}
+\setcounter{page}{1}
 
 \section{Background and Motivation}
 This project concerns neutrinos and their properties, and so a brief description of the relevant properties and their scientific significance is presented.
@@ -100,7 +100,7 @@ The answers to these questions could significantly further our understanding of 
     }\label{fig:nu_feyn}
 \end{figure}
 
-\subsection{Neutrino oscillations}
+\subsection{Neutrino Oscillations}
 In particle physics oscillations is a phenomenon that takes place when the particle mass eigenstates which govern its evolution in time are not the same as the state in which it is observed.
 This phenomenon is not exclusive to neutrinos, the neutral Kaon is known to oscillate to its own antiparticle and vice-versa \cite{burkhardtWavelengthNeutrinoNeutral2003}.
 % However it might seem a bit abstract, but as we know from basic quantum mechanics when we make an observation, the observed system will collapse into some particular state depending on the result of our observation.
@@ -131,7 +131,7 @@ Then to complete the picture, the probability of a neutrino measured to be of fl
 where $E$ is it's energy, $L$ the distance between our measurements and $\Delta m^2_{ij}$ the mass difference of the mass eigenstates $i, j$ squared (for more detail see \cite{zuberNeutrinoPhysics2020}).
 This is then our main entry point for studying the PMNS matrix from oscillation experiments, though it cannot actually be fully determined just from oscillation experiments (there may be another phase )
 
-\subsection{Experiments and Energy Reconstruction}
+\subsection{Experiments and Energy Reconstruction}\label{sec:exanderec}
 There are many active experiments (including Super-Kamiokande, OPERA, MINOS, DUNE and Hyper-Kamiokande\footnote{**maybe change which ones I mention and add references to them}) working on precise neutrino oscillation measurements to determine the neutrino masses and PMNS matrix elements.
 In all of these experiments neutrinos from a source which has known fractions of the 3 flavours are beamed across large distances (for oscillations of 1\si{GeV} \Nm\ an $L$ of order $\sim 1000\si{km}$ is needed \cite{mezzettoThreeFlavorOscillationsAccelerator2020}) so that they oscillate and then some of the flavours (electron, \Mu\ or both) are observed and counted.
 This means we are measuring some of the probabilities from \cref{eq:nosc} with a known $L$, however we don't have a simple value for $E$ which we need in order to use the data.
@@ -145,8 +145,12 @@ These always have to include a lepton of the corresponding flavour and possibly 
 A collection of particle measurements of particles originating from one neutrino is called and event and these are grouped by different neutrino-nucleus interactions (the neutrinos don't scatter off of the atomic electrons).
 This is done as they share many characteristics (for example what particles are produced), different interactions require different treatments for say the energy reconstructions and are fundamentally different on the theoretical level.
 
-Which is where \efn\ comes in, in order to better interpret data from neutrino detectors and mainly to improve their energy reconstruction (which is becoming a limiting factor on the uncertainties of the results) we need to understand these neutrino-nucleus interactions better.
+Which is where \efn\ comes in, in order to better interpret data from neutrino detectors and mainly to improve their energy reconstruction (which is becoming a significant factor on the uncertainties of the results) we need to understand these neutrino-nucleus interactions better.
 However, as there are no monoenergetic neutrino beams it is very difficult to experimentally study these effects directly on neutrinos, so instead we study electron-nucleus interactions which are subject to the same quantum field theory interactions.
+
+\subsubsection{Monte Carlo event generators}
+**not done, but I think this might be a good place to introduce them
+
 
 \subsection{Neutrino(Electron)-nucleus interactions}
 First there is another concept to introduce, both neutrino and electron nucleus scattering can be described by
@@ -161,9 +165,16 @@ Semi-inclusive cross sections where $l'$ and some of the hadrons are detected an
 As neutrinos only interact via the weak force, all neutrino-nucleus interactions take place via either the \Zz\ boson in which case the final lepton is the same neutrino, these are called Neutral Current (NC) and are not detected.
 Or it can interact through the \Wp and \Wm\ bosons (Charged Current interactions) in which case a charged lepton is produced and detected.
 This is contrasted to electrons which will dominantly interact with the nucleus through photons (so preserving the electron), nevertheless within quantum field theory both leptons interact via a vector current though neutrinos also interact through an axial-vector current \cite{alvarez-rusoNuSTEC11NeutrinoScattering2018}.
+Due to this existing MC event generators like GENIE can be modified to generate electron-nucleus interaction events and test particularly the vector current component of the theories behind the generator.
+
+Finally to come back to the interaction types mentioned in \cref{sec:exanderec}, the dominant types relevant for oscillation experiments are Quasi-elastic, Resonant and Deep Inelastic scaterring
+
+\subsubsection{Quasi-elastic (QE) scattering}
+These events are most dominant at lower energies, 
 
 
-\subsection{Quasi-elastic interactions}
+\subsubsection{Resonant scattering}
+\subsubsection{Deep Inelastic scattering (DIS)}
 
 
 
