@@ -5,9 +5,10 @@
 \usepackage[pdftex]{graphicx}
 \usepackage{float}
 \usepackage{hyperref}
-\usepackage{cleveref}
 \usepackage{physics}
+\usepackage{amsmath}
 \usepackage{siunitx}
+\usepackage{cleveref}
 
 
 \addbibresource{references.bib}
@@ -21,6 +22,7 @@
 \newcommand{\Nm}{$\nu_\mu$}
 \newcommand{\Nt}{$\nu_\tau$}
 
+\newcommand{\Zz}{$Z^0$}
 \newcommand{\Wp}{$W^+$}
 \newcommand{\Wm}{$W^-$}
 \newcommand{\pip}{$\pi^+$}
@@ -111,30 +113,43 @@ Thus the probabilities of measuring the neutrino in any of the 3 flavour states 
 % The result is that if a neutrino is measured to be of some known flavour the probability of measuring it at a later time in any of the other flavour states changes and it might later be measured to be of a different flavour.
 
 A very important property resulting from the two eigenstate sets being different is the transformation matrix between them.
-For neutrinos this is the PMNS\footnotemark\ mixing matrix, it is referred to as $U$ and is such that 
+For neutrinos this is the PMNS\footnotemark\ matrix, it is referred to as $U$ and is such that 
 \begin{equation}
     \ket{\nu_\alpha} = \sum_i U_{\alpha i} \ket{\nu_i}, \text{ and }
     \ket{\nu_i} = \sum_\alpha U^\dag_{i \alpha} \ket{\nu_\alpha}
 \end{equation}
 where $\ket{\nu_\alpha}$ are the 3 flavour eigenstates and $\ket{\nu_i}$ the mass eigenstates.
-% The exact form of this matrix then determines many of the neutrino properties, notably if all the matrix elements are real then they maintain Charge-Parity (CP) symmetry.
-% \footnotetext{Stands for Pontecorvo–Maki–Nakagawa–Sakata matrix, it is the analogue of the CKM matrix for the mixing of quarks.}
+The exact form of the matrix then determines many of the neutrino properties, obtaining accurate values for its elements is the main driving force of neutrino oscillation experiments.
+For example if the matrix is not completely real then neutrinos violate CP symmetry.
+\footnotetext{Stands for Pontecorvo–Maki–Nakagawa–Sakata matrix, it is the analogue of the CKM matrix for the mixing of quarks.}
+
 Then to complete the picture, the probability of a neutrino measured to be of flavour $\alpha$ to be measured again in the flavour $\beta$ is given by 
-\begin{equation}
+\begin{equation} \label{eq:nosc}
     P(\alpha \rightarrow \beta) = \sum_i |U_{\alpha i} U^\dag_{i \beta}|^2 + 2\Re \sum_{j>i} U_{\alpha i} U^\dag_{i \beta} (U_{\alpha j} U^\dag_{j \beta})^* \exp(-i\frac{\Delta m^2_{ij}}{2}\frac{L}{E})
 \end{equation}
-where $E$ is it's energy, $L$ the distance between our measurements and $\Delta m^2_{ij}$ the mass difference of the mass eigenstates $i, j$ squared (for a more detailed analysis see \cite{zuberNeutrinoPhysics2020}).
+where $E$ is it's energy, $L$ the distance between our measurements and $\Delta m^2_{ij}$ the mass difference of the mass eigenstates $i, j$ squared (for more detail see \cite{zuberNeutrinoPhysics2020}).
+This is then our main entry point for studying the PMNS matrix from oscillation experiments, though it cannot actually be fully determined just from oscillation experiments (there may be another phase )
 
 \subsection{Experiments and Energy Reconstruction}
-Finally, these probabilities are something we can measure, there are many active experiments working on this to determine the neutrino masses and PMNS matrix elements, the list includes Super-Kamiokande, OPERA, MINOS, DUNE, Hyper-Kamiokande.\footnote{**maybe change which ones I mention and add references to them}
-In all of these experiments neutrinos from a source which has known fractions of the 3 flavours are beamed across large distances (about 1300\si{km} for DUNE, for oscillations of 1\si{GeV} \Nm\ $L$ of order $\sim 1000\si{km}$ is needed \cite{mezzettoThreeFlavorOscillationsAccelerator2020}) so that they oscillate and then some of the flavours (electron, \Mu\ or both) are measured.
-This means we are measuring some of the probabilities above with a known $L$, however there aren't any suitable monoenergetic neutrino sources.
-Experiments typically use either neutrinos from the sun, from the atmosphere due to the cosmic microwave background or from secondary neutrino beams at accelerators.
-We naturally don't have any control over the solar and atmospheric neutrinos, and while we can to some degree control the energies of neutrinos from accelerator sources not to the necessary degree.
+There are many active experiments (including Super-Kamiokande, OPERA, MINOS, DUNE and Hyper-Kamiokande\footnote{**maybe change which ones I mention and add references to them}) working on precise neutrino oscillation measurements to determine the neutrino masses and PMNS matrix elements.
+In all of these experiments neutrinos from a source which has known fractions of the 3 flavours are beamed across large distances (for oscillations of 1\si{GeV} \Nm\ an $L$ of order $\sim 1000\si{km}$ is needed \cite{mezzettoThreeFlavorOscillationsAccelerator2020}) so that they oscillate and then some of the flavours (electron, \Mu\ or both) are observed and counted.
+This means we are measuring some of the probabilities from \cref{eq:nosc} with a known $L$, however we don't have a simple value for $E$ which we need in order to use the data.
+Experiments typically use either neutrinos from the sun, from the atmosphere due to the cosmic microwave background or from secondary neutrino beams at accelerators and all of these methods produce neutrinos with wide ranges of energies.
+% We naturally don't have any control over the solar and atmospheric neutrinos, and while we can to some degree control the energies of neutrinos from accelerator sources not to the necessary degree.
 
 Because of that experiments rely on reconstructing incident neutrino energies.
-As neutrinos are uncharged and of small mass they aren't detected directly, instead a large amount of some stable substance (argon, water or chlorine) is stored and then when a neutrino comes in it might interact with one of these atoms and produce detectable particles.
-These always have to include a lepton of the corresponding flavour and often the
+As neutrinos are uncharged and of small mass they aren't detected directly, instead a large amount (needed due to their small cross sections) of some stable substance (argon, water or chlorine) is stored and surrounded by detectors.
+Then when a neutrinos comes in, some interact with these atoms and produce detectable particles.
+These always have to include a lepton of the corresponding flavour and possibly other particles, often pions or photons.
+A collection of particle measurements of particles originating from one neutrino is called and event and these are grouped by different neutrino-nucleus interactions (the neutrinos don't scatter off of the atomic electrons).
+This is done as they share many characteristics (for example what particles are produced), different interactions require different treatments for say the energy reconstructions and are fundamentally different on the theoretical level.
+
+Which is where \efn\ comes in, in order to better interpret data from neutrino detectors and mainly to improve their energy reconstruction (which is becoming a limiting factor on the uncertainties of the results) we need to  understand these neutrino-nucleus interactions better.
+However, as there are no monoenergetic neutrino beams it is not possible to experimentally study these effects directly on neutrinos, so instead we study electron-nucleus interactions which are subject to the same quantum field theory interactions.
+
+\subsection{Neutrino-nucleus interactions}
+As neutrinos only interact via the weak force, all neutrino-nucleus interactions take place via the \Zz, \Wp and \Wm bosons.
+\subsection{Quasi-elastic interactions}
 
 % Neutrino detectors rely on having a large amount of some substance (Argon, water, Chlorine) with with the neutrino then interacts.
 % In many detectors (including water Cherenkov type) only the outgoing lepton
