@@ -1,7 +1,8 @@
 \documentclass[a4paper,12pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage{fullpage}
-\usepackage[style=phys]{biblatex}
+\usepackage[style=phys,maxbibnames=6]{biblatex}
+\usepackage[skip=0.3em,indent=2em]{parskip}
 \usepackage[pdftex]{graphicx}
 \usepackage{float}
 \usepackage{hyperref}
@@ -139,32 +140,31 @@ Experiments typically use either neutrinos from the sun, from the atmosphere due
 
 Because of that experiments rely on reconstructing incident neutrino energies.
 As neutrinos are uncharged and of small mass they aren't detected directly, instead a large amount (needed due to their small cross sections) of some stable substance (argon, water or chlorine) is stored and surrounded by detectors.
-Then when a neutrinos comes in, some interact with these atoms and produce detectable particles.
+Then when neutrinos come in, some will interact with these atoms and produce detectable particles.
 These always have to include a lepton of the corresponding flavour and possibly other particles, often pions or photons.
 A collection of particle measurements of particles originating from one neutrino is called and event and these are grouped by different neutrino-nucleus interactions (the neutrinos don't scatter off of the atomic electrons).
 This is done as they share many characteristics (for example what particles are produced), different interactions require different treatments for say the energy reconstructions and are fundamentally different on the theoretical level.
 
-Which is where \efn\ comes in, in order to better interpret data from neutrino detectors and mainly to improve their energy reconstruction (which is becoming a limiting factor on the uncertainties of the results) we need to  understand these neutrino-nucleus interactions better.
-However, as there are no monoenergetic neutrino beams it is not possible to experimentally study these effects directly on neutrinos, so instead we study electron-nucleus interactions which are subject to the same quantum field theory interactions.
+Which is where \efn\ comes in, in order to better interpret data from neutrino detectors and mainly to improve their energy reconstruction (which is becoming a limiting factor on the uncertainties of the results) we need to understand these neutrino-nucleus interactions better.
+However, as there are no monoenergetic neutrino beams it is very difficult to experimentally study these effects directly on neutrinos, so instead we study electron-nucleus interactions which are subject to the same quantum field theory interactions.
 
-\subsection{Neutrino-nucleus interactions}
-As neutrinos only interact via the weak force, all neutrino-nucleus interactions take place via the \Zz, \Wp and \Wm bosons.
+\subsection{Neutrino(Electron)-nucleus interactions}
+First there is another concept to introduce, both neutrino and electron nucleus scattering can be described by
+\begin{equation}
+    l + A \rightarrow l' + a + b + c ...
+\end{equation}
+where an incoming lepton $l$ scatters off of a nucleus $A$ resulting in a lepton $l'$ and hadron particles $a, b, c ...$.
+When considering realistic experiments we always know $l$ and $A$ but might only be able to detect the outgoing lepton and some or none of the outgoing hadrons. 
+To differentiate these cases we consider separately inclusive cross sections where only $l'$ is detected (so the result is essentially as if integrating over all the possible outgoing hadrons).
+Semi-inclusive cross sections where $l'$ and some of the hadrons are detected and exclusive cross sections where we know all of the resulting particles \cite{amaroElectronNeutrinonucleusScattering2020}.
+
+As neutrinos only interact via the weak force, all neutrino-nucleus interactions take place via either the \Zz\ boson in which case the final lepton is the same neutrino, these are called Neutral Current (NC) and are not detected.
+Or it can interact through the \Wp and \Wm\ bosons (Charged Current interactions) in which case a charged lepton is produced and detected.
+This is contrasted to electrons which will dominantly interact with the nucleus through photons (so preserving the electron), nevertheless within quantum field theory both leptons interact via a vector current though neutrinos also interact through an axial-vector current \cite{alvarez-rusoNuSTEC11NeutrinoScattering2018}.
+
+
 \subsection{Quasi-elastic interactions}
 
-% Neutrino detectors rely on having a large amount of some substance (Argon, water, Chlorine) with with the neutrino then interacts.
-% In many detectors (including water Cherenkov type) only the outgoing lepton
-
-% We naturally don't have any control over the solar and atmospheric neutrinos, but for accelerator sources we can to some degree control the generated neutrino energies, but the control is limited and the neutrino flux is orders of magnitude lower \cite{zuberNeutrinoPhysics2020, deloguENUBETExperiment2022}.
-% With NBBs we can know the neutrino energies to some level, however 
-
-
-% All of these sources tend to have a wide energy range however, 
-% However none of these sources have a dominant energy, they all have a wide range, but for calculations of mass differences and PMNS matrix elements we need the $E$ values.
-% For that reasons experiments are forced to reconstruct the energies of incoming neutrinos based on the observed events.
-
-
-% in all of these experiments the neutrinos are either from the sun, microwave cosmic radiation or secondary sources from accelerators\cite{zuberNeutrinoPhysics2020}.
-% None of these 
 
 
 
