@@ -5,6 +5,8 @@
 \usepackage[skip=0.3em,indent=2em]{parskip}
 \usepackage[pdftex]{graphicx}
 \usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
 \usepackage{hyperref}
 \usepackage{physics}
 \usepackage{amsmath}
@@ -231,13 +233,14 @@ As mentioned before, these dominate at lower neutrino energies and in many ways 
     }\label{fig:QE_fd}
 \end{figure}
 
-QE interactions are the only type for which we do have a theoretical understanding, the simplest models rely on a combination of two independent parts: calculations of neutrino-nucleon interactions within the impulse-approximation and modelling of the nucleons within the nuclei.
+Of the neutrino interactions, QE are the best theoretically understood, the simplest models rely on a combination of two independent parts: calculations of neutrino-nucleon interactions within the impulse-approximation and modelling of the nucleons within the nuclei.
 A recent review \cite{gallagherNeutrinoNucleusInteractions2011} has compared the theoretical result with observations from the MiniBooNE and NOMAD.
 While the models capture many important features, there are also significant discrepancies which point to the interaction being more complicated than thought and also points out that many studies consider different levels of inclusiveness leasing to difficulties in comparisons.
 
-I won't go into further detail as we don't examine them in this work (so they are just background that we try to eliminate) however it is worth noting that the elastic scattering of electrons off of nuclei 
+% I won't go into further detail as we don't examine them in this work (so they are just background that we try to eliminate) however it is worth noting that the elastic scattering of electrons off of nuclei 
 
 As they are not a focus of this work, I won't go further into detail, however it is worth saying that QE interactions are also a great example of the similarities of neutrino and electron scattering.
+The elastic electron scattering off of nuclei is closely related and in the two have often been studied together, also being the dominant interaction at lower energies.
 
 \subsubsection{Resonant scattering}
 
@@ -260,7 +263,7 @@ Finally, hadronization models account for FSI, for these GENIE uses the AGKY mod
 GENIE also has an electron scattering mode (\eGEN) that has been revised in 2021 by the \efn collaboration \cite{e4ncollaborationInclusiveElectronScattering2021}.
 This uses the same underlying logic and structures of GENIE to generate electron-nucleus scattering events, data from which has been in used in this report.
 
-\section{Our data}
+\section{The \efn\ Data}
 The data used by the \efn\ analysis comes from the e2a experiment measuring electron scattering at electron energies of 1.159, 2.257 and 4.453 \si{GeV} on targets of He, C and Fe nuclei.
 The measurements took place in Thomas Jefferson National Accelerator Facility (JLab) using the CEBAF Large Acceptance Spectrometer (CLAS6) \cite{meckingCEBAFLargeAcceptance2003} in 1999, the data has been used in many published works including \cite{khachatryanElectronbeamEnergyReconstruction2021}.
 In addition, recently CLAS has undergone an upgrade (CLAS6 to CLAS12) \cite{burkertCLAS12SpectrometerJefferson2020} allowing experiments at electron energies up to 12 \si{GeV} and generally improved capabilities.
@@ -274,16 +277,41 @@ Some of these properties, especially the ones that never could be measured, are 
 Finally, as the detector is not perfect there are many steps of adjusting the `truth` data before it can be compared to experiments, these are covered in detail later as they are a big part of this project.
 
 \subsection{The CLAS detector}
-The CLAS6 detector, active from 1998 to 2012 when the work on CLAS12 has began, is largely based 
+The CLAS6 detector, active from 1998 to 2012 when the work on CLAS12 has began, is largely built around a set of 6 toroidal magnets distributed along the azimuthal angle $\phi$.
+These curve the trajectories of charged particles in their $\phi$ plane and allow for charged particle momentum measurements in drift chambers.
+They also give rise to distinct 6 sectors visible in \cref{fig:CLAS} and deadspace between them from particles hitting the magnets.
 
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/CLAS_headon.pdf}
+        \caption{CLAS6 as seen along the beam axis.}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.5\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{figures/CLAS_side.pdf}
+        \caption{Side view cross section through the detector.}
+    \end{subfigure}
+    \caption{\label{fig:CLAS}
+        Diagrams of the CLAS6 detector from \cite{meckingCEBAFLargeAcceptance2003}, see for more detail.
+        Most important for us are the EM calorimeter spanning $\theta < 60$ which detects the scattered electrons and photons.
+        Cherenkov counters near the axis are needed for distinguishing electrons and negative pions and the time-of-flight (TOF) detectors help distinguish protons and positive pions.
+    }
+\end{figure}
 
-For a summary of the CLAS6 available data, each event has a number of particles detected and a 4 momentum measurement for each.
-Only electrons, protons, charged pions and photons are measured and so any cross sections are inclusive over all other hypothetical particles.
-In addition, due to the detector design, particles are only detected under certain conditions.
-For one thing, the detector has 6 toroidal magnets patched azimuthally around the beam axis in order to separate positive and negative charges based on which direction the paths curve in the magnetic field.
-However, this also creates a certain amount of deadspace as if a particle hits the magnet it will not be detected, there are also limits on the particle momenta (pions are only detected if they momentum is over 0.3\si{GeV/c}) along with other features.
-While they don't capture all the features, the e2a experiment has compiled acceptance maps for each type of particle, they assign a probability of being detected based on the momentum and direction of the particle, some of the electron acceptance maps are shown in \cref{fig:acc_map}.
-These are very important in matching measured and GENIE data and are what is currently holding up the new CLAS12 data.
+Our data, from e2a, has measurement of electrons, protons, charged pions and photons (so essentially our cross sections are inclusive over all the other particles) and each event has a list of 4 momentum measurements for each detected particle.
+In order to properly compare the measured data to theoretical MC data however, it is necessary to take into account that the detector only detects some of these particles based on their directions and momentum and even then there are finite probabilities for detection.
+This can be done either by decoding these defects and then produce adjusted results from our measurements, this is in many ways better, however it is complicated and error prone.
+Instead, if one only needs to test a particular aspect, it is much easier to degrade the MC data according to the defects and produce theoretical prediction of what the detector should see.
+
+We do this in two steps, first we specify a fairly wide range of directions and momenta, we apply \emph{fiducial} cuts to filter these and define these as our signal in both experimental and MC data.
+These reflect the hard limits of the CLAS6 detector, the precise fiducials depend on the sample and we have inherited from previous \efn\ work and e2a as a collection of C\texttt{++} files.
+A good example however is that we only consider pions with momentum over 150 \si{MeV}.
+Then, if we are to truly compare MC to data, we apply \emph{acceptance} maps.
+These have been compiled by e2a as well and give a probability of being detected for each of the 6 types of particles and every possible direction of their momentum within the fiducial cuts.
+They are given as 3 dimensional histograms (\verbb{TH3F} from ROOT) with momentum magnitude, $\theta$ and $\phi$ as the axes a projection of the electron acceptance map can be seen in \cref{fig:acc_map}.
 
 \begin{figure}[h]
 \centering
@@ -294,8 +322,11 @@ These are very important in matching measured and GENIE data and are what is cur
 \end{figure}
 
 
-
-\newpage
+\section{Inspecting the Nuclear Transparency with 1 Pion 1 Nucleon Events}
+Finally, once all the preliminary works of revising the codebase has been completed, we conduct a basic nuclear transparency study.
+Nuclear transparency is a very wide term describing how much of an effect do final state interactions have under certain condition, here we look at events with 1 pion 1 nucleon of of the $\sim 2\si{GeV}$ electron scattering off of carbon.
+Given its nature nuclear transparency has to be studied either theoretical or from simulations as we cannot measure any pre final state properties.
+The first step is to prepare our data, 
 
 
 \printbibliography
