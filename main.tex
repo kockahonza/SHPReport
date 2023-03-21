@@ -260,7 +260,7 @@ Finally, hadronization models account for FSI, for these GENIE uses the AGKY mod
 GENIE also has an electron scattering mode (\eGEN) that has been revised in 2021 by the \efn collaboration \cite{e4ncollaborationInclusiveElectronScattering2021}.
 This uses the same underlying logic and structures of GENIE to generate electron-nucleus scattering events, data from which has been in used in this report.
 
-\section{The Datasets and Revising the Codebase}
+\section{Our data}
 The data used by the \efn\ analysis comes from the e2a experiment measuring electron scattering at electron energies of 1.159, 2.257 and 4.453 \si{GeV} on targets of He, C and Fe nuclei.
 The measurements took place in Thomas Jefferson National Accelerator Facility (JLab) using the CEBAF Large Acceptance Spectrometer (CLAS6) \cite{meckingCEBAFLargeAcceptance2003} in 1999, the data has been used in many published works including \cite{khachatryanElectronbeamEnergyReconstruction2021}.
 In addition, recently CLAS has undergone an upgrade (CLAS6 to CLAS12) \cite{burkertCLAS12SpectrometerJefferson2020} allowing experiments at electron energies up to 12 \si{GeV} and generally improved capabilities.
@@ -272,6 +272,27 @@ As this is a GENIE format, there are fields for many properties not measured in 
 Some of the more notable fields are the outgoing electron 4 momentum, information about all the particles after the neutrino-nucleus interaction (referred to as primary or initial state) as well as the same information about post FSI particles (final state).
 Some of these properties, especially the ones that never could be measured, are referred to as the `truth` as they reflect what we think is physically going on.
 Finally, as the detector is not perfect there are many steps of adjusting the `truth` data before it can be compared to experiments, these are covered in detail later as they are a big part of this project.
+
+\subsection{The CLAS detector}
+The CLAS6 detector, active from 1998 to 2012 when the work on CLAS12 has began, is largely based 
+
+
+For a summary of the CLAS6 available data, each event has a number of particles detected and a 4 momentum measurement for each.
+Only electrons, protons, charged pions and photons are measured and so any cross sections are inclusive over all other hypothetical particles.
+In addition, due to the detector design, particles are only detected under certain conditions.
+For one thing, the detector has 6 toroidal magnets patched azimuthally around the beam axis in order to separate positive and negative charges based on which direction the paths curve in the magnetic field.
+However, this also creates a certain amount of deadspace as if a particle hits the magnet it will not be detected, there are also limits on the particle momenta (pions are only detected if they momentum is over 0.3\si{GeV/c}) along with other features.
+While they don't capture all the features, the e2a experiment has compiled acceptance maps for each type of particle, they assign a probability of being detected based on the momentum and direction of the particle, some of the electron acceptance maps are shown in \cref{fig:acc_map}.
+These are very important in matching measured and GENIE data and are what is currently holding up the new CLAS12 data.
+
+\begin{figure}[h]
+\centering
+    \includegraphics[width=0.9\textwidth]{example-image-duck}
+    \caption{
+        Ducky: Acceptance maps
+    }\label{fig:acc_map}
+\end{figure}
+
 
 
 \newpage
