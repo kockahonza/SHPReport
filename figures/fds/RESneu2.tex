@@ -1,0 +1,26 @@
+\documentclass[12pt]{standalone}
+\usepackage{tikz-feynman}
+
+\begin{document}
+\begin{tikzpicture}
+    \begin{feynman}
+        \vertex (e1) {$\nu_e$};
+        \vertex [below right=5mm and 15mm of e1] (e2);
+        \vertex [above right=5mm and 20mm of e2] (e3) {$e^-$};
+        \vertex [below=of e1] (hitnuc1) {$n$};
+        \vertex [right=15mm of hitnuc1] (hitnuc2);
+        \vertex [right=12mm of hitnuc2] (hitnuc3);
+        \vertex [above right=5mm and 8mm of hitnuc3] (dec1) {$\pi^+$};
+        \vertex [below right=5mm and 8mm of hitnuc3] (dec2) {$n$};
+
+        \diagram* {
+            (e1) -- [fermion] (e2) -- [fermion] (e3),
+            (e2) -- [boson, edge label'=\(W\)] (hitnuc2),
+            (hitnuc1) -- [fermion] (hitnuc2) -- [fermion, edge label=\(\Delta^{+}\)] (hitnuc3),
+            (hitnuc3) -- [fermion] (dec1),
+            (hitnuc3) -- [fermion] (dec2),
+        };
+    \end{feynman}
+\end{tikzpicture}
+
+\end{document}

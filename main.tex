@@ -37,7 +37,7 @@
 \newcommand{\pim}{$\pi^-$}
 
 \newcommand{\duckim}[2][0.8]{
-    \begin{figure}[h]
+    \begin{figure}[H]
         \centering
         \includegraphics[width=#1\textwidth]{example-image-duck}
         \caption{
@@ -45,6 +45,8 @@
         }\label{fig:nu_fen}
     \end{figure}
 }
+
+\DeclareMathOperator{\diag}{diag}
 
 
 \begin{document}
@@ -106,7 +108,7 @@ However at the end of the last century neutrinos have been observed to undergo o
 Since then they have been at the forefront of research, nowadays they are accepted to have mass and there are questions about them being their own antiparticles (Majorana) and possibly violating charge-parity symmetry.
 The answers to these questions could significantly further our understanding of the universe, including explaining the dominance of matter over antimatter.
 
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
     \includegraphics{figures/NeutrinoFeynman.pdf}
     \caption{
@@ -150,33 +152,33 @@ This is then our main entry point for studying the PMNS matrix from oscillation 
 Though even if we  knew precisely all the oscillation probabilities we still can not fully determine the matrix, there may be a Majorana phase component that doesn't influence $P$ and so needs to be studied using other experiments.
 
 \subsection{Oscillation Experiments and Energy Reconstruction}\label{sec:exanderec}
-There are active experiments (NOvA and T2K currently running and DUNE and Hyper-Kamiokande under development) working on precise neutrino oscillation measurements to determine the neutrino masses and PMNS matrix elements.
+There are many active experiments (NOvA and T2K currently running and DUNE and Hyper-Kamiokande under development) working on precise neutrino oscillation measurements to determine the neutrino masses and PMNS matrix elements.
 % There are active experiments (including Super-Kamiokande, OPERA, MINOS, DUNE and Hyper-Kamiokande\footnote{**maybe change which ones I mention and add references to them}) working on precise neutrino oscillation measurements to determine the neutrino masses and PMNS matrix elements.
 In all of these experiments neutrinos from a source which has known fractions of the 3 flavours are beamed across large distances (for oscillations of 1\si{GeV} \Nm\ an $L$ of order $\sim 1000\si{km}$ is needed \cite{mezzettoThreeFlavorOscillationsAccelerator2020}) so that they oscillate and then some of the flavours (electron, \Mu\ or both) are observed and counted.
 This means we are measuring some of the probabilities from \cref{eq:nosc} with a known $L$, however we don't have a simple value for $E$ which we need in order to interpret the data.
-Experiments typically use either neutrinos from the sun, from the atmosphere due to the cosmic microwave background or from secondary neutrino beams at accelerators and all of these methods produce neutrinos with wide ranges of energies.
+Experiments typically use either neutrinos from the sun, from the atmosphere due to the cosmic microwave background or from secondary neutrino beams at accelerators and all of these methods produce neutrinos with wide ranges of energies (see \cref{fig:neu_s_Es}).
 Because of that experiments rely on reconstructing incident neutrino energies and for that a very good understanding of the detecting mechanism is needed.
 
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.6\textwidth]{figures/sourceEnergies.pdf}
     \caption{
-        The energy distributions of neutrino sources used at various experiments.
-        All of these are accelerator based sources which have the narrowest energy distributions, however still the spread is on the order of hundreds of \si{MeV}.
+        The energy distributions of neutrino sources used at various experiments, both oscillation (DUNE, NOvA, T2K) and neutrino interaction studies (MicroBooNE, MINERVA).
+        All of these are accelerator based sources which have the narrowest energy distributions, however still the spread is on the order of hundreds of \si{MeV} at least.
         Figure taken from \cite{sajjadatharNeutrinosTheirInteractions2023}.
-    }
+    }\label{fig:neu_s_Es}
 \end{figure}
 
 As neutrinos are uncharged and have tiny cross sections, they aren't detected directly, instead a large amount (needed due to the small cross sections) of some stable substance (argon, water or chlorine) is stored and surrounded by detectors (often carbon based scintillators).
 Then when neutrinos come in, some will interact with these atoms and produce detectable particles.
-These always have to include a lepton of the corresponding flavour and possibly other particles, often pions, nucleons or photons and a collection of particle measurements originating from one neutrino is called an event
+These always have to include a lepton of the corresponding flavour and possibly other particles, often pions, nucleons or photons and a collection of particle measurements originating from one neutrino is called an event.
 While the neutrinos can interact with the atomic electrons \cite{whittinghamScatteringLowEnergy2022}, it is only significant at low neutrino energies and rarely relevant to oscillation experiments.
 Thus some of the most important physics of neutrino detectors are the neutrino-nucleus interactions and these are not yet well understood.
 Modern oscillation experiments report the model limitations to be a source of large systematic uncertainties\cite{abeConstraintMatterAntimatter2020,novacollaborationNewConstraintsOscillation2018}.
 
-Which is where \efn\ comes in, while ideally we would study these interaction with neutrinos, the absence of a monoenergetic neutrino source, along with other complications (CITATION) makes us consider other options.
+Which is where \efn\ comes in, while ideally we would study these interaction with neutrinos, the absence of a monoenergetic neutrino source, along with other complications (**CITATION) makes us consider other options.
 While on the surface they seem different, electrons scatter off of nuclei in a similar manner, further after the first neutrino-nucleus interactions, the resulting hadrons will often interact with each other too.
-This is called Final State Interactions (FSI) or nuclear effects, these are very relevant to oscillation experiments and identical for neutrino and electron-nucleus scattering.
+This is called Final State Interactions (FSI) or nuclear effects, these are very relevant to oscillation experiments as they significantly change the resulting particles we detect and they are identical for neutrino and electron-nucleus scattering.
 So in summary, we can use easily available electron scattering data to test neutrino interaction models -- \efn.
 
 % in order to better interpret data from neutrino detectors and mainly to improve their energy reconstruction (which is becoming a significant factor on the uncertainties of the results) we need to understand these neutrino-nucleus interactions better.
@@ -185,7 +187,7 @@ So in summary, we can use easily available electron scattering data to test neut
 
 \subsection{Neutrino(Electron)-nucleus interactions}
 As the interactions are not yet fully, fundamentally understood, we to a large degree resort to classifications which allows us to make prediction under certain conditions.
-Firstly, both neutrino and electron nucleus scattering can be described by
+Both neutrino and electron nucleus scattering can be described by
 \begin{equation}
     l + A \rightarrow l' + a + b + c ...
 \end{equation}
@@ -194,7 +196,7 @@ When considering realistic experiments we always know $l$ and $A$ but might only
 To differentiate these cases we consider separately \emph{inclusive} cross sections where only $l'$ is detected (so the result is essentially as if summing over all the possible outgoing hadrons).
 \emph{Semi-inclusive} cross sections where $l'$ and some of the hadrons are detected and \emph{exclusive} cross sections where we know all of the resulting particles \cite{amaroElectronNeutrinonucleusScattering2020}.
 
-As neutrinos only interact via the weak force, all neutrino-nucleus interactions take place via either the \Zz\ boson, in which case the final lepton is the same neutrino and so these events are not detected.
+As neutrinos only interact via the weak force, all neutrino-nucleus interactions take place via either the \Zz\ boson, in which case the final lepton is the same neutrino.
 These are called \emph{Neutral Current} (NC) events and are generally difficult to measure as we cannot measure the outgoing lepton and have to rely on reconstructing the event solely from the hadrons \cite{giustiNeutralCurrentNeutrinonucleus2020}.
 Or it can interact through the \Wp and \Wm\ bosons (\emph{Charged Current} or CC interactions) in which case a charged lepton is produced and detected, often being the most important particle for detection and event reconstruction.
 
@@ -202,49 +204,156 @@ This is contrasted to electrons which will dominantly interact with the nucleus 
 Nevertheless within quantum field theory the neutrino weak force interactions have a vector and an axial-vector components and the electron EM interaction has only a vector component\cite{alvarez-rusoNuSTEC11NeutrinoScattering2018}.
 Thus, the vector part of neutrino-nucleus scattering calculations and simulations can be adapted and tested by electron scattering.
 
-\subsubsection{Event kinematics}
-
 % Due to this existing MC event generators like GENIE can be modified to generate electron-nucleus interaction events and test particularly the vector current component of the theories behind the generator.
 % Further on I will only speak about neutrino interactions, but most of these characteristics apply to electrons too.
 
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.6\textwidth]{figures/sigmaVsEnu.pdf}
     \caption{
-        Replace this with a better image and a source!!
+        Replace this with a better image and a source!! Possibly also add an equivalent electron image to show both and how they're similar.
     }\label{fig:nusigma_vs_Enu}
 \end{figure}
 
-Finally to come back to the interaction types mentioned in \cref{sec:exanderec}, the main types relevant for oscillation experiments are Quasi-Elastic (QE), Resonant (RES) and Deep Inelastic Scattering (DIS).
-In this order these dominate at increasing energies (see \cref{fig:nusigma_vs_Enu}), a low energy neutrino ($<1\si{GeV}$) will essentially bounce off of a nucleus/a single nucleon from it as a whole.
-At medium energies ($\sim 1 \si{GeV}$) the neutrino can excite a nucleon into an excited state and at the highest energies ($>3\si{GeV}$) the neutrino will interact with many particles and DIS interactions become difficult to predict especially once accounting for FSI.
+Finally to come back to the interaction types mentioned in \cref{sec:exanderec}, some of the main types relevant for oscillation experiments are Quasi-Elastic (QE), Resonant (RES) and Deep Inelastic Scattering (DIS), see \cref{fig:nusigma_vs_Enu}.
+In this order these dominate at increasing energies and correspond with how far inside the nucleus the neutrino penetrated.
+Importantly, these classifications also carry over to electron scattering very well, in fact they are referred to within neutrino physics under the same names, even though QE electron scattering is much closer to fully elastic scattering.
+% A low energy neutrino ($<1\si{GeV}$) will scatter off of a nucleon as a whole, without changing it's composition.
+% At medium energies ($\sim 1 \si{GeV}$) the neutrino can excite a nucleon into an excited state and at the highest energies ($>3\si{GeV}$) the neutrino will interact with many particles and DIS interactions become difficult to predict especially once accounting for FSI.
 
 \subsubsection{Quasi-Elastic (QE) scattering}
 Elastic scattering refers to processes where the internal structure of the colliding objects isn't altered.
-Naturally then, fully elastic neutrino scattering can only happen within NC interactions.
-However, there is a very similar type of CC interaction where the neutrino interacts interacts with the nucleus, mostly as a whole, but converting one of the neutrons to a protons, shown in \cref{fig:QE_fd} (a similar process for an antineutrino would convert a proton into a neutron), these are QE interactions.
-As mentioned before, these dominate at lower neutrino energies and in many ways are the simplest interaction as don't need as much information about that nucleus.
+Fully elastic neutrino scattering can then only happen within NC interactions.
+However, there is a very similar CC interaction where the neutrino interacts with a single neutron through an $W$ boson, changing it into a proton, but otherwise conserving it's structure.
+This is shown in \cref{fig:QE_fd} and as mentioned before these dominate at lower neutrino energies ($< 1\si{GeV}$).
+In many ways they are the simplest interaction as they don't require as much information about that nucleus theoretically and experimentally they have a very clear signature of 1 electron and 1 nucleon with FSI not playing a major role.
 
-\begin{figure}[h]
+\begin{figure}[H]
 \centering
-    \includegraphics[width=0.9\textwidth]{example-image-duck}
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics{figures/fds/QEFDneu.pdf}
+        \caption{
+            One of the neutrons is converted to a proton and scattered outside the nucleus (making the nucleus a Helium 3).
+        }
+    \end{subfigure}
+    \hspace{1em}
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics{figures/fds/QEFDel.pdf}
+        \caption{
+            Here the electron only scatters one of the neutrons (or protons) out of the nucleus but it remains the same type.
+        }
+    \end{subfigure}
     \caption{
-        Ducky: QE interaction Feynman diagram
+        A Feynman diagrams of typical QE interactions of an electron neutrino and an electron with a Helium 4 nucleus.
+        (The $W$ boson can be positive of negative depending on the time ordering.)
     }\label{fig:QE_fd}
 \end{figure}
 
 Of the neutrino interactions, QE are the best theoretically understood, the simplest models rely on a combination of two independent parts: calculations of neutrino-nucleon interactions within the impulse-approximation and modelling of the nucleons within the nuclei.
 A recent review \cite{gallagherNeutrinoNucleusInteractions2011} has compared the theoretical result with observations from the MiniBooNE and NOMAD.
-While the models capture many important features, there are also significant discrepancies which point to the interaction being more complicated than thought and also points out that many studies consider different levels of inclusiveness leasing to difficulties in comparisons.
-
-% I won't go into further detail as we don't examine them in this work (so they are just background that we try to eliminate) however it is worth noting that the elastic scattering of electrons off of nuclei 
+While the models capture many important features, there are also significant discrepancies which point to the interaction being more complicated than thought and also points out that many studies consider different levels of inclusiveness leading to difficulties in comparisons.
 
 As they are not a focus of this work, I won't go further into detail, however it is worth saying that QE interactions are also a great example of the similarities of neutrino and electron scattering.
-The elastic electron scattering off of nuclei is closely related and in the two have often been studied together, also being the dominant interaction at lower energies.
+Theoretically, QE neutrino scattering is very similar to elastic electron scattering off of nucleons in nuclei (also referred to as QE) and as electrons have been studied earlier it has served as inspiration for the neutrino QE scattering theories.
+Within \efn\ the same data this report will be working with has been inspected for testing incident electron energy reconstruction for QE scattering in \cite{khachatryanElectronbeamEnergyReconstruction2021}.
 
 \subsubsection{Resonant scattering}
+Resonant interactions are dominant for neutrinos at energies near 1 \si{GeV}, they are the next logical step, the neutrino still only interacts with one nucleon, however this time that nucleon changes into an excited baryon state which promptly decays.
+There are a couple possible such excited states, called \emph{resonances}, including various $N$ and $\Delta$ particles with spins $\frac{1}{2}, \frac{3}{2}$ or possibly more \cite{leitnerElectronNeutrinonucleusScattering2009}.
+Here we focus on $\Delta_{1232}$ resonances (with masses near 1232 \si{MeV} and spin $\frac{3}{2}$) as they are are some of the most dominant and suitable to study as they decay into pion and nucleon pairs with a branching fraction of 99.4\% \cite{particledatagroupReviewParticlePhysics2022}.
+Other processes are largely similar to these.
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics{figures/fds/RESneu1.pdf}
+        \caption{
+            $\pi^+pe^-$ final state
+        }
+    \end{subfigure}
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics{figures/fds/RESneu2.pdf}
+        \caption{
+            $\pi^+ne^-$ final state
+        }
+    \end{subfigure}
+    \begin{subfigure}[b]{0.3\textwidth}
+        \centering
+        \includegraphics{figures/fds/RESneu3.pdf}
+        \caption{
+            $\pi^0pe^-$ final state
+        }
+    \end{subfigure}
+    \caption{
+        All possible CC $\Delta$ resonant electron neutrino scattering processes summarized, only showing the relevant nucleon, the rest form the remaining nucleus.
+        The processes are identical for $\nu_\mu$ and $\mu_\tau$ except with the other leptons replacing the final state electron.
+    }\label{fig:RES_fd}
+\end{figure}
+
+The CC $\Delta$ (from now on always 1232) resonant processes for neutrino scattering are shown in \cref{fig:RES_fd} where only the struck nucleon is shown, the others are unaffected and form the post-collision nucleus.
+NC processes are analogous and summarized as
+\begin{align}
+    \nu + p &\rightarrow \nu + \pi^+ + n & \nu + n &\rightarrow \nu + \pi^- + p \\
+    \nu + p &\rightarrow \nu + \pi^0 + p & \nu + n &\rightarrow \nu + \pi^0 + n
+\end{align}
+and finally, the equivalent electron scattering processes are shown in \cref{fig:RESel_fd}.
+Both of these processes are often called coherent pion production interactions as they produce pions before FSI.
+While charged pions have a mean lifetime of $\sim 10^{-8} \si{s}$ and so are detected by the detector, $\pi^0$ have lifetimes of $\sim 10^{-17} \si{s}$ \cite{particledatagroupReviewParticlePhysics2022} and decay into 2 photons before detection, which is why in this project we focus on charged pions more than $\pi^0$.
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics{figures/fds/RESel1.pdf}
+        \caption{
+            $\pi^+ne^-$ final state
+        }
+    \end{subfigure}
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics{figures/fds/RESel2.pdf}
+        \caption{
+            $\pi^-pe^-$ final state
+        }
+    \end{subfigure}
+
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics{figures/fds/RESel3.pdf}
+        \caption{
+            $\pi^0pe^-$ final state
+        }
+    \end{subfigure}
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics{figures/fds/RESel4.pdf}
+        \caption{
+            $\pi^0ne^-$ final state
+        }
+    \end{subfigure}
+    \caption{
+        $\Delta$ resonant electron scattering processes, (b) and (a) are the most important for this project as our data includes detected charged pions and protons.
+    }\label{fig:RESel_fd}
+\end{figure}
+
 
 \subsubsection{Deep Inelastic scattering (DIS)}
+This is the final 
+
+\subsection{Event kinematics}
+This is also a good place to introduce the main particle properties and related conventions.
+As these are high energy particles, we have to treat them relativistically, as such the key property of a particle is its 4 momentum $p^\mu$, or equivalently energy $E$ and relativistic 3 momentum $\vb{p}$.
+We mainly describe the 3 momenta using spherical polar coordinates with $p = \lvert \vb{p} \rvert, \theta$ (sometimes using $\cos{\theta}$ instead of $\theta$) with the axis in the direction of the incident particle beam.
+When we do use a Cartesian basis (for example  in the code), we choose z to be coincident with the polar axis and x an y to be arbitrary.
+We use natural units in which $\hbar = c = 1$ and the special relativity metric $\diag(-1, 1, 1, 1)$ such that $E = p^0$ (however ROOT, GENIE and so the code uses $\diag(1, 1, 1, -1)$).
+As such the 4 momentum of the incident particle of energy  is given by
+\begin{equation}
+    p^\mu \leftrightarrow \begin{pmatrix} E_b \\ E_b \\ 0 \\ 0 \end{pmatrix}
+\end{equation}
 
 \subsection{The GENIE Event Generator \cite{andreopoulosGENIENeutrinoMonte2010}}
 Due to the amount expertise required to understand either the theory or the experimental aspects of neutrino interactions, it becomes difficult to package theories in a way that they can be easily understood and tested by experiments.
@@ -263,25 +372,18 @@ Finally, hadronization models account for FSI, for these GENIE uses the AGKY mod
 GENIE also has an electron scattering mode (\eGEN) that has been revised in 2021 by the \efn collaboration \cite{e4ncollaborationInclusiveElectronScattering2021}.
 This uses the same underlying logic and structures of GENIE to generate electron-nucleus scattering events, data from which has been in used in this report.
 
-\section{The \efn\ Data}
+\section{The \efn\ Data and Writing the Analysis Code}
 The data used by the \efn\ analysis comes from the e2a experiment measuring electron scattering at electron energies of 1.159, 2.257 and 4.453 \si{GeV} on targets of He, C and Fe nuclei.
 The measurements took place in Thomas Jefferson National Accelerator Facility (JLab) using the CEBAF Large Acceptance Spectrometer (CLAS6) \cite{meckingCEBAFLargeAcceptance2003} in 1999, the data has been used in many published works including \cite{khachatryanElectronbeamEnergyReconstruction2021}.
 In addition, recently CLAS has undergone an upgrade (CLAS6 to CLAS12) \cite{burkertCLAS12SpectrometerJefferson2020} allowing experiments at electron energies up to 12 \si{GeV} and generally improved capabilities.
 The \efn\ collaboration has a CLAS12 experiment under development, with new data starting at electron energies of $\sim6 \si{GeV}$ expected to be ready soon.
 Along collection of measured events we also have a collection of GENIE generated events for the same energy and target (for the $\sim 2\si{GeV}$ neutrino energy C target we have 1 million measured and 175 million GENIE generated events).
 
-These datasets are each in a ROOT file in a GENIE format called \verbb{gst}, this is a list-like object (\verbb{TTree}) of events with their properties.
-As this is a GENIE format, there are fields for many properties not measured in experiments, for the CLAS6 data these are empty.
-Some of the more notable fields are the outgoing electron 4 momentum, information about all the particles after the neutrino-nucleus interaction (referred to as primary or initial state) as well as the same information about post FSI particles (final state).
-Some of these properties, especially the ones that never could be measured, are referred to as the `truth` as they reflect what we think is physically going on.
-Finally, as the detector is not perfect there are many steps of adjusting the `truth` data before it can be compared to experiments, these are covered in detail later as they are a big part of this project.
-
-\subsection{The CLAS detector}
 The CLAS6 detector, active from 1998 to 2012 when the work on CLAS12 has began, is largely built around a set of 6 toroidal magnets distributed along the azimuthal angle $\phi$.
 These curve the trajectories of charged particles in their $\phi$ plane and allow for charged particle momentum measurements in drift chambers.
 They also give rise to distinct 6 sectors visible in \cref{fig:CLAS} and deadspace between them from particles hitting the magnets.
 
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
     \begin{subfigure}[b]{0.45\textwidth}
         \centering
@@ -303,7 +405,7 @@ They also give rise to distinct 6 sectors visible in \cref{fig:CLAS} and deadspa
 
 Our data, from e2a, has measurement of electrons, protons, charged pions and photons (so essentially our cross sections are inclusive over all the other particles) and each event has a list of 4 momentum measurements for each detected particle.
 In order to properly compare the measured data to theoretical MC data however, it is necessary to take into account that the detector only detects some of these particles based on their directions and momentum and even then there are finite probabilities for detection.
-This can be done either by decoding these defects and then produce adjusted results from our measurements, this is in many ways better, however it is complicated and error prone.
+This can be done by considering all the possible undetected particles (and errors in the ones detected) and adjusting for them to produce a measurement of the true underlying physics, this is however very complicated and error prone.
 Instead, if one only needs to test a particular aspect, it is much easier to degrade the MC data according to the defects and produce theoretical prediction of what the detector should see.
 
 We do this in two steps, first we specify a fairly wide range of directions and momenta, we apply \emph{fiducial} cuts to filter these and define these as our signal in both experimental and MC data.
@@ -313,7 +415,7 @@ Then, if we are to truly compare MC to data, we apply \emph{acceptance} maps.
 These have been compiled by e2a as well and give a probability of being detected for each of the 6 types of particles and every possible direction of their momentum within the fiducial cuts.
 They are given as 3 dimensional histograms (\verbb{TH3F} from ROOT) with momentum magnitude, $\theta$ and $\phi$ as the axes a projection of the electron acceptance map can be seen in \cref{fig:acc_map}.
 
-\begin{figure}[h]
+\begin{figure}[H]
 \centering
     \includegraphics[width=0.9\textwidth]{example-image-duck}
     \caption{
@@ -321,12 +423,18 @@ They are given as 3 dimensional histograms (\verbb{TH3F} from ROOT) with momentu
     }\label{fig:acc_map}
 \end{figure}
 
+These datasets are each in a ROOT file in a GENIE format called \verbb{gst}, this is a list-like object (\verbb{TTree}) of events with their properties.
+As this is a GENIE format, there are fields for many properties not measured in experiments, for the CLAS6 data these are empty.
+Some of the more notable fields are the outgoing electron 4 momentum, information about all the particles after the neutrino-nucleus interaction (referred to as primary or initial state) as well as the same information about post FSI particles (final state).
+Some of these properties, especially the ones that never could be measured, are referred to as the `truth` as they reflect what we think is physically going on.
+Finally, as the detector is not perfect there are many steps of adjusting the `truth` data before it can be compared to experiments, these are covered in detail later as they are a big part of this project.
 
 \section{Inspecting the Nuclear Transparency with 1 Pion 1 Nucleon Events}
-Finally, once all the preliminary works of revising the codebase has been completed, we conduct a basic nuclear transparency study.
-Nuclear transparency is a very wide term describing how much of an effect do final state interactions have under certain condition, here we look at events with 1 pion 1 nucleon of of the $\sim 2\si{GeV}$ electron scattering off of carbon.
+Finally, once all the preliminary works of revising the codebase has been completed, we conduct a basic nuclear transparency study on the MC data.
+Nuclear transparency is a very wide term describing how much of an effect do final state interactions have under certain conditions, here we look at events with 1 pion 1 nucleon of of the $\sim 2\si{GeV}$ electron scattering off of carbon.
 Given its nature nuclear transparency has to be studied either theoretical or from simulations as we cannot measure any pre final state properties.
-The first step is to prepare our data, 
+
+Truth signal - events with the electron passing the gdoc test and fiducials (fiducials for the sake of the report) that have exactly 1 pion of the chosen type passing fiducials (and 0 of the other) and exactly 1 nucleon passing fiducials (and 0 of the other) both in the primary state.
 
 
 \printbibliography
