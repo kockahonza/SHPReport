@@ -4,6 +4,7 @@
 \usepackage[style=phys,maxbibnames=6]{biblatex}
 \usepackage[skip=0.3em,indent=2em]{parskip}
 \usepackage[pdftex]{graphicx}
+\usepackage{epsf}
 \usepackage{float}
 \usepackage{caption}
 \usepackage{subcaption}
@@ -98,7 +99,7 @@ Signature:\hspace*{8cm}Date:  31/10/2021
 \pagestyle{plain}
 \setcounter{page}{1}
 
-\section{Motivation and Background}
+\section{Neutrino Oscillations and Understanding Neutrino Scattering}
 This project concerns neutrinos and their properties, and so a brief description of the relevant properties and their scientific significance is presented.
 Neutrinos are 3 uncharged leptons of different flavours (each corresponding to the other 3, charged, leptons -- electron, \Mu\ and \Tau\ of ascending masses).
 Neutrinos interact only via the weak force and with very low cross sections, the Feynman diagrams of their interactions with the other fundamental particles through the W and Z bosons are shown in \cref{fig:nu_feyn}.
@@ -185,10 +186,11 @@ So in summary, we can use easily available electron scattering data to test neut
 
 % However, as there are no monoenergetic neutrino beams it is very difficult to experimentally study these effects directly on neutrinos, so instead we study electron-nucleus interactions which are subject to the same quantum field theory interactions.
 
-\subsection{Neutrino(Electron)-nucleus interactions}
+\section{Neutrino(Electron)-nucleus interactions}
+Firstly, throughout the report I will mostly not mention antineutrinos, their interactions do have some specifics to them but are mostly directly analogous to the processes I describe for neutrinos.
 As the interactions are not yet fully, fundamentally understood, we to a large degree resort to classifications which allows us to make prediction under certain conditions.
 Both neutrino and electron nucleus scattering can be described by
-\begin{equation}
+\begin{equation}\label{eq:genint}
     l + A \rightarrow l' + a + b + c ...
 \end{equation}
 where an incoming lepton $l$ scatters off of a nucleus $A$ resulting in a lepton $l'$ and hadron particles $a, b, c ...$.
@@ -203,15 +205,33 @@ Or it can interact through the \Wp and \Wm\ bosons (\emph{Charged Current} or CC
 This is contrasted to electrons which will dominantly interact with the nucleus through photons (so preserving the electron).
 Nevertheless within quantum field theory the neutrino weak force interactions have a vector and an axial-vector components and the electron EM interaction has only a vector component\cite{alvarez-rusoNuSTEC11NeutrinoScattering2018}.
 Thus, the vector part of neutrino-nucleus scattering calculations and simulations can be adapted and tested by electron scattering.
-
 % Due to this existing MC event generators like GENIE can be modified to generate electron-nucleus interaction events and test particularly the vector current component of the theories behind the generator.
 % Further on I will only speak about neutrino interactions, but most of these characteristics apply to electrons too.
 
+
+\subsection{Particle and event properties}
+This is also a good place to introduce some ways in which we describe events and the particles in them.
+As these are high energy particles, we have to treat them relativistically, as such the key property of a particle is its 4 momentum $p^\mu$, or equivalently energy $E$ and relativistic 3 momentum $\vb{p}$.
+For our coordinate systems we choose the incident particle beam direction to be along the Cartesian $e_z$ and we often use spherical polars with respect to this axis and such that $\theta = 0$ corresponds to $e_z$ (often $\cos{\theta}$ is used instead of $\theta$).
+The specific orientation of $e_x$ and $e_y$ isn't very important and so is mostly glossed over, in addition we use natural units in which $\hbar = c = 1$ and in the report we denote 4 vectors such that the SR metric $\eta_{\mu \nu}$ is $\diag(1, -1, -1, -1)$ (though notably GENIE, ROOT, see \cref{sec:genie}, and so our data uses a convention where it is $\diag(-1, -1, -1, 1)$).
+For example this means an incident particle of mass $m$ and energy $E$ would have
+\begin{equation}
+    p^\mu \leftrightarrow \begin{pmatrix} E \\ \sqrt{E^2 - m^2} \\ 0 \\ 0 \end{pmatrix}
+\end{equation}
+
+In the events we consider, we have an incident lepton with 4 momentum $q_{i}^\mu$ impacting the nucleus and let $p_i^\mu$ be the outgoing leptons 4 momentum.
+A very common scattering property within particle physics is the 4 momentum transfer $q^2$, here it is the 4 momentum change of the incident particle squared, so $(p_i^\mu - q_i^\mu)^2$, though within neutrino interactions typically $Q^2 = -q^2$ is used instead.
+Next, there is $W^2$, the invariant mass of all the produced hadrons, with regard to \cref{eq:genint}, one of $a, b, c \ldots$ will be the remaining nucleus and $W^2 = r_\mu r^\mu$ where $r^\mu$ is the total 4 momentum of all the others.
+There are other common event properties, notably the Bjorken scaling variables $x, y$, however they are not of interest in this report.
+
+\subsection{Interaction types}
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.6\textwidth]{figures/sigmaVsEnu.pdf}
     \caption{
-        Replace this with a better image and a source!! Possibly also add an equivalent electron image to show both and how they're similar.
+        The differential cross section of neutrino-nucleus interactions shown for different interaction mechanisms and their sum.
+        Near the x axis the approximate regions of interests for the T2K, NOvA and DUNE experiments is shown.
+        Figure originally from \cite{formaggioEVEeVNeutrino2012}.
     }\label{fig:nusigma_vs_Enu}
 \end{figure}
 
@@ -259,7 +279,7 @@ As they are not a focus of this work, I won't go further into detail, however it
 Theoretically, QE neutrino scattering is very similar to elastic electron scattering off of nucleons in nuclei (also referred to as QE) and as electrons have been studied earlier it has served as inspiration for the neutrino QE scattering theories.
 Within \efn\ the same data this report will be working with has been inspected for testing incident electron energy reconstruction for QE scattering in \cite{khachatryanElectronbeamEnergyReconstruction2021}.
 
-\subsubsection{Resonant scattering}
+\subsubsection{Resonant scattering (RES)}
 Resonant interactions are dominant for neutrinos at energies near 1 \si{GeV}, they are the next logical step, the neutrino still only interacts with one nucleon, however this time that nucleon changes into an excited baryon state which promptly decays.
 There are a couple possible such excited states, called \emph{resonances}, including various $N$ and $\Delta$ particles with spins $\frac{1}{2}, \frac{3}{2}$ or possibly more \cite{leitnerElectronNeutrinonucleusScattering2009}.
 Here we focus on $\Delta_{1232}$ resonances (with masses near 1232 \si{MeV} and spin $\frac{3}{2}$) as they are are some of the most dominant and suitable to study as they decay into pion and nucleon pairs with a branching fraction of 99.4\% \cite{particledatagroupReviewParticlePhysics2022}.
@@ -293,16 +313,6 @@ Other processes are largely similar to these.
         The processes are identical for $\nu_\mu$ and $\mu_\tau$ except with the other leptons replacing the final state electron.
     }\label{fig:RES_fd}
 \end{figure}
-
-The CC $\Delta$ (from now on always 1232) resonant processes for neutrino scattering are shown in \cref{fig:RES_fd} where only the struck nucleon is shown, the others are unaffected and form the post-collision nucleus.
-NC processes are analogous and summarized as
-\begin{align}
-    \nu + p &\rightarrow \nu + \pi^+ + n & \nu + n &\rightarrow \nu + \pi^- + p \\
-    \nu + p &\rightarrow \nu + \pi^0 + p & \nu + n &\rightarrow \nu + \pi^0 + n
-\end{align}
-and finally, the equivalent electron scattering processes are shown in \cref{fig:RESel_fd}.
-Both of these processes are often called coherent pion production interactions as they produce pions before FSI.
-While charged pions have a mean lifetime of $\sim 10^{-8} \si{s}$ and so are detected by the detector, $\pi^0$ have lifetimes of $\sim 10^{-17} \si{s}$ \cite{particledatagroupReviewParticlePhysics2022} and decay into 2 photons before detection, which is why in this project we focus on charged pions more than $\pi^0$.
 
 \begin{figure}[H]
     \centering
@@ -340,44 +350,48 @@ While charged pions have a mean lifetime of $\sim 10^{-8} \si{s}$ and so are det
     }\label{fig:RESel_fd}
 \end{figure}
 
+The CC $\Delta$ (from now on always 1232) resonant processes for neutrino scattering are shown in \cref{fig:RES_fd} where only the struck nucleon is shown, the others are unaffected and form the post-collision nucleus.
+NC processes are analogous and summarized as
+\begin{align}
+    \nu + p &\rightarrow \nu + \pi^+ + n & \nu + n &\rightarrow \nu + \pi^- + p \\
+    \nu + p &\rightarrow \nu + \pi^0 + p & \nu + n &\rightarrow \nu + \pi^0 + n
+\end{align}
+and finally, the equivalent electron scattering processes are shown in \cref{fig:RESel_fd}.
+Both of these processes are often called coherent pion production interactions as they produce pions before FSI.
+While charged pions have a mean lifetime of $\sim 10^{-8} \si{s}$ and so are detected by the detector, $\pi^0$ have lifetimes of $\sim 10^{-17} \si{s}$ \cite{particledatagroupReviewParticlePhysics2022} and decay into 2 photons before detection, which is why in this project we focus on charged pions more than $\pi^0$.
 
 \subsubsection{Deep Inelastic scattering (DIS)}
-This is the final 
+Finally at high energies ($>3\si{GeV}$) DIS events start to dominate.
+In these the neutrino no longer interacts with a whole nucleon but some quark within a nucleon or a "sea" quark
 
-\subsection{Event kinematics}
-This is also a good place to introduce the main particle properties and related conventions.
-As these are high energy particles, we have to treat them relativistically, as such the key property of a particle is its 4 momentum $p^\mu$, or equivalently energy $E$ and relativistic 3 momentum $\vb{p}$.
-We mainly describe the 3 momenta using spherical polar coordinates with $p = \lvert \vb{p} \rvert, \theta$ (sometimes using $\cos{\theta}$ instead of $\theta$) with the axis in the direction of the incident particle beam.
-When we do use a Cartesian basis (for example  in the code), we choose z to be coincident with the polar axis and x an y to be arbitrary.
-We use natural units in which $\hbar = c = 1$ and the special relativity metric $\diag(-1, 1, 1, 1)$ such that $E = p^0$ (however ROOT, GENIE and so the code uses $\diag(1, 1, 1, -1)$).
-As such the 4 momentum of the incident particle of energy  is given by
-\begin{equation}
-    p^\mu \leftrightarrow \begin{pmatrix} E_b \\ E_b \\ 0 \\ 0 \end{pmatrix}
-\end{equation}
-
-\subsection{The GENIE Event Generator \cite{andreopoulosGENIENeutrinoMonte2010}}
+\subsection{The GENIE Event Generator \cite{andreopoulosGENIENeutrinoMonte2010}}\label{sec:genie}
 Due to the amount expertise required to understand either the theory or the experimental aspects of neutrino interactions, it becomes difficult to package theories in a way that they can be easily understood and tested by experiments.
-The fact that recently the Neutrino Scattering Theory-Experiment Collaboration (NuSTEC \cite{alvarez-rusoNuSTEC11NeutrinoScattering2018}) has been started is a sign of this.
+Partly due to this the Neutrino Scattering Theory-Experiment Collaboration (NuSTEC \cite{alvarez-rusoNuSTEC11NeutrinoScattering2018}) has been started recently.
 As a result, Monte Carlo (MC) neutrino event generators are often used to package theoretical models in a way that predictions can be made.
-GENIE is the most widely adopted such MC generator, first released for use in 2007 it aims to be a canonical generator accurately reflecting the state-of-art theories for a wie range of energies and targets.
+GENIE is the most widely adopted such MC generator, first released for use in 2007 it aims to be a canonical generator accurately reflecting the state-of-art theories for a wide range of energies and targets.
 It is a large codebase of modern C\texttt{++} code using the popular ROOT libraries\cite{brunROOTObjectOriented1997} and is particularly well tuned to a tested on the few \si{GeV} energy neutrinos that are of interest to oscillation experiments.
 
 As is described in \cite{andreopoulosGENIENeutrinoMonte2010}, there are 3 main categories of models in GENIE.
-Nuclear physics models model the nuclei and their composition, this strongly depends on the energy of the incoming neutrino and whether it will scatter off of a whole nucleon or a quark.
+Nuclear physics models model the nuclei and their composition, this strongly depends on the energy of the incoming neutrino and whether it will scatter mostly off of a whole nucleon or a quark.
 GENIE uses a Relativistic Fermi Gas (RFG) model for this step which is particularly successful at lower energies.
 Then cross sections are calculated for various scattering types using their cross-section models and one is randomly chosen according to these.
-These types include the ones mentioned above, but they are both further divided ooterh interactions are considered, including NC scattering and neutrino-electron scattering.
+These types include the ones mentioned above, but they are both further divided and other interactions are considered, including NC scattering and neutrino-electron scattering.
 Finally, hadronization models account for FSI, for these GENIE uses the AGKY model from the MINOS experiment \cite{HadronizationModelMINOS}.
+However, for many of these there are options of models to choose from, two main tuning setups used in \efn\ are the G2018 (somewhat more empirical separating the different interactions earlier) and GSuSAv2, which we use here, this uses a super-scaling lepton scattering model\cite{amaroNeutrinonucleusScatteringSuSA2021}.
 
-GENIE also has an electron scattering mode (\eGEN) that has been revised in 2021 by the \efn collaboration \cite{e4ncollaborationInclusiveElectronScattering2021}.
-This uses the same underlying logic and structures of GENIE to generate electron-nucleus scattering events, data from which has been in used in this report.
+% As has been mentioned before within QFT a large amount of the models for neutrino scattering are the same for electrons and these have been directly adapted within GENIE to create \eGEN, a mode of operation that can simulate electron-nucleus scattering events.
+% \eGEN\ has been revised in 2021 by the \efn\ collaboration \cite{e4ncollaborationInclusiveElectronScattering2021} and is really at the core of the project.
+% Data from it, including the data used in this report, can then be studied and compared to experimental data.
+GENIE also has an electron scattering mode (\eGEN) that has been revised in 2021 by the \efn\ collaboration \cite{e4ncollaborationInclusiveElectronScattering2021}.
+This uses the same underlying logic and structures of GENIE, as mentioned before within QFT both neutrino and electron interactions have a vector component, so that part of the code is reused.
+\eGEN\ is then use to generate electron scattering data to test the underlying models.
 
-\section{The \efn\ Data and Writing the Analysis Code}
+\section{The \efn\ CLAS6 Data and Writing the Analysis Code}
 The data used by the \efn\ analysis comes from the e2a experiment measuring electron scattering at electron energies of 1.159, 2.257 and 4.453 \si{GeV} on targets of He, C and Fe nuclei.
 The measurements took place in Thomas Jefferson National Accelerator Facility (JLab) using the CEBAF Large Acceptance Spectrometer (CLAS6) \cite{meckingCEBAFLargeAcceptance2003} in 1999, the data has been used in many published works including \cite{khachatryanElectronbeamEnergyReconstruction2021}.
 In addition, recently CLAS has undergone an upgrade (CLAS6 to CLAS12) \cite{burkertCLAS12SpectrometerJefferson2020} allowing experiments at electron energies up to 12 \si{GeV} and generally improved capabilities.
 The \efn\ collaboration has a CLAS12 experiment under development, with new data starting at electron energies of $\sim6 \si{GeV}$ expected to be ready soon.
-Along collection of measured events we also have a collection of GENIE generated events for the same energy and target (for the $\sim 2\si{GeV}$ neutrino energy C target we have 1 million measured and 175 million GENIE generated events).
+Along collection of measured events we also have a collection of GENIE generated events for the same energies and targets (for the $\sim 2\si{GeV}$ neutrino energy C target we have 1 million measured and 175 million GENIE generated events).
 
 The CLAS6 detector, active from 1998 to 2012 when the work on CLAS12 has began, is largely built around a set of 6 toroidal magnets distributed along the azimuthal angle $\phi$.
 These curve the trajectories of charged particles in their $\phi$ plane and allow for charged particle momentum measurements in drift chambers.
@@ -398,7 +412,7 @@ They also give rise to distinct 6 sectors visible in \cref{fig:CLAS} and deadspa
     \end{subfigure}
     \caption{\label{fig:CLAS}
         Diagrams of the CLAS6 detector from \cite{meckingCEBAFLargeAcceptance2003}, see for more detail.
-        Most important for us are the EM calorimeter spanning $\theta < 60$ which detects the scattered electrons and photons.
+        Most important for us are the EM calorimeter spanning $\theta < 50\si{\degree}$ which detects the scattered electrons and photons.
         Cherenkov counters near the axis are needed for distinguishing electrons and negative pions and the time-of-flight (TOF) detectors help distinguish protons and positive pions.
     }
 \end{figure}
@@ -409,17 +423,51 @@ This can be done by considering all the possible undetected particles (and error
 Instead, if one only needs to test a particular aspect, it is much easier to degrade the MC data according to the defects and produce theoretical prediction of what the detector should see.
 
 We do this in two steps, first we specify a fairly wide range of directions and momenta, we apply \emph{fiducial} cuts to filter these and define these as our signal in both experimental and MC data.
-These reflect the hard limits of the CLAS6 detector, the precise fiducials depend on the sample and we have inherited from previous \efn\ work and e2a as a collection of C\texttt{++} files.
-A good example however is that we only consider pions with momentum over 150 \si{MeV}.
-Then, if we are to truly compare MC to data, we apply \emph{acceptance} maps.
-These have been compiled by e2a as well and give a probability of being detected for each of the 6 types of particles and every possible direction of their momentum within the fiducial cuts.
-They are given as 3 dimensional histograms (\verbb{TH3F} from ROOT) with momentum magnitude, $\theta$ and $\phi$ as the axes a projection of the electron acceptance map can be seen in \cref{fig:acc_map}.
+These reflect the harder limits of the CLAS6 detector, the precise fiducials depend on the beam energy and we have them inherited from previous \efn\ work and e2a as a collection of C\texttt{++} code, see \cite{papadopoulouLeptonNucleusScatteringMeasurements2023,mclauchlanDeltaElectroproduction12C}.
+They are different for each particle type and cut on their 3 momentum size and direction, see \cref{fig:fid_map} for an example.
+The 6 distinct zones/segments are a result of the mentioned magnets obstructing the areas in between.
+% An example is that we only consider pions with momentum over 150 \si{MeV}.
 
 \begin{figure}[H]
-\centering
-    \includegraphics[width=0.9\textwidth]{example-image-duck}
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics{figures/python/el_fid.pdf}
+        \caption{$e^-$ at a momentum of 1\si{GeV}}
+    \end{subfigure}
+    \hspace{0.5em}
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics{figures/python/pip_fid.pdf}
+        \caption{$\pi^+$ at a momentum of 0.7\si{GeV}}
+    \end{subfigure}
     \caption{
-        Ducky: Acceptance maps
+        Showing the directional dependence of our fiducial cuts for data with beam energy 2.257\si{GeV}.
+        The fiducials for electrons and positive pions at fixed 3 momentum magnitudes are shown, dark blue means the particle passes, grey that it is cut.
+        $\phi$ angle is shown in the -30 to 330\si{\degree} range, this is in order not to cut through the accepted segment.
+    }\label{fig:fid_map}
+\end{figure}
+
+Then, if we are to truly compare MC to data, we apply \emph{acceptance} maps.
+These have been compiled by e2a as well and give a probability of a particle being detected for each of the particle types and every possible direction and size of their momentum within the fiducial cuts.
+These are different for each target and beam energy and are given as 3 dimensional histograms (\verbb{TH3F} from ROOT) with momentum magnitude, $\cos(\theta)$ and $\phi$ as the axes, see \cref{fig:acc_map}.
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics{figures/python/el_acc1.pdf}
+        \caption{Fixed $|\vb{p}| = 1\si{GeV}$}
+    \end{subfigure}
+    \hspace{0.5em}
+    \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+        \includegraphics{figures/python/el_acc2.pdf}
+        \caption{Fixed $\phi = 0$}
+    \end{subfigure}
+    \caption{
+        Electron acceptance map projections for the 2.257\si{GeV} beam energy and C target dataset.
+        The $z$, colormapped axis is the probability of an electron in the region being accepted.
     }\label{fig:acc_map}
 \end{figure}
 
