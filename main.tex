@@ -111,7 +111,7 @@ The answers to these questions could significantly further our understanding of 
 
 \begin{figure}[H]
     \centering
-    \includegraphics{figures/NeutrinoFeynman.pdf}
+    \includegraphics[width=0.75\textwidth]{figures/NeutrinoFeynman.pdf}
     \caption{
         Feynman diagrams of weak force vertices for neutrino interactions, all other vertices including them can be obtain by suitable rotations of these
         (this requires replacing some particles with their antiparticles, including the \Wm becoming a \Wp).
@@ -376,7 +376,7 @@ Nuclear physics models model the nuclei and their composition, this strongly dep
 GENIE uses a Relativistic Fermi Gas (RFG) model for this step which is particularly successful at lower energies.
 Then cross sections are calculated for various scattering types using their cross-section models and one is randomly chosen according to these.
 These types include the ones mentioned above, but they are both further divided and other interactions are considered, including NC scattering and neutrino-electron scattering.
-Finally, hadronization models account for FSI, for these GENIE uses the AGKY model from the MINOS experiment \cite{HadronizationModelMINOS}.
+Hadronization models then finalize the primary interaction by predicting which hadrons are produced, for these GENIE uses the AGKY model from the MINOS experiment \cite{HadronizationModelMINOS}.
 However, for many of these there are options of models to choose from, two main tuning setups used in \efn\ are the G2018 (somewhat more empirical separating the different interactions earlier) and GSuSAv2, which we use here, this uses a super-scaling lepton scattering model\cite{amaroNeutrinonucleusScatteringSuSA2021}.
 
 % As has been mentioned before within QFT a large amount of the models for neutrino scattering are the same for electrons and these have been directly adapted within GENIE to create \eGEN, a mode of operation that can simulate electron-nucleus scattering events.
@@ -392,10 +392,6 @@ The measurements took place in Thomas Jefferson National Accelerator Facility (J
 In addition, recently CLAS has undergone an upgrade (CLAS6 to CLAS12) \cite{burkertCLAS12SpectrometerJefferson2020} allowing experiments at electron energies up to 12 \si{GeV} and generally improved capabilities.
 The \efn\ collaboration has a CLAS12 experiment under development, with new data starting at electron energies of $\sim6 \si{GeV}$ expected to be ready soon.
 Along collection of measured events we also have a collection of GENIE generated events for the same energies and targets (for the $\sim 2\si{GeV}$ neutrino energy C target we have 1 million measured and 175 million GENIE generated events).
-
-The CLAS6 detector, active from 1998 to 2012 when the work on CLAS12 has began, is largely built around a set of 6 toroidal magnets distributed along the azimuthal angle $\phi$.
-These curve the trajectories of charged particles in their $\phi$ plane and allow for charged particle momentum measurements in drift chambers.
-They also give rise to distinct 6 sectors visible in \cref{fig:CLAS} and deadspace between them from particles hitting the magnets.
 
 \begin{figure}[H]
     \centering
@@ -417,16 +413,15 @@ They also give rise to distinct 6 sectors visible in \cref{fig:CLAS} and deadspa
     }
 \end{figure}
 
+\subsection{CLAS6}
+The CLAS6 detector, active from 1998 to 2012 when the work on CLAS12 has began, is largely built around a set of 6 toroidal magnets distributed along the azimuthal angle $\phi$.
+These curve the trajectories of charged particles in their $\phi$ plane and allow for charged particle momentum measurements in drift chambers.
+They also give rise to distinct 6 sectors visible in \cref{fig:CLAS} and deadspace between them from particles hitting the magnets.
+
 Our data, from e2a, has measurement of electrons, protons, charged pions and photons (so essentially our cross sections are inclusive over all the other particles) and each event has a list of 4 momentum measurements for each detected particle.
 In order to properly compare the measured data to theoretical MC data however, it is necessary to take into account that the detector only detects some of these particles based on their directions and momentum and even then there are finite probabilities for detection.
 This can be done by considering all the possible undetected particles (and errors in the ones detected) and adjusting for them to produce a measurement of the true underlying physics, this is however very complicated and error prone.
 Instead, if one only needs to test a particular aspect, it is much easier to degrade the MC data according to the defects and produce theoretical prediction of what the detector should see.
-
-We do this in two steps, first we specify a fairly wide range of directions and momenta, we apply \emph{fiducial} cuts to filter these and define these as our signal in both experimental and MC data.
-These reflect the harder limits of the CLAS6 detector, the precise fiducials depend on the beam energy and we have them inherited from previous \efn\ work and e2a as a collection of C\texttt{++} code, see \cite{papadopoulouLeptonNucleusScatteringMeasurements2023,mclauchlanDeltaElectroproduction12C}.
-They are different for each particle type and cut on their 3 momentum size and direction, see \cref{fig:fid_map} for an example.
-The 6 distinct zones/segments are a result of the mentioned magnets obstructing the areas in between.
-% An example is that we only consider pions with momentum over 150 \si{MeV}.
 
 \begin{figure}[H]
     \centering
@@ -448,9 +443,17 @@ The 6 distinct zones/segments are a result of the mentioned magnets obstructing 
     }\label{fig:fid_map}
 \end{figure}
 
+\subsection{Fiducials and acceptance maps}
+We do this in two steps, first we specify a fairly wide range of directions and momenta, we apply \emph{fiducial} cuts to filter these and define these as our signal in both experimental and MC data.
+These reflect the harder limits of the CLAS6 detector, the precise fiducials depend on the beam energy and we have them inherited from previous \efn\ work and e2a as a collection of C\texttt{++} code, see \cite{papadopoulouLeptonNucleusScatteringMeasurements2023,mclauchlanDeltaElectroproduction12C}.
+They are different for each particle type and cut on their 3 momentum size and direction, see \cref{fig:fid_map} for an example.
+The 6 distinct zones/segments are a result of the mentioned magnets obstructing the areas in between an the gaps are due to some components not performing up to specification on the day of the experiment.
+% An example is that we only consider pions with momentum over 150 \si{MeV}.
+
 Then, if we are to truly compare MC to data, we apply \emph{acceptance} maps.
 These have been compiled by e2a as well and give a probability of a particle being detected for each of the particle types and every possible direction and size of their momentum within the fiducial cuts.
 These are different for each target and beam energy and are given as 3 dimensional histograms (\verbb{TH3F} from ROOT) with momentum magnitude, $\cos(\theta)$ and $\phi$ as the axes, see \cref{fig:acc_map}.
+There probabilities are then used as weights for events when plotting histograms.
 
 \begin{figure}[H]
     \centering
@@ -471,16 +474,67 @@ These are different for each target and beam energy and are given as 3 dimension
     }\label{fig:acc_map}
 \end{figure}
 
+\subsection{The codebase}
 These datasets are each in a ROOT file in a GENIE format called \verbb{gst}, this is a list-like object (\verbb{TTree}) of events with their properties.
 As this is a GENIE format, there are fields for many properties not measured in experiments, for the CLAS6 data these are empty.
 Some of the more notable fields are the outgoing electron 4 momentum, information about all the particles after the neutrino-nucleus interaction (referred to as primary or initial state) as well as the same information about post FSI particles (final state).
 Some of these properties, especially the ones that never could be measured, are referred to as the `truth` as they reflect what we think is physically going on.
-Finally, as the detector is not perfect there are many steps of adjusting the `truth` data before it can be compared to experiments, these are covered in detail later as they are a big part of this project.
+GENIE also adds flags to separate the QE, RES, DIS and other types of events and has information about what FSI has happened, this is described best in the GENIE manual\cite{andreopoulosGENIENeutrinoMonte2015} though it is somewhat outdated.
 
-\section{Inspecting the Nuclear Transparency with 1 Pion 1 Nucleon Events}
-Finally, once all the preliminary works of revising the codebase has been completed, we conduct a basic nuclear transparency study on the MC data.
-Nuclear transparency is a very wide term describing how much of an effect do final state interactions have under certain conditions, here we look at events with 1 pion 1 nucleon of of the $\sim 2\si{GeV}$ electron scattering off of carbon.
-Given its nature nuclear transparency has to be studied either theoretical or from simulations as we cannot measure any pre final state properties.
+As there are $\sim100$ different properties per event and we have up to hundreds of millions of events, a moderately sophisticated analysis code is needed.
+The main \efn\ code is available on github \cite{E4nuE4nuanalysiscodePlaceholder} as developed by Afrodite Papadopoulou, however it has since been used by various scientists each adding their own functionality.
+As a result there are various versions kept by people and on github of a large, somewhat bloated and very difficult to understand code, most the logic of the analysis being in a single 4000 line file.
+A main goal of this project was to redevelop and streamline this code in order to lower the entry barrier for others, make it easier to spot analysis flaws and reduce boilerplate code.
+
+The code I developed is also available on github \cite{kockahonzaSHPGenieData2023}, it uses C\textt{++}17 features and ROOT 6.12 as available on the GENIE machine at Fermilab used by us.
+It heavily uses classes and the features are best described by describing the code.
+The main class \verbb{GenieAnalysis} will expect an input file with a \verbb{gst} dataset, has 2 virtual methods to be overriden \verbb{double passesCuts()} and \verbb{void useEntry(double weight)} and 1 method that is expected to be used \verbb{void runAnalysis(int number\_of\_entries)}\footnotemark.
+\footnote{I am somewhat loose with the code for the sake of brevity, for example replacing the ROOT types with the normal C\texttt{++} ones.}
+The last of which will start an analysis, it will go through the first \verbb{number\_of\_entries} events from the input file and for each \verbb{passesCuts} will be ran, its return value being used as the weight, so if it is 0 that event is not used at all.
+If nonzero, \verbb{useEntry(weight)} is called with that weight, this method does nothing in this class, it is expected to be overriden by inheriting classes to for example count the events, or write some properties to a histogram.
+Given this structure the code is intended to provide data on the events as a whole, it is not suited for applications where some parts of an event are to accepted and some discarded.
+
+The next and likely most useful part of the code is the \verbb{GAAutoHistograms} class, this inherits from \verbb{GenieAnalysis} and provides automatic histogram creation and filling as long as they conform to the following structure.
+There are "types" and "properties" and \verbb{GAAutoHistograms} creates histograms of properties, for each type independently.
+Specifically I use types to separate interaction types like QE, RES, $\Delta$ resonances and then also all events, each of these would be a type.
+Properties are then the quantities of interest, like $W, Q^2$, outgoing electron momentum and angles and so on.
+\verbb{GAAutoHistograms} is constructed in a way that it has a set list of "known" types and properties that can be easily added and each have a code name, the user can then specify which to use.
+Specifically it can create 1D histograms for each property and type combination and also 2D histograms showing how some 2 properties correlate, again it can do this separately for any chosen known types.
+
+To touch on the project structure, these and the following classes are implemented in the \verbb{GenieAnalysis} folder, then there are executables, these are \verbb{.cpp} files in the root folder which specify a given run.
+For a quick summary of the rest (see \cref{fig:code_dia}), the \verbb{GACLAS6Common} file (and namespace) defines auxiliary properties specific to the CLAS6 data (like target and beam energy enumerations) and a wrapper around the original fiducials code.
+The \verbb{GACLAS6MCCuts, GACLAS6MC} classes do equivalent analysis to that which the original code (as inherited from Lucas Taling, a previous MSc student) did on the GENIE data for CLAS6.
+This was mainly used for first looks and testing of the new code (having 5 executables using these) and \verbb{GACLAS6DataPrepare, GACLAS6Data} do the equivalent for the actual CLAS6 data, though this has not been tested much.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/code_flow_diagram/diagram.pdf}
+    \caption{
+        A class diagram of the new code showing the relations.
+        The reusable classes from the \verbb{GenieAnalysis} folder are shown with a white background, classes from executables are light blue.
+    }\label{fig:code_dia}
+\end{figure}
+
+
+\section{Nuclear Transparency of 1 Pion 1 Nucleon Events}
+Finally, once all the preliminary coding has been completed, we conduct a basic nuclear transparency study on the data.
+Nuclear transparency is a very wide term describing how much of an effect do FSI have under certain conditions.
+Here we look at events with 1 charged pion 1 nucleon from a GENIE generated dataset and inspect how well we can reconstruct the pion momentum from the electron and nucleon momenta.
+Given its nature nuclear transparency is typically studied either theoretically or from MC data as we cannot measure any particle properties before FSI.
+We use the GENIE generated datasets referred to before, they described in more detail in \cite{papadopoulouLeptonNucleusScatteringMeasurements2023}, and specifically we only look at the data with beam energy of 2.257\si{GeV} and mainly carbon target.
+Importantly, GENIE was tuned to the SuSAv2 configuration and use the INTRANUKE hN model for FSI (or intranuclear transport modelling in the GENIE documentation\cite{andreopoulosGENIENeutrinoMonte2015}).
+
+
+First a summary of the kinematics involved, ideally we are looking for events where an electron scattered off of a single nucleon
+
+First we have to define our signal, the basic cuts we make to get a suitable sample for which our goal may be achievable.
+We use the fiducial cuts from the CLAS6 detector, speciifically in a 
+
+% Specifically we use the introduced GENIE data generated for the CLAS6 measurements with a carbon target and beam energy of 2.257\si{GeV}.
+% We then have 
+
+
+
 
 Truth signal - events with the electron passing the gdoc test and fiducials (fiducials for the sake of the report) that have exactly 1 pion of the chosen type passing fiducials (and 0 of the other) and exactly 1 nucleon passing fiducials (and 0 of the other) both in the primary state.
 
