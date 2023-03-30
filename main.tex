@@ -1,7 +1,7 @@
 \documentclass[a4paper,12pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage{fullpage}
-\usepackage[style=phys,maxbibnames=6]{biblatex}
+\usepackage[bibencoding=utf8,style=phys,maxbibnames=6]{biblatex}
 \usepackage[skip=0em,indent=2em]{parskip}
 \usepackage[pdftex]{graphicx}
 \usepackage{float}
@@ -66,24 +66,25 @@
 
 \begin{center}
         \Large\bf \Large\bf Senior Honours Project \\
-        \LARGE\bf Further analysis of \efn\ data
+        \LARGE\bf Nuclear Transparency of $1\pi1\text{\normalfont nucleon}$ Events from $2.26\si{GeV}$ Electron-Carbon Scattering
+        % \LARGE\bf Nuclear Transparency of $1\pi1\text{\normalfont nucleon}$ Events from $\sim2\si{GeV}$ electron-carbon scattering
 \end{center}
 
 \vspace*{0.5cm}
 
 \begin{center}
         \bf Jan Kocka \\
-        February 2022
+        31$^\text{th}$ of March 2023
 \end{center}
 \vspace*{5mm}
 
 \begin{abstract}
     \noindent
-    This report outlines the need for a better understanding of neutrino-nucleus interactions and how studying electron-nucleus interaction can be just as illuminating as working directly with neutrinos.
+    We outline the need for a better understanding of neutrino-nucleus interactions and how studying electron-nucleus interaction can be used for the purpose.
     It covers some of the prerequisites to understand such studies, including the most commonly studied interaction types and the use of Monte Carlo event generators like GENIE.
     An introduction to the CLAS6 data used by the \efn\ collaboration is presented and a new codebase using modern C\texttt{++} to analyse the data was developed.
     Finally we use this code to conduct a study of nuclear effects on the reconstruction of pion momentum of 1 pion 1 nucleon events (mainly from $\Delta_{1232}$ resonances) from GENIE generated 2.26\si{GeV} incident electron - carbon nucleus scattering.
-    We identify errors of the reconstruction due to initial state effects and final state interactions, however even once adjusting for detector precision reconstructing pion momentum should be possible within 400 \si{Mev/c}.
+    We identify errors of the reconstruction due to initial state effects and final state interactions, and show that even when accounting for detector precision such resolution may be possible to within 400 \si{Mev/c}.
 \end{abstract}
 
 \vspace*{1cm}
@@ -94,7 +95,7 @@
       I declare that this project and report is my own work.
 \end{center}
 
-\vspace*{4cm}
+\vspace*{3cm}
 Signature:\hfill Date:  31/3/2023
 
 \vfill
@@ -115,9 +116,9 @@ This project concerns neutrinos and their properties, and so a brief description
 Neutrinos are three uncharged leptons of different flavours (each corresponding to the other 3, charged, leptons -- electron, \Mu\ and \Tau\ of ascending masses).
 Neutrinos interact only via the weak force and with very low cross sections, the Feynman diagrams of their interactions with the other fundamental particles through the W and Z bosons are shown in \cref{fig:nu_feyn}.
 
-Their existence was originally proposed by Pauli in the 1930s to explain the beta decay, and their mass was long thought to be 0, most notably the standard model assumes this.
+Their existence was originally proposed by Pauli in the 1930s to explain the beta decay, and their mass was long thought to be zero, most notably the standard model assumes this.
 However at the end of the last century neutrinos have been observed to undergo oscillations which implies non-zero mass.
-Since then they have been at the forefront of research, nowadays they are accepted to have mass and there are questions about them being their own antiparticles (Majorana) and possibly violating charge-parity symmetry.
+Since then they have been at the forefront of research, nowadays they are generally accepted to have mass and there are questions about them being their own antiparticles (Majorana) and possibly violating charge-parity symmetry.
 The answers to these questions could significantly further our understanding of the universe, including explaining the dominance of matter over antimatter.
 
 \begin{figure}[H]
@@ -132,11 +133,11 @@ The answers to these questions could significantly further our understanding of 
 \end{figure}
 
 \subsection{Neutrino Oscillations}
-In particle physics oscillations is a phenomenon that takes place when the particle mass eigenstates which govern its evolution in time are not the same as the state in which it is observed.
+In particle physics oscillations is a phenomenon that takes place when the particle mass eigenstates which govern its evolution in time are not the same as the states in which it can be observed.
 This phenomenon is not exclusive to neutrinos, the neutral Kaon has been known to oscillate to its own antiparticle and vice-versa since before neutrino oscillations were discovered \cite{burkhardtWavelengthNeutrinoNeutral2003}.
 % However it might seem a bit abstract, but as we know from basic quantum mechanics when we make an observation, the observed system will collapse into some particular state depending on the result of our observation.
 
-In the case of neutrinos, we say there are three flavours and the way we differentiate them is by the weak interaction, as so far all interactions we observed conserve the three separated lepton numbers (electron, \Mu\ and \Tau\ again).
+In the case of neutrinos, we say there are three flavour states and the way we differentiate them is by the weak interaction as so far all observed interactions conserve the three separate lepton numbers (electron, \Mu\ and \Tau\ again).
 So say an electron capture takes place when an electron interacts with a proton to form a neutron and a neutrino, then we observe that neutrino to be an electron neutrino in order to conserve the electron lepton number and we can say it is collapsed into the electron neutrino eigenstate.
 
 Further, that electron eigenstate can be expressed in terms of the mass eigenstates, and if the two eigenstate sets aren't identical it will have multiple non-zero components.
@@ -152,19 +153,19 @@ For neutrinos this is the PMNS\footnotemark\ matrix, it is referred to as $U$ an
 \end{equation}
 where $\ket{\nu_\alpha}$ are the three flavour eigenstates and $\ket{\nu_i}$ the mass eigenstates.
 The exact form of the matrix then determines many of the neutrino properties, obtaining accurate values for its elements is the main driving force of neutrino oscillation experiments.
-For example if the matrix is not completely real then neutrinos violate CP symmetry.
+For example if the matrix is not completely real then neutrinos violate CP symmetry\cite{zuberNeutrinoPhysics2020}.
 \footnotetext{Stands for Pontecorvo–Maki–Nakagawa–Sakata matrix, it is the analogue of the CKM matrix for the mixing of quarks.}
 
-Then to complete the picture, the probability of a neutrino measured to be of flavour $\alpha$, to be measured again in the flavour $\beta$ is given by 
+Then to complete the picture, the probability of a neutrino measured to be of flavour $\alpha$, to be measured again in flavour $\beta$ is given by 
 \begin{equation} \label{eq:nosc}
     P(\alpha \rightarrow \beta) = \sum_i |U_{\alpha i} U^\dag_{i \beta}|^2 + 2\Re \sum_{j>i} U_{\alpha i} U^\dag_{i \beta} (U_{\alpha j} U^\dag_{j \beta})^* \exp(-i\frac{\Delta m^2_{ij}}{2}\frac{L}{E})
 \end{equation}
 where $E$ is it's energy, $L$ the distance between our measurements and $\Delta m^2_{ij}$ the mass difference of the mass eigenstates $i, j$ squared (for more detail see \cite{zuberNeutrinoPhysics2020}).
-This is then our main entry point for studying the PMNS matrix from oscillation experiments as we can measure these probabilities $P$ and deduce some of the values or their relations along with the mass differences $\Delta m_{ij}$.
-Though even if we  knew precisely all the oscillation probabilities we still can not fully determine the matrix, there may be a Majorana phase component that doesn't influence $P$ and so needs to be studied using other experiments.
+This is then our main entry point for studying the PMNS matrix from oscillation experiments as we can measure these probabilities $P$ and so get insight into the $U_{\alpha i}$ elements along with the mass differences $\Delta m_{ij}$.
+Though notably, even if we knew precisely all the oscillation probabilities we would not have all the information to fully determine $U$ as there may be Majorana phase components that doesn't influence $P$, these need to be studied by other experiments like neutrinoless $\beta$ decay \cite{degouveaManifestCPViolation2003}.
 
 \subsection{Oscillation Experiments and Energy Reconstruction}\label{sec:exanderec}
-There are many active experiments (NOvA and T2K currently running and DUNE and Hyper-Kamiokande under development) working on precise neutrino oscillation measurements to determine the neutrino masses and PMNS matrix elements.
+There are many active experiments (NOvA\cite{pattersonNOvAExperimentStatus2013} and T2K\cite{abeT2KExperiment2011} currently running and DUNE\cite{falconeDeepUndergroundNeutrino2022} and Hyper-Kamiokande\cite{yokoyamaHyperKamiokandeExperiment2017} under development) working on precise neutrino oscillation measurements to determine the neutrino masses and PMNS matrix elements.
 % There are active experiments (including Super-Kamiokande, OPERA, MINOS, DUNE and Hyper-Kamiokande\footnote{**maybe change which ones I mention and add references to them}) working on precise neutrino oscillation measurements to determine the neutrino masses and PMNS matrix elements.
 In these (long-baseline) experiments, neutrinos from a source which has known fractions of the three flavours are beamed across large distances (for oscillations of $\sim 1\si{GeV}$ \Nm\ an $L$ of order $\sim 1000\si{km}$ is needed \cite{mezzettoThreeFlavorOscillationsAccelerator2020}) so that they oscillate and then some of the flavours (electron, \Mu\ or both) are observed and counted.
 This means we are measuring some of the probabilities from \cref{eq:nosc} with a known $L$, however we don't have a simple value for $E$ which we need in order to interpret the data.
@@ -175,13 +176,13 @@ Because of that experiments rely on reconstructing incident neutrino energies an
     \centering
     \includegraphics[width=0.6\textwidth]{figures/sourceEnergies.pdf}
     \caption{
-        The energy distributions of neutrino sources used at various experiments, both oscillation (DUNE, NOvA, T2K) and neutrino interaction studies (MicroBooNE, MINERVA).
+        The energy distributions of neutrino sources used at various experiments, both oscillation (DUNE, NOvA, T2K) and neutrino interaction studies (MicroBooNE\cite{acciarriDesignConstructionMicroBooNE2017}, MINERVA\cite{mcfarlandMINERnADedicatedNeutrino2006}).
         All of these are accelerator based sources which have the narrowest energy distributions, however still the spread is on the order of hundreds of \si{MeV} at least.
         Figure taken from \cite{sajjadatharNeutrinosTheirInteractions2023}.
     }\label{fig:neu_s_Es}
 \end{figure}
 
-As neutrinos are uncharged and have tiny cross sections, they aren't detected directly, instead a large amount (needed due to the small cross sections) of some stable substance (argon, water or chlorine) is stored and surrounded by detectors (often carbon based scintillators).
+As neutrinos are uncharged and have tiny cross sections, they aren't detected directly, instead a large amount of some stable substance (argon, water or chlorine) is stored and surrounded by detectors (Cherenkov detectors, plastic/carbon based scintillators).
 Then when neutrinos come in, some will interact with these atoms and produce detectable particles.
 These always have to include a lepton of the corresponding flavour and possibly other particles, often nucleons, photons or pions and a collection of particle measurements originating from one neutrino is called an event.
 While the neutrinos can interact with the atomic electrons \cite{whittinghamScatteringLowEnergy2022}, it is only significant at low neutrino energies and rarely relevant to oscillation experiments.
@@ -189,14 +190,14 @@ Thus some of the most important physics of neutrino detectors are the neutrino-n
 Modern oscillation experiments report these limitations to be a source of large systematic uncertainties\cite{abeConstraintMatterAntimatter2020,novacollaborationNewConstraintsOscillation2018}.
 
 \subsection{\efn\ and nuclear effects}
-Which is where \efn\ comes in, while ideally we would study these interaction with neutrinos, but the absence of a monoenergetic neutrino source, along with their small cross sections makes us consider other options.
+Which is where \efn\ comes in, while ideally we would study these interaction with neutrinos, but the absence of monoenergetic neutrino sources, along with their small cross sections makes us consider other options.
 While on the surface it may seem different, electrons scatter off of nuclei in a similar manner, and further, nuclear effects are identical.
-Nuclear effects mainly come in two flavours, initial state effects and final state effects.
+Nuclear effects mainly come in two flavours, initial and final state effects.
 
 Initial state nuclear effects describe how the state of the nucleus before the collision affects our measurements.
-An example demonstrated later on is that if the incident lepton scatters a nucleon outside the nucleus and we want to use 4 momentum conservation for analysis, we need to account for the 4 momentum of the original nucleon, and possibly the nucleus within the sample, neither of which are simple to model.
+An example that is seen in the results of this report is that if the incident lepton scatters a nucleon outside the nucleus and we want to use 4 momentum conservation for analysis, we need to account for the non-zero 4 momentum of the original nucleon, and possibly also of the nucleus, neither of which are simple to model.
 
-However, likely more problematic are Final State Interactions (FSI), these can occur when the first (primary) lepton interaction creates or scatters other hadrons, which happens nearly always.
+However, less predictable and likely more problematic are Final State Interactions (FSI), these can occur when the first (primary) lepton interaction creates or scatters other hadrons, which happens nearly always.
 These hadrons then start within the nucleus and can interact with it before escaping it.
 This is a significant effect, for $\sim 1\si{GeV}$ neutrinos impacting an iron target, about 30\% of the created hadrons undergo FSI\cite{stevendytmanFinalStateInteractions2009}.
 FSI can not only change the particle 4 momentum but also result in particle creation or absorption, completely changing the composition of the particles we detect.
@@ -210,7 +211,7 @@ See \cite{golanEffectsFinalstateInteractions2012,stevendytmanFinalStateInteracti
 
 % However, as there are no monoenergetic neutrino beams it is very difficult to experimentally study these effects directly on neutrinos, so instead we study electron-nucleus interactions which are subject to the same quantum field theory interactions.
 
-\section{Neutrino(Electron)-nucleus interactions}
+\section{Neutrino(Electron)-nucleus interactions}\label{sec:nenuc_inter}
 Firstly, throughout the report antineutrinos are largely not mentioned, their interaction do have some specifics to them, however are mostly directly analogous to the described neutrino processes.
 As the interactions are not yet fully, fundamentally understood, we to a large degree resort to classifications which allows us to make prediction under certain conditions.
 Both neutrino and electron nucleus scattering can be described by
@@ -218,39 +219,40 @@ Both neutrino and electron nucleus scattering can be described by
     l + A \rightarrow l' + a + b + c ...
 \end{equation}
 where an incoming lepton $l$ scatters off of a nucleus $A$ resulting in a lepton $l'$ and hadron particles $a, b, c ...$.
-When considering realistic experiments we always know $l$ and $A$ but might only be able to detect the outgoing lepton and some or none of the outgoing hadrons. 
-To differentiate these cases we consider separately \emph{inclusive} cross sections where only $l'$ is detected (so the result is essentially as if summing over all the possible outgoing hadrons).
+When considering realistic experiments we always know $l$ and $A$ but might only be able to detect the outgoing lepton $l'$ and some or none of the outgoing hadrons. 
+To differentiate these cases we consider separately \emph{inclusive} cross sections where only $l'$ is detected (so any cross sections are essentially a sum over all possible outgoing hadrons).
 \emph{Semi-inclusive} cross sections where $l'$ and some of the hadrons are detected and \emph{exclusive} cross sections where we know all of the resulting particles \cite{amaroElectronNeutrinonucleusScattering2020}.
 
 As neutrinos only interact via the weak force, all neutrino-nucleus interactions take place via either the \Zz\ boson, in which case the final lepton is the same neutrino.
-These are called \emph{Neutral Current} (NC) events and are generally difficult to measure as we cannot measure the outgoing lepton and have to rely on reconstructing the event solely from the hadrons \cite{giustiNeutralCurrentNeutrinonucleus2020}.
-Or it can interact through the \Wp and \Wm\ bosons (\emph{Charged Current} or CC interactions) in which case a charged lepton is produced and detected, often being the most important particle for detection and event reconstruction.
+These are called \emph{Neutral Current} (NC) events and are generally difficult to measure as the outgoing lepton is undetected and we have to rely on reconstructing the event solely from the hadrons \cite{giustiNeutralCurrentNeutrinonucleus2020}.
+Or it can interact through the \Wp and \Wm\ bosons (\emph{Charged Current} or CC interactions) in which case a charged lepton is produced and detected, often being the most important particle for event reconstruction.
 
+% TODO: Review if this is necessary
 This is contrasted to electrons which will dominantly interact with the nucleus through photons (so preserving the electron).
-Nevertheless within quantum field theory the neutrino weak force interactions have a vector and an axial-vector components and the electron EM interaction has only a vector component\cite{alvarez-rusoNuSTEC11NeutrinoScattering2018}.
-Thus, the vector part of neutrino-nucleus scattering calculations and simulations can be adapted and tested by electron scattering.
+Nevertheless within Quantum Field Theory (QFT) the electron EM and neutrino weak force interactions are modeled similarly and so theories for one can be tested on the other, see \cref{sec:genie} for more.
+% Thus, the vector part of neutrino-nucleus scattering calculations and simulations can be adapted and tested by electron scattering.
 % Due to this existing MC event generators like GENIE can be modified to generate electron-nucleus interaction events and test particularly the vector current component of the theories behind the generator.
 % Further on I will only speak about neutrino interactions, but most of these characteristics apply to electrons too.
 
 
 \subsection{Particle and event properties}
-This is also a good place to introduce some ways in which we describe events and the particles in them.
+This is also a good place to introduce some of our notation and event properties.
 As these are high energy particles, we have to treat them relativistically, as such the key property of a particle is its 4 momentum $p^\mu$, or equivalently energy $E$ and relativistic 3 momentum $\vb{p}$.
 For our coordinate systems we choose the incident particle beam direction to be along the Cartesian $e_z$ and we often use spherical polars with respect to this axis and such that $\theta = 0$ corresponds to $e_z$ (often $\cos{\theta}$ is used instead of $\theta$).
-The specific orientation of $e_x$ and $e_y$ isn't very important and so is mostly glossed over, in addition we use natural units in which $\hbar = c = 1$ and in the report we write 4 vectors such that the SR metric $\eta_{\mu \nu}$ is $\diag(1, -1, -1, -1)$ (though notably GENIE, ROOT, see \cref{sec:genie}, and so our data uses a convention where it is $\diag(-1, -1, -1, 1)$).
-For example this means an incident particle of mass $m$ and energy $E$ would have
+The specific orientation of $e_x$ and $e_y$ isn't very important and so is mostly glossed over.
+In addition we use natural units in which $\hbar = c = 1$ and in the report we write 4 vectors such that the SR\footnote{Special Relativity} metric $\eta_{\mu \nu}$ is $\diag(1, -1, -1, -1)$ (though notably GENIE, ROOT, see \cref{sec:genie}, and so our data analysis uses a convention where it is $\diag(-1, -1, -1, 1)$).
+For example this means an incident particle of mass $m$ and energy $E$ would have 4 momentum
 \begin{equation}
-    q_i^\mu \leftrightarrow \begin{pmatrix} E \\ \sqrt{E^2 - m^2} \\ 0 \\ 0 \end{pmatrix}
+    q_l^\mu \leftrightarrow \begin{pmatrix} E \\ \sqrt{E^2 - m^2} \\ 0 \\ 0 \end{pmatrix}
 \end{equation}
 
-In the events we consider, we have an incident lepton with 4 momentum $q_{i}^\mu$ impacting the nucleus and let $p_i^\mu$ be the outgoing leptons 4 momentum.
-A very common scattering property within particle physics is the 4 momentum transfer $q^2$, here it is the 4 momentum change of the incident particle squared, so $(p_i^\mu - q_i^\mu)^2$, though within neutrino interactions typically $Q^2 = -q^2$ is used instead.
-Next, there is $W^2$, the invariant mass of all the produced hadrons, with regard to \cref{eq:genint}, one of $a, b, c \ldots$ will be the remaining nucleus and $W^2 = r_\mu r^\mu$ where $r^\mu$ is the total 4 momentum of all the others.
+In the events we consider, we have an incident lepton with 4 momentum $q_{l}^\mu$ impacting the nucleus and let $p_l^\mu$ be the outgoing leptons 4 momentum.
+A very common scattering property within particle physics is the 4 momentum transfer $q^2$, here it is the 4 momentum change of the incident particle squared, so $(p_l^\mu - q_l^\mu)^2$, though within neutrino interactions typically $Q^2 = -q^2$ is used instead.
+Next, there is $W$, the invariant mass of all the produced hadrons, with regard to \cref{eq:genint}, one of $a, b, c \ldots$ will be the remaining nucleus and $W^2 = r_\mu r^\mu$ where $r^\mu$ is the total 4 momentum of all the other hadrons.
 % Notably that means we can reconstruct $W$ using only electron 4 momentum, assuming the struck nucleon was at rest as then .
 % This is not a completely valid assumption, however it can lead to good results
-There are other common event properties, notably the Bjorken scaling variables $x, y$, however they are not of interest in this report.
+There are other commonly used event properties, notably the Bjorken scaling variables $x, y$, however they are not of interest in this report and so not covered.
 
-\subsection{Interaction types}
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.6\textwidth]{figures/sigmaVsEnu.pdf}
@@ -261,18 +263,19 @@ There are other common event properties, notably the Bjorken scaling variables $
     }\label{fig:nusigma_vs_Enu}
 \end{figure}
 
-Finally to come back to the interaction types mentioned in \cref{sec:exanderec}, some of the main types relevant for oscillation experiments are Quasi-Elastic (QE), Resonant (RES) and Deep Inelastic Scattering (DIS), see \cref{fig:nusigma_vs_Enu}.
+\subsection{Interaction types}\label{sec:inttyp}
+Finally to come back to the interaction types mentioned at the start of \cref{sec:nenuc_inter}, some of the main types relevant for oscillation experiments are Quasi-Elastic (QE), Resonant (RES) and Deep Inelastic Scattering (DIS), see \cref{fig:nusigma_vs_Enu}.
 In this order these dominate at increasing energies and correspond with how far inside the nucleus the neutrino penetrated.
-Importantly, these classifications also carry over to electron scattering very well, in fact they are referred to within neutrino physics under the same names, even though QE electron scattering is much closer to fully elastic scattering.
+Importantly, these classifications also carry over to electron scattering very well, in fact they are referred to within neutrino physics under the same names, even though QE electron scattering is closer to fully elastic scattering.
 % A low energy neutrino ($<1\si{GeV}$) will scatter off of a nucleon as a whole, without changing it's composition.
 % At medium energies ($\sim 1 \si{GeV}$) the neutrino can excite a nucleon into an excited state and at the highest energies ($>3\si{GeV}$) the neutrino will interact with many particles and DIS interactions become difficult to predict especially once accounting for FSI.
 
 \subsubsection{Quasi-Elastic (QE) scattering}
-Elastic scattering refers to processes where the internal structure of the colliding objects isn't altered.
+In elastic scattering the structure of colliding objects isn't altered.
 Fully elastic neutrino scattering can then only happen within NC interactions.
 However, there is a very similar CC interaction where the neutrino interacts with a single neutron through an $W$ boson, changing it into a proton, but otherwise conserving it's structure.
-This is shown in \cref{fig:QE_fd} and as mentioned before these dominate at lower neutrino energies ($< 1\si{GeV}$).
-In many ways they are the simplest interaction as they don't require as much information about that nucleus theoretically and experimentally they have a very clear signature of one electron and one nucleon with FSI not playing a major role.
+This is shown in \cref{fig:QE_fd}, in many ways they are the simplest interaction as they don't require as much information about that nucleus theoretically and experimentally they have a very clear signature of one electron and one proton with FSI not playing a major role.
+Notably there are also equivalent NC QE processes where either nucleon type can be scattered outside the nucleus by an exchanged $Z$ boson.
 
 \begin{figure}[H]
 \centering
@@ -297,6 +300,7 @@ In many ways they are the simplest interaction as they don't require as much inf
     }\label{fig:QE_fd}
 \end{figure}
 
+% TODO: Might be deletable
 Of the neutrino interactions, QE are the best theoretically understood, the simplest models rely on a combination of two independent parts: calculations of neutrino-nucleon interactions within the impulse-approximation and modelling of the nucleons within the nuclei.
 A recent review \cite{gallagherNeutrinoNucleusInteractions2011} has compared the theoretical result with observations from the MiniBooNE and NOMAD.
 While the models capture many important features, there are also significant discrepancies which point to the interaction being more complicated than thought and also points out that many studies consider different levels of inclusiveness leading to difficulties in comparisons.
@@ -306,7 +310,7 @@ Theoretically, QE neutrino scattering is very similar to elastic electron scatte
 Within \efn\ the same data this report will be working with has been inspected for testing incident electron energy reconstruction for QE scattering in \cite{khachatryanElectronbeamEnergyReconstruction2021}.
 
 \subsubsection{Resonant scattering (RES) with focus on $\Delta$ and pion production}
-Resonant interactions are dominant for neutrinos at energies near 1 \si{GeV}, they are the next logical step, the neutrino still only interacts with one nucleon, however this time that nucleon changes into an excited baryon state which promptly decays.
+Resonant interactions are dominant for neutrinos at energies near 1-2 \si{GeV}, they are the next logical step, the neutrino still only interacts with one nucleon, however this time that nucleon changes into an excited baryon state which promptly decays.
 There are a couple possible such excited states, called \emph{resonances}, including various $N$ and $\Delta$ particles with spins $\frac{1}{2}, \frac{3}{2}$ or possibly more \cite{leitnerElectronNeutrinonucleusScattering2009}.
 Here we focus on $\Delta_{1232}$ resonances (with masses near 1232 \si{MeV} and spin $\frac{3}{2}$, throughout the report $\Delta \sim \Delta_{1232}$) as they are are some of the most dominant and suitable to study as they decay into pion and nucleon pairs with a branching fraction of 99.4\% \cite{particledatagroupReviewParticlePhysics2022}.
 Other processes are largely similar to these.
@@ -335,10 +339,26 @@ Other processes are largely similar to these.
         }
     \end{subfigure}
     \caption{
-        All possible CC $\Delta$ resonant electron neutrino scattering processes summarized, only showing the relevant nucleon, the rest form the remaining nucleus.
+        All possible CC, $\Delta$ RES electron neutrino scattering processes summarized, only showing the relevant nucleon, the rest form the remaining nucleus.
         The processes are identical for $\nu_\mu$ and $\mu_\tau$ except with the other leptons replacing the final state electron.
     }\label{fig:RES_fd}
 \end{figure}
+
+The CC $\Delta$ RES processes for neutrino scattering are shown in \cref{fig:RES_fd}, and NC processes are analogous and summarized as
+\begin{align}
+    \nu + p &\rightarrow \nu + \pi^+ + n & \nu + n &\rightarrow \nu + \pi^- + p \\
+    \nu + p &\rightarrow \nu + \pi^0 + p & \nu + n &\rightarrow \nu + \pi^0 + n
+\end{align}
+and finally, the equivalent electron scattering processes are shown in \cref{fig:RESel_fd}.
+
+RES interactions are often studied as they are in many ways the next step in complexity after QE events and one of their distinctive features is pion production.
+This is important as pions can be detected by scattering experiments, though while charged pions have a mean lifetime of $\sim 10^{-8} \si{s}$, enough to reach a detector.
+$\pi^0$ have lifetimes of $\sim 10^{-17} \si{s}$ \cite{particledatagroupReviewParticlePhysics2022} and decay into two photons before detection.
+They can then be reconstructed from photon measurements, however that adds complexity and so in this report we only look at charged pion events.
+
+Other than RES interactions, pions can also be produced by coherent pion production where the neutrino/electron scatters off of the whole nucleus \cite{sogarwalCoherentPionProduction2022,higueraMeasurementCoherentProduction2014} however at higher energies these are less prominent compared to the other processes.
+Further pions can also be produced in FSI by any interaction type or in DIS interactions before FSI, however both of these typically create multiple particles and so are difficult to work with.
+For these reasons in our analysis we try to restrict the amount of these events in our sample, so that we can focus on simple pion production where the kinematics can be understood.
 
 \begin{figure}[H]
     \centering
@@ -372,58 +392,59 @@ Other processes are largely similar to these.
         }
     \end{subfigure}
     \caption{
-        $\Delta$ resonant electron scattering processes, (b) and (a) are the most important for this project as our data includes detected charged pions and protons.
+        $\Delta$ RES electron scattering processes, (b) and (a) are the most important for this project as our data includes detected charged pions and protons.
     }\label{fig:RESel_fd}
 \end{figure}
 
-The CC $\Delta$ resonant processes for neutrino scattering are shown in \cref{fig:RES_fd} where only the struck nucleon is shown, the others are unaffected and form the post-collision nucleus.
-NC processes are analogous and summarized as
-\begin{align}
-    \nu + p &\rightarrow \nu + \pi^+ + n & \nu + n &\rightarrow \nu + \pi^- + p \\
-    \nu + p &\rightarrow \nu + \pi^0 + p & \nu + n &\rightarrow \nu + \pi^0 + n
-\end{align}
-and finally, the equivalent electron scattering processes are shown in \cref{fig:RESel_fd}.
-
-Resonant interactions are often studied as they are in many ways the next step in complexity after QE events and one of their distinctive features is pion production.
-This is important as pions can be detected by scattering experiments, though while charged pions have a mean lifetime of $\sim 10^{-8} \si{s}$, enough to reach a detector.
-$\pi^0$ have lifetimes of $\sim 10^{-17} \si{s}$ \cite{particledatagroupReviewParticlePhysics2022} and decay into two photons before detection, they can then be reconstructed from photon measurements, however that adds complexity and so in this report we only look at charged pion events.
-
-Other than RES interactions, pions can also be produced by coherent pion production where the neutrino/electron scatters off of the whole nucleus \cite{sogarwalCoherentPionProduction2022,higueraMeasurementCoherentProduction2014} however these mostly dominated by the other processes at higher energies.
-Further pions can also be produced in FSI by any interaction type or in DIS interactions before FSI, however both of these processes can create many particles at once and so are very difficult to work with.
-For these reasons in our analysis we try to restrict the amount of these events in our sample, so that we can focus on simple pion production where the kinematics can be understood.
-
 \subsubsection{Deep Inelastic scattering (DIS)}
-Finally at high energies ($>3\si{GeV}$) DIS events start to dominate.
-In these the neutrino no longer interacts with a whole nucleon but some quark within a nucleon or a "sea" quark
+Finally at high energies ($>3\si{GeV}$) DIS events start to dominate, in these the neutrino scatters off of a quark within a nucleon (valence or sea quark).
+This typically results in a jet of multiple hadrons (can be pions, Kaons, strange sigma baryons\ldots in the final state) and so $W$ values are larger than in QE or RES, often over 2 \si{GeV} is mentioned\cite{morfinRecentDevelopmentsNeutrino2012}.
+They can take place through both NC and CC channels and there is again a connection to electron scattering, the models are similar and electron DIS scattering is one of the key probes of nuclear structure\cite{taylorDeepInelasticScattering1991}.
 
 \subsection{The GENIE Event Generator \cite{andreopoulosGENIENeutrinoMonte2010}}\label{sec:genie}
 Due to the amount expertise required to understand either the theory or the experimental aspects of neutrino interactions, it becomes difficult to package theories in a way that they can be easily understood and tested by experiments.
 Partly due to this the Neutrino Scattering Theory-Experiment Collaboration (NuSTEC \cite{alvarez-rusoNuSTEC11NeutrinoScattering2018}) has been started recently.
-As a result, Monte Carlo (MC) neutrino event generators are often used to package theoretical models in a way that predictions can be made.
+As a result, Monte Carlo (MC) neutrino event generators are used to package theoretical models in a way that predictions can be made.
 GENIE is the most widely adopted such MC generator, first released for use in 2007 it aims to be a canonical generator accurately reflecting the state-of-art theories for a wide range of energies and targets.
-It is a large codebase of modern C\texttt{++} code using the popular ROOT libraries\cite{brunROOTObjectOriented1997} and is particularly well tuned to a tested on the few \si{GeV} energy neutrinos that are of interest to oscillation experiments.
+It is a large codebase of modern C\texttt{++} code using the popular ROOT framework\cite{brunROOTObjectOriented1997} and is particularly well tuned to a tested on the few \si{GeV} energy neutrinos that are of interest to oscillation experiments.
 
-As is described in \cite{andreopoulosGENIENeutrinoMonte2010}, there are three main categories of models in GENIE.
-Nuclear physics models model the nuclei and their composition, this strongly depends on the energy of the incoming neutrino and whether it will scatter mostly off of a whole nucleon or a quark.
+As is described in \cite{andreopoulosGENIENeutrinoMonte2010,andreopoulosGENIENeutrinoMonte2015}, there are three main steps of models in GENIE.
+Nuclear physics models describe the nuclei and their composition as experienced by the incoming neutrino (initial state effects).
 GENIE uses a Relativistic Fermi Gas (RFG) model for this step which is particularly successful at lower energies.
 Then cross sections are calculated for various scattering types using their cross-section models and one is randomly chosen according to these.
-These types include the ones mentioned above, but they are both further divided and other interactions are considered, including NC scattering and neutrino-electron scattering.
-Hadronization models then finalize the primary interaction by predicting which hadrons are produced, for these GENIE uses the AGKY model from the MINOS experiment \cite{HadronizationModelMINOS}.
-However, for many of these there are options of models to choose from, two main tuning setups used in \efn\ are the G2018 (somewhat more empirical separating the different interactions earlier) and GSuSAv2, which we use here, this uses a super-scaling lepton scattering model\cite{amaroNeutrinonucleusScatteringSuSA2021}.
+These types include the ones mentioned in \cref{sec:inttyp}, but they are both further divided and other interactions are considered, including NC scattering and neutrino-electron scattering.
+Hadronization models then finalize the primary interaction by predicting which hadrons are produced, for these GENIE uses the AGKY model from the MINOS experiment \cite{yangHadronizationModelMINOS2007}.
+
+However there are various ways to tune this models according to experimental or theoretical data.
+The two main tuning setups used by \efn\ are the G2018 (somewhat more empirical separating the different interactions earlier) and GSuSAv2, which we use here, this uses a super-scaling lepton scattering model\cite{amaroNeutrinonucleusScatteringSuSA2021}.
 
 % As has been mentioned before within QFT a large amount of the models for neutrino scattering are the same for electrons and these have been directly adapted within GENIE to create \eGEN, a mode of operation that can simulate electron-nucleus scattering events.
 % \eGEN\ has been revised in 2021 by the \efn\ collaboration \cite{e4ncollaborationInclusiveElectronScattering2021} and is really at the core of the project.
 % Data from it, including the data used in this report, can then be studied and compared to experimental data.
-GENIE also has an electron scattering mode (\eGEN) that has been revised in 2021 by the \efn\ collaboration \cite{e4ncollaborationInclusiveElectronScattering2021}.
-This uses the same underlying logic and structures of GENIE, as mentioned before within QFT both neutrino and electron interactions have a vector component, so that part of the code is reused.
-\eGEN\ is then use to generate electron scattering data to test the underlying models.
+Importantly, GENIE also has an electron scattering mode (\eGEN) that has been revised in 2021 by the \efn\ collaboration \cite{e4ncollaborationInclusiveElectronScattering2021}.
+Within QFT the neutrino weak force interactions have vector and axial-vector components and the electron EM interaction only has a vector component.
+The theory is beyond the scope of this report, but the key is that the vector component code logic and structure can be used for generating electron-nucleus interaction events (provided adapted tunings).
+We can then compare \eGEN\ data to electron scattering experiments to test the same underlying GENIE models as for neutrino scattering.
+This is at the core of the \efn\ project.
+
+% This is contrasted to electrons which will dominantly interact with the nucleus through photons (so preserving the electron).
+% Nevertheless within quantum field theory the neutrino weak force interactions have a vector and an axial-vector components and the electron EM interaction has only a vector component\cite{alvarez-rusoNuSTEC11NeutrinoScattering2018}.
+% Thus, the vector part of neutrino-nucleus scattering calculations and simulations can be adapted and tested by electron scattering.
+% Due to this existing MC event generators like GENIE can be modified to generate electron-nucleus interaction events and test particularly the vector current component of the theories behind the generator.
+% Further on I will only speak about neutrino interactions, but most of these characteristics apply to electrons too.
+
 
 \section{The \efn\ CLAS6 Data and Writing the Analysis Code}
 The data used by the \efn\ analysis comes from the e2a experiment measuring electron scattering at electron energies of 1.16, 2.26 and 4.45 \si{GeV} on targets of He, C and Fe nuclei.
-The measurements took place in Thomas Jefferson National Accelerator Facility (JLab) using the CEBAF Large Acceptance Spectrometer (CLAS6) \cite{meckingCEBAFLargeAcceptance2003} in 1999, the data has been used in many published works including \cite{khachatryanElectronbeamEnergyReconstruction2021}.
+The measurements took place in Thomas Jefferson National Accelerator Facility (JLab) using the CEBAF Large Acceptance Spectrometer (CLAS6) \cite{meckingCEBAFLargeAcceptance2003} in 1999, the data has been used in many published works including \cite{khachatryanElectronbeamEnergyReconstruction2021,mclauchlanDeltaElectroproduction12C}.
 In addition, recently CLAS has undergone an upgrade (CLAS6 to CLAS12) \cite{burkertCLAS12SpectrometerJefferson2020} allowing experiments at electron energies up to 12 \si{GeV} and generally improved capabilities.
 The \efn\ collaboration has a CLAS12 experiment under development, with new data starting at electron energies of $\sim6 \si{GeV}$ expected to be ready soon.
-Along collection of measured events we also have a collection of GENIE generated events for the same energies and targets (for the $\sim 2\si{GeV}$ neutrino energy C target we have 1 million measured and 175 million GENIE generated events).
+Along with measured data events we also have collections of GENIE generated events for the same energies and targets (the $\sim 2\si{GeV}$ neutrino energy C target has 1 million measured and 175 million GENIE generated events).
+
+\subsection{CLAS6}\label{sec:CLAS6}
+The CLAS6 detector is largely built around a set of six toroidal magnets distributed along the azimuthal angle $\phi$.
+These curve the trajectories of charged particles in their $\phi$ plane and allow for charged particle momentum measurements in drift chambers.
+They also give rise to six distinct sectors visible in \cref{fig:CLAS} and deadspace between them from particles hitting the magnets.
 
 \begin{figure}[H]
     \centering
@@ -445,15 +466,23 @@ Along collection of measured events we also have a collection of GENIE generated
     }
 \end{figure}
 
-\subsection{CLAS6}\label{sec:CLAS6}
-The CLAS6 detector, active from 1998 to 2012 when the work on CLAS12 has began, is largely built around a set of six toroidal magnets distributed along the azimuthal angle $\phi$.
-These curve the trajectories of charged particles in their $\phi$ plane and allow for charged particle momentum measurements in drift chambers.
-They also give rise to distinct six sectors visible in \cref{fig:CLAS} and deadspace between them from particles hitting the magnets.
+Our data, from e2a, has measurement of electrons, protons, charged pions and photons (so our cross sections are inclusive over all the other particles), each event having a list of 4 momentum measurements for each detected particle.
+In order to compare measured and MC data it is first necessary to take into account the detector limitations of only detecting particles in certain regions and with finite probabilities.
+This can be done by thoroughly considering all the possible ways the event measurements could have taken place and correcting for each in order to produce a measurement of the true physics.
+This is however very complicated and error prone and if one only needs to test a certain aspect or a model it is much easier to degrade MC data according to the detector defects for comparison.
+This is what we do in this report though we only look at MC data.
 
-Our data, from e2a, has measurement of electrons, protons, charged pions and photons (so essentially our cross sections are inclusive over all the other particles) and each event has a list of 4 momentum measurements for each detected particle.
-In order to properly compare the measured data to theoretical MC data however, it is necessary to take into account that the detector only detects some of these particles based on their directions and momentum and even then there are finite probabilities for detection.
-This can be done by considering all the possible undetected particles (and errors in the ones detected) and adjusting for them to produce a measurement of the true underlying physics, this is however very complicated and error prone.
-Instead, if one only needs to test a particular aspect, it is much easier to degrade the MC data according to the defects and produce theoretical prediction of what the detector should see.
+\subsection{Fiducials and acceptance maps}
+We do this in two ways, first we use \emph{fiducial} cuts.
+These are a set of conditions for each particle type to match, they depend on the particles momentum and direction and are boolean, either pass or fail.
+They reflect the harder boundaries in which we would expect out detector to work, we apply these to both measured and MC data and they define what events we consider our signal.
+These we inherited from previous \efn\ and e2a analysis as a collection of C\texttt{++} files, projections for some are shown in \cref{fig:fid_map} (the gaps reflects detector defects on the day of the run) and see \cite{mclauchlanDeltaElectroproduction12C} appendix C for more detail.
+
+% We do this in two steps, first we specify a fairly wide range of directions and momenta, we apply \emph{fiducial} cuts to filter these and define these as our signal in both experimental and MC data.
+% These reflect the harder limits of the CLAS6 detector, the precise fiducials depend on the beam energy and we have them inherited from previous \efn\ work and e2a as a collection of C\texttt{++} code, see \cite{papadopoulouLeptonNucleusScatteringMeasurements2023,mclauchlanDeltaElectroproduction12C}.
+% They are different for each particle type and cut on their 3 momentum size and direction, see \cref{fig:fid_map} for an example.
+% The six distinct zones/segments are a result of the mentioned magnets obstructing the areas in between an the gaps are due to some components not performing up to specification on the day of the experiment.
+% An example is that we only consider pions with momentum over 150 \si{MeV}.
 
 \begin{figure}[H]
     \centering
@@ -475,17 +504,13 @@ Instead, if one only needs to test a particular aspect, it is much easier to deg
     }\label{fig:fid_map}
 \end{figure}
 
-\subsection{Fiducials and acceptance maps}
-We do this in two steps, first we specify a fairly wide range of directions and momenta, we apply \emph{fiducial} cuts to filter these and define these as our signal in both experimental and MC data.
-These reflect the harder limits of the CLAS6 detector, the precise fiducials depend on the beam energy and we have them inherited from previous \efn\ work and e2a as a collection of C\texttt{++} code, see \cite{papadopoulouLeptonNucleusScatteringMeasurements2023,mclauchlanDeltaElectroproduction12C}.
-They are different for each particle type and cut on their 3 momentum size and direction, see \cref{fig:fid_map} for an example.
-The six distinct zones/segments are a result of the mentioned magnets obstructing the areas in between an the gaps are due to some components not performing up to specification on the day of the experiment.
-% An example is that we only consider pions with momentum over 150 \si{MeV}.
+Then for true MC to experiment comparisons we use \emph{acceptance} maps.
+These have been compiled by e2a as well, this time as 3D histogram ROOT files with $|\vb{p}|, \cos(\theta)$ and $\phi$ as axes.
+They are separate for each detected particle type and assign a probability of detection based on particle 3 momenta, see \cref{fig:acc_map}.
 
-Then, if we are to truly compare MC to data, we apply \emph{acceptance} maps.
-These have been compiled by e2a as well and give a probability of a particle being detected for each of the particle types and every possible direction and size of their momentum within the fiducial cuts.
-These are different for each target and beam energy and are given as three dimensional histograms (\verbb{TH3F} from ROOT) with momentum magnitude, $\cos(\theta)$ and $\phi$ as the axes, see \cref{fig:acc_map}.
-There probabilities are then used as weights for events when plotting histograms.
+% These have been compiled by e2a as well and give a probability of a particle being detected for each of the particle types and every possible direction and size of their momentum within the fiducial cuts.
+% These are different for each target and beam energy and are given as three dimensional histograms (\verbb{TH3F} from ROOT) with momentum magnitude, $\cos(\theta)$ and $\phi$ as the axes, see \cref{fig:acc_map}.
+% There probabilities are then used as weights for events when plotting histograms.
 
 \begin{figure}[H]
     \centering
@@ -506,52 +531,46 @@ There probabilities are then used as weights for events when plotting histograms
     }\label{fig:acc_map}
 \end{figure}
 
-\subsection{The codebase}
-These datasets are each in a ROOT file in a GENIE format called \verbb{gst}, this is a list-like object (\verbb{TTree}) of events with their properties.
-As this is a GENIE format, there are fields for many properties not measured in experiments, for the CLAS6 data these are empty.
+\subsection{Analysis details and the new framework}\label{sec:code}
+These datasets are each in a ROOT file in a GENIE format called \verbb{gst}, this is a list-like object (ROOT \verbb{TTree}) of events with their properties.
+% As this is a GENIE format, there are fields for many properties not measured in experiments, for the CLAS6 data these are empty.
 Some of the more notable fields are the outgoing electron 4 momentum, information about all the particles after the neutrino-nucleus interaction (referred to as primary or initial state) as well as the same information about post FSI particles (final state).
-Some of these properties, especially the ones that never could be measured, are referred to as the `truth` as they reflect what we think is physically going on.
-GENIE also adds flags to separate the QE, RES, DIS and other types of events and has information about what FSI has happened, this is described best in the GENIE manual\cite{andreopoulosGENIENeutrinoMonte2015} though it is somewhat outdated.
+Some of these properties, especially the ones that never could be measured (and so empty in measured data), are referred to as the "truth" as they reflect the true physics.
+There are also flags to separate QE, different RES and DIS events and information on what FSI has taken place, this is best described in the GENIE manual\cite{andreopoulosGENIENeutrinoMonte2015} though it is somewhat outdated..
 
-As there are $\sim100$ different properties per event and we have up to hundreds of millions of events, a moderately sophisticated analysis code is needed.
-The main \efn\ code is available on github \cite{E4nuE4nuanalysiscodePlaceholder} as developed by Afrodite Papadopoulou, however it has since been used by various scientists each adding their own functionality.
-As a result there are various versions kept by people and on github of a large, somewhat bloated and very difficult to understand code, most the logic of the analysis being in a single 4000 line file.
-A main goal of this project was to redevelop and streamline this code in order to lower the entry barrier for others, make it easier to spot analysis flaws and reduce boilerplate code.
+As there are $\sim100$ different properties per event up to hundreds of millions of events, a moderately sophisticated analysis code is needed.
+The main \efn\ code is available on github \cite{E4nuE4nuanalysiscodePlaceholder} as developed by Afrodite Papadopoulou for her thesis\cite{papadopoulouLeptonNucleusScatteringMeasurements2023}, however it has since been used by various scientists each adding their own functionality.
+As a result there are various versions kept by people of a large and very difficult to understand code, most the logic of the analysis being in a single 4000 line file.
+A main goal of this project was to redevelop this code in order to lower the entry barrier for others (including future students), make it easier to spot analysis flaws and reduce boilerplate code.
 
 The newly developed code is also available on github \cite{kockahonzaSHPGenieData2023}, it uses C\texttt{++}17 features and ROOT 6.12 as available on the GENIE machine at Fermilab used by us.
 It heavily uses classes and the features are best described by describing the code.
 The main class \verbb{GenieAnalysis} will expect an input file with a \verbb{gst} dataset, has two virtual methods to be overriden \verbb{double passesCuts()} and \verbb{void useEntry(double weight)} and one method that is expected to be used \verbb{void runAnalysis(int number\_of\_entries)}\footnotemark.
-\footnote{I am somewhat loose with the code for the sake of brevity, for example replacing the ROOT types with the normal C\texttt{++} ones.}
+\footnotetext{I am somewhat loose with the code for the sake of brevity, for example replacing the ROOT types with the normal C\texttt{++} ones.}
 The last of which will start an analysis, it will go through the first \verbb{number\_of\_entries} events from the input file and for each \verbb{passesCuts} will be ran, its return value being used as the weight, so if it is zero that event is not used at all.
-If nonzero, \verbb{useEntry(weight)} is called with that weight, this method does nothing in this class, it is expected to be overriden by inheriting classes to for example count the events, or write some properties to a histogram.
-Given this structure the code is intended to provide data on the events as a whole, it is not suited for applications where some parts of an event are to accepted and some discarded.
+If non-zero, \verbb{useEntry(weight)} is called with that weight, this method does nothing in this class, it is expected to be overriden by inheriting classes to for example count the events, or write some properties to a histogram.
+% Overall then the code will check for each event if they should be used and if so use them all in the same way.
+% Given this structure the code is intended to provide data on the events as a whole, it is not suited for applications where some parts of an event are to accepted and some discarded.
+% Given this structure the code it is clear this code is suited for when we want to collect event properties.
 
-The next and likely most useful part of the code is the \verbb{GAAutoHistograms} class, this inherits from \verbb{GenieAnalysis} and provides automatic histogram creation and filling as long as they conform to the following structure.
-There are "types" and "properties" and \verbb{GAAutoHistograms} creates histograms of properties, for each type independently.
-Specifically types are used to separate interaction types like QE, RES, $\Delta$ resonances and then also all events, each of these would be a type.
-Properties are then the quantities of interest, like $W, Q^2$, outgoing electron momentum and angles and so on.
-\verbb{GAAutoHistograms} is constructed in a way that it has a set list of "known" types and properties that can be easily added and each have a code name, the user can then specify which to use.
-Specifically it can create 1D histograms for each property and type combination and also 2D histograms showing how some two properties correlate, again it can do this separately for any chosen known types.
+The likely most useful part of the code is the \verbb{GAAutoHistograms} class, this builds on top of \verbb{GenieAnalysis} and provides automatic ROOT histogram generation for event "properties", say $W$ or outgoing electron energy.
+A concept of event "type" is also defined in the code, one might be QE events or another may be all events, the property histograms are then generated for each type independently.
+The class has an easily extensible (couple lines of code) list of "known" properties and types and then the user only needs to provide a list of histograms to generate.
+Specifically there are two types of histograms that can be created, 1D histograms for each property, and also 2D histograms showing the correlation of some 2 chosen properties.
 
-To touch on the project structure, these and the following classes are implemented in the \verbb{GenieAnalysis} folder, then there are executables, these are \verbb{.cpp} files in the root folder which specify a given run.
-For a quick summary of the rest (see \cref{fig:code_dia}), the \verbb{GACLAS6Common} file (and namespace) defines auxiliary properties specific to the CLAS6 data (like target and beam energy enumerations) and a wrapper around the original fiducials code.
-The \verbb{GACLAS6MCCuts, GACLAS6MC} classes do equivalent analysis to that which the original code (as inherited from Lucas Taling, a previous MSc student) did on the GENIE data for CLAS6.
-This was mainly used for first looks and testing of the new code (having five executables using these) and \verbb{GACLAS6DataPrepare, GACLAS6Data} do the equivalent for the actual CLAS6 data, though this has not been tested much.
+Some more information on the code is in \cref{app:code} and on the github repository\cite{kockahonzaSHPGenieData2023}.
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.9\textwidth]{figures/code_flow_diagram/diagram.pdf}
-    \caption{
-        A class diagram of the new code showing the relations.
-        The reusable classes from the \verbb{GenieAnalysis} folder are shown with a white background, classes from executables are light blue.
-    }\label{fig:code_dia}
-\end{figure}
-
+% The likely most useful part of the code is the \verbb{GAAutoHistograms} class, this inherits from \verbb{GenieAnalysis} and provides automatic histogram creation and filling as long as they conform to the following structure.
+% There are "types" and "properties" and \verbb{GAAutoHistograms} creates histograms of properties, for each type independently.
+% Specifically types are used to separate interaction types like QE, RES, $\Delta$ resonances and then also all events, each of these would be a type.
+% Properties are then the quantities of interest, like $W, Q^2$, outgoing electron momentum and angles and so on.
+% \verbb{GAAutoHistograms} is constructed in a way that it has a set list of "known" types and properties that can be easily added and each have a code name, the user can then specify which to use.
+% Specifically it can create 1D histograms for each property and type combination and also 2D histograms showing how some two properties correlate, again it can do this separately for any chosen known types.
 
 \section{Nuclear Transparency of 1 Pion 1 Nucleon Events}
 Finally, once all the preliminary coding has been completed, we conduct a basic nuclear transparency study on the data.
-Nuclear transparency is a very wide term describing how much of an effect do FSI have under certain conditions.
-Given its nature nuclear transparency is typically studied either theoretically or from MC data as we cannot measure any particle properties before FSI.
+Nuclear transparency is a very wide term describing how significant nuclear effects are under certain conditions.
+Given its nature nuclear transparency is often studied either theoretically or from MC data as we cannot measure any particle properties before FSI.
 
 Here we look at events with 1 charged pion 1 nucleon from a GENIE generated dataset and inspect how well we can reconstruct the pion momentum from the electron and nucleon momenta.
 We use the datasets mentioned before, they are described in more detail in \cite{papadopoulouLeptonNucleusScatteringMeasurements2023}, and specifically we only look at the data with beam energy of 2.26\si{GeV} and mainly carbon target.
@@ -559,8 +578,8 @@ Importantly, GENIE was tuned to the SuSAv2 configuration using the INTRANUKE hN 
 GENIE has two models for FSI, hA and hN, the main difference being the hA modelling a hadrons path out of the nucleus as a whole, either it scatters once or not at all.
 hN performs a full IntraNuclear Cascade (INC), each hadron can rescatter multiple times including hadrons produced from a previous rescattering, of the two hN is the more accurate though slower model\cite{andreopoulosGENIENeutrinoMonte2015}.
 
-The pion reconstruction is done as for simple pion production of exactly 1 charged pion and 1 nucleon without any FSI, the main channels of this process we are looking for are the $\Delta$ resonance showed in \cref{fig:RESel_fd}.
-We then further assume the struck nucleon to be at rest and the reconstruction goes as described below and shown in \cref{eq:reco_ass,eq:reco_res}.
+The pion reconstruction is done as for simple pion production of exactly 1 charged pion and 1 nucleon without any FSI, the main channels of this process we are looking for are the $\Delta$ resonances showed in \cref{fig:RESel_fd}.
+We then further assume the struck nucleon to be at rest and the reconstruction goes as follows.
 Denoting the 4 momenta of the electron and nucleon before collision as $q_e^\mu$ and $q_n^\mu$, both of which we know.
 Their sum must be equal to the sum of the 4 momenta of the outgoing electron, pion and nucleon, denoted respectively as $p_e^\mu, p_\pi^\mu$ and $p_n^\mu$.
 
@@ -573,7 +592,7 @@ Their sum must be equal to the sum of the 4 momenta of the outgoing electron, pi
     p_\pi^\mu &= q_i^\mu + q_n^\mu - p_e^\mu - p_n^\mu
 \end{align}
 
-Of course for the data this will rarely work perfectly, we expect 3 main sources of errors -- the original nucleon having nonzero momentum, other pion production processes producing other undetected particles, mainly other resonances and DIS, (photons, other mesons\ldots) and finally FSI.
+Of course for the data this will rarely work perfectly, we expect 3 main sources of errors -- the original nucleon having non-zero momentum, other pion production processes producing other undetected particles, mainly other RES and DIS, (photons, other mesons\ldots) and finally FSI.
 However they all have different signatures and so we can largely separate them, first we however need to define our signal.
 
 We have conducted many runs with different parameters, they can be summarized by three options, which event set we use, which combination of charged pion and nucleon we are looking for and if we do a cut on $W$.
@@ -604,7 +623,7 @@ This should result in increased noise and for example getting pion plus nucleon 
 
 \paragraph{Detector Like (DL)} This is to get some insight into what level of precision we might expect from detector data.
 This event set introduces an additional element of Monte Carlo methods, starting with the electron, if it passes the fiducial cuts its acceptance is calculated.
-Then according to the acceptance likelihood it is randomly either accepted or rejected, if accepted the 3 momentum magnitude will be smeared in the same way that previous \efn\ work has used.
+Then according to the acceptance likelihood it is randomly either accepted or rejected, if accepted the 3 momentum magnitude will be smeared in the same way that previous \efn\ work has used \cite{papadopoulouLeptonNucleusScatteringMeasurements2023}.
 This is done by drawing a number from a Gaussian distribution with mean of the original distribution and $\sigma$ of 0.005 times the original magnitude.
 
 Then for the hadron particles, we use particle from the final state that pass their fiducial cuts.
@@ -627,7 +646,7 @@ Also note that again assuming the struck nucleon being at rest\footnotemark\ we 
 \footnotetext{This method for $W$ reconstruction is often used (GENIE calculates such a value) though even if it was incorrect in terms of being equal to the hadronic invariant mass, its use as a cut still holds.}
 \Cref{fig:W_demo} shows a histogram of the electron reconstructed $W$ values for one of the runs split by different interaction types, similar plots are often produced by studies.
 As we have selected only pre FSI pion production events there are no QE events, otherwise they would form a narrow peak near 1\si{GeV}.
-The peak of the non-$\Delta$ resonances corresponds to the $N$ mass and DIS events typically come in behind them and with a sharp drop off near 2\si{GeV} as the incident electrons have energy 2.26\si{GeV}.
+The peak of the non-$\Delta$ RES corresponds to the $N$ masses and DIS events typically come in behind them and with a sharp drop off near 2\si{GeV} as the incident electrons have energy 2.26\si{GeV}.
 If we then only consider events in some range of $W$ values we can change the relative dominance of the interaction types.
 
 This process can of course be done with any event property, we choose $W$ as previous work by Lucas Taling in his MSc thesis has shown that it is the ideal choice for separating $\Delta$ resonances.
@@ -643,6 +662,17 @@ Only one such plot is shown, but all the others are very similar and give values
         Numbers are calculated directly from the $W$ histogram, hence the steps.
         Carbon target and 2.26\si{GeV} beam energy.
     }\label{fig:W_cut_metr}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics{figures/python/vs_pp_C_m_ps.pdf}
+    \caption{
+        Correlation of actual and reconstructed pion momentum magnitude for the \md, PS, no $W$ cut data.
+        The $\Delta$ events have a near constant width due to the original nucleon non-zero momentum and no off diagonal events.
+        Other RES events and DIS both have the same width and also off diagonal events as they will more commonly produce other unaccounted for particles including photons and mesons.
+        Carbon target and 2.26\si{GeV} beam energy.
+    }\label{fig:vs_pp_ps1}
 \end{figure}
 
 \subsection{Primary state results}
@@ -663,30 +693,10 @@ In our data we see 20\% and 21\% for \md\ and \pd\ respectively, other rescatter
     \caption{FSI rescattering rates for PS event sets without $W$ cut, of carbon target at beam energy 2.26\si{GeV}.}\label{tab:FSI_re}
 \end{table}
 
-\begin{figure}[H]
-    \centering
-    \includegraphics{figures/python/vs_pp_C_m_ps.pdf}
-    \caption{
-        Correlation of actual and reconstructed pion momentum magnitude for the \md, PS, no $W$ cut data.
-        The $\Delta$ events have a near constant width due to the original nucleon nonzero momentum and no off diagonal events.
-        Other resonant events and DIS both have the same width and also off diagonal events as they will more commonly produce other unaccounted for particles including photons and mesons.
-        Carbon target and 2.26\si{GeV} beam energy.
-    }\label{fig:vs_pp_ps1}
-\end{figure}
-
-For a qualitative look at the pion momentum reconstruction performance, 2D histograms of events with respect to actual and reconstructed pion momentum magnitude are the most useful (such plots for $\cos(\theta)$ and $\phi$ were generated but didn't show anything interesting).
+For a qualitative look at the pion momentum reconstruction performance, 2D histograms of events with respect to actual and reconstructed pion momentum magnitude are the most useful.
 \Cref{fig:vs_pp_ps1,fig:vs_pp_ps2} show these for the PS, \md\ and \pd\ event sets.
 Also note that there is no separate diagram for QE events, for PS and FSR event sets there are none as pions are only created in FSI for QE events.
-Some QE events did appear for FS and DL event sets however at most 1\% (see \cref{fig:extra1} in \cref{app:extra}) and only constitute noise.
-
-The main difference between \cref{fig:vs_pp_ps1,fig:vs_pp_ps2} is that the \pd\ has more events and less of the events are from $\Delta$ resonances.
-This shows that the fiducials already significantly help separating other resonant and especially DIS events.
-The main result from both is that all $\Delta$ events are distributed along the diagonal, meaning the reconstruction works as it should with the width being due to the nonzero struck nucleon momentum\footnotemark, an initial state effect and showing this can act a probe of nuclear structure.
-\footnotetext{The fact that visually the width seems to decrease is just an effect from there being less events at higher momenta.}
-
-Finally, the FSR event set should yield exactly the same event properties as PS except it will not accept any where rescattering later occurred.
-As such the same plots are shown in \cref{app:extra}, \cref{fig:vs_pp_fsr}, the only notable difference being a significant drop in event counts near pion momentum $\sim 270\si{MeV}$.
-This is points to pions or nucleons experiencing an increase in FSI interactions near the area and also shows up in FS and DL data.
+Some QE events did appear for FS and DL event sets (due to FSI pion production) however at most 1\% of the events (see \cref{fig:extra1} in \cref{app:extra}) and only constitute noise.
 
 \begin{figure}[H]
     \centering
@@ -698,36 +708,80 @@ This is points to pions or nucleons experiencing an increase in FSI interactions
     }\label{fig:vs_pp_ps2}
 \end{figure}
 
+The main difference between \cref{fig:vs_pp_ps1,fig:vs_pp_ps2} is that the \pd\ has more events and less of the events are from $\Delta$ RES.
+This shows that the fiducials already significantly help separating other RES and especially DIS events.
+The main result from both is that all $\Delta$ events are distributed along the diagonal, meaning the reconstruction works as it should with the width being due to the non-zero struck nucleon momentum\footnotemark, an initial state effect and showing this can act a probe of nuclear structure.
+\footnotetext{The fact that visually the width seems to decrease is just an effect from there being less events at higher momenta.}
+
+Finally, the FSR event set yields exactly the same event properties as PS except dropping events where any FSI rescattering occurred.
+As such the FSR plots add little value (and are shown in \cref{app:extra}, \cref{fig:vs_pp_fsr}), the only notable difference being a significant drop in event counts near pion momentum $\sim 270\si{MeV}$.
+This is an interesting result as it points to pions or nucleons experiencing an increase in FSI interactions near the area and the same gap is visible in FS and DL data.
+
 \subsection{Detector like and other results}
-Moving on to data more likely to reflect experiment, FS and DL show similar features and no other differences between \md\ and \pd\ than that pointed out before appear so I only focus on the DL, \md\ event set.
-Without the $W$ cut we get similar results as in \cref{fig:vs_pp_ps1} but with added noise and the mentioned lack of events near pion momentum of 270\si{MeV}, notably however only 16\% of the events are $\Delta$ resonances and 64\% are very noisy DIS events.
-The post $W$ data is shown in \cref{fig:vs_pp_dl_W} \ldots yadada \ldost tomorrow morning
+Moving on to data more likely to reflect experiment, FS and DL show similar features and no differences between \md\ and \pd\ other than those pointed out before, so I only focus on the DL, \md\ event set.
+Without the $W$ cut we get similar results as in \cref{fig:vs_pp_ps1} but with added noise and the mentioned lack of events near pion momentum of 270\si{MeV}, notably however only 16\% of the events are $\Delta$ RES and 64\% are very noisy DIS events.
+The data with $W$ cut applied is shown in \cref{fig:vs_pp_dl_W}, with 54\% of events now being $\Delta$ RES a significant improvement showing the cuts' performance.
 
 \begin{figure}[H]
     \centering
     \includegraphics{figures/python/vs_pp_C_m_dl_W.pdf}
     \caption{
         Correlation of actual and reconstructed pion momentum magnitude for the \md, DL, data with the $W$ cut applied.
+        The $\Delta$ events are noticeably affected by FSI.
+        The $W$ cut works very well on the other RES though further DIS event separation could be desirable.
         Carbon target and 2.26\si{GeV} beam energy.
     }\label{fig:vs_pp_dl_W}
 \end{figure}
 
+Another parameter of note is the actual and reconstructed pions 3 momentum magnitude difference, call it $\Delta p = |\vb{p}_\text{reco}| - |\vb{p}_\text{actual}|$.
+While this may be viewed as misleading due to subtracting vector magnitudes instead of getting the magnitude of the vector difference, the two vectors are mostly in the same direction (the directional reconstruction performs well, shown in \cref{app:extra}, \cref{fig:vs_dir_dl}) and overall the number is a good qualitative metric.
+% This could be somewhat misleading in terms of us subtracting magnitudes of vectors as opposed to getting the magnitude of the vector difference.
+% However the direction reconstruction performs to a good degree (see \cref{app:extra}, \cref{fig:vs_dir_dl}) and so the two vectors are mostly in similar directions.
+% Overall this number provides a good qualitative metric of how good the reconstruction is.
 
-Another metric worth inspecting is the actual an reconstructed pions 3 momentum magnitude difference, call it $\Delta p = |\vb{p}_{reco}| - |\vb{p}_{actual}|$.
-While it could be somewhat misleading in terms of us subtracting magnitudes of vectors as opposed to getting the magnitude of the vector difference.
-However the direction reconstruction performs to a similar degree as the magnitude (see \cref{app:extra,fig:vs_dir_dl}) and so the two vectors are in a similar direction.
-Overall this number provides a good qualitative metric of how good the reconstruction is.
-isn't fully explained yet but the plot is showing in out most "detector like" setup we can reconstruct it to within ~400MeV for most events.
+This is shown in \cref{fig:p_test_dl_W}, the width of the zero centered peak is $\sim 400\si{MeV}$, this is mainly due to initial nucleon momentum and detector smearing.
+Also $\sim 12\%$ of the events are in the right hand side tail ($\Delta p > 220\si{MeV}$) caused by unseen particles mainly from FSI (we also checked for correlation between $\Delta p$ and the real pions momentum and there was none, further supporting the width coming from the original nucleon).
+These are fairly promising results in terms of using the reconstruction method on measured data within the same energy range and target.
+Though the effects of unseen particles particularly from FSI are significant and further efforts for isolating 1 $\pi$ 1 nucleon events would be worth pursuing.
 
 \begin{figure}[H]
     \centering
     \includegraphics{figures/python/metr_m_dl_W.pdf}
     \caption{
-        % Correlation of actual and reconstructed pion momentum magnitude for the \md, DL, data with the $W$ cut applied.
+        Reconstructed and actual pions momentum magnitude difference for the \md, DL data with the $W$ cut applied.
+        The width of the peak around 0 comes from the initial nucleon momentum and the tail to the right from events with additional unseen particles.
+        These carry some of the momentum thus decrease actual pion momentum.
         Carbon target and 2.26\si{GeV} beam energy.
     }\label{fig:p_test_dl_W}
 \end{figure}
 
+Finally, on a separate note if we use the actual pion momentum information we can using \cref{eq:reco_res} calculate essentially the GENIE modeled momentum of the original nucleon.
+This shows how electron experiments are used to probe nuclear structure and is a good sanity check, our data agrees quite well with what is shown in \cite{luMeasurementNuclearEffects2016a}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics{figures/python/nuc_str1.pdf}
+    \caption{
+        Momentum of the struck nucleon as reconstructed using actual pion momentum from the \md, DL data with the $W$ cut.
+        Carbon target and 2.26\si{GeV} beam energy.
+    }\label{fig:p_test_dl_W}
+\end{figure}
+
+\section{Conclusion}
+As a part of this project a new data analysis framework for both measured and MC data (in \verbb{gst} format) has been developed.
+Hopefully significantly decreasing the entry barrier for future projects, the framework is easily adaptable (to say the new CLAS12 data) and provides a more modern object oriented interface.
+
+The framework was then used for a nuclear transparency study of $1\pi1\text{nucleon}$ events on 2.26\si{GeV} electrons scattering off of carbon nuclei, using the GENIE MC generated data from the \efn\ CLAS6 dataset.
+For that purpose we used a simple 4 momentum conservation method to reconstruct the pion momentum from the electron and nucleon kinematics.
+This targets simple pion production events not producing any other particles, we in particular focused on the $\Delta$ resonant pion production of \md\ states.
+We also used the CLAS6 fiducial maps and a $W$ cut at 1.4\si{GeV} in order to maximize the number of such events in our data.
+
+The reconstruction shows promising results with 85\% of the events being reconstructed within $\pm 180\si{MeV}$ for \md\ events with the $W$ cut, where we accounted for detector uncertainties using acceptance maps.
+There are two main error contributions, nuclear initial state effects are responsible for the correctly identified states having a mean error of $\sim 150 \si{MeV}$ in the momentum reconstruction.
+Likely more concerning are however the remaining $\sim 15\%$ of misidentified \dm\ events, mainly coming from FSI and DIS events, for these the reconstruction does not work and further event selection may be required.
+% The largest cause for concern is the remaining misidentified events as they form a significant number of events with very large errors.
+% Other than that nuclear initial state effects are likely responsible for a width of 
+% The most significant cause of large errors are misidentified final states due to only detecting electrons, charged pions and protons, responsible for about 12\% of events having a large .
 
 \newpage
 
@@ -778,7 +832,7 @@ isn't fully explained yet but the plot is showing in out most "detector like" se
             \centering
             \includegraphics{figures/python/vs_pp_C_p_fsr.pdf}
             \caption{\pd\ event set}
-        \end{subfigure}{\textwidth}
+        \end{subfigure}
         \caption{
             Correlation of actual and reconstructed pion momentum magnitude for the FSR, no $W$ cut data.
             Both similar to their counterparts \cref{fig:vs_pp_ps1,fig:vs_pp_ps2} with a notable difference being a gap at actual pion momentum near 270\si{MeV}.
@@ -800,7 +854,7 @@ isn't fully explained yet but the plot is showing in out most "detector like" se
             \centering
             \includegraphics{figures/python/vs_phi_C_m_dl.pdf}
             \caption{$\phi$ reconstruction performance}
-        \end{subfigure}{\textwidth}
+        \end{subfigure}
         \caption{
             Performance of the directional part of pion 3 momentum reconstruction for the DL, \md, no $W$ cut data.
             Other event sets performed very similarly.
@@ -808,6 +862,31 @@ isn't fully explained yet but the plot is showing in out most "detector like" se
             The "flare" going left and slightly up from the dominant cluster of events in the $\cos(\theta)$ is likely due to not true \md events with undetected particles.
             Carbon target and 2.26\si{GeV} beam energy.
         }\label{fig:vs_dir_dl}
+    \end{figure}
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics{figures/python/no_dep.pdf}
+        \caption{
+            Demonstrating that there is no real correlation between the pion reconstruction performance and the real pions momentum, similar plots for $\cos(\theta)$ and $\phi$ were also inspected.
+            Possibly the slight tilt of the Other RES data would be worth inspecting.
+            Data for the \md, DL with $W$ cut, C target and 2.26\si{GeV} beam energy.
+        }\label{fig:vs_dir_dl}
+    \end{figure}
+
+    \section{Some more detail on the code}\label{app:code}
+    To touch on the project structure, the classes mentioned in \cref{sec:code} and the following ones are implemented in the \verbb{GenieAnalysis} folder, then there are executables, these are \verbb{.cpp} files in the root folder which specify a given run.
+    For the other, see \cref{fig:code_dia}, the \verbb{GACLAS6Common} file (and namespace) defines specific properties specific to the CLAS6 data (like target and beam energy enums) and a wrapper around the original fiducials code.
+    The \verbb{GACLAS6MCCuts, GACLAS6MC} classes do equivalent analysis to that which the original code (as inherited from Lucas Taling, a previous MSc student) did on the GENIE data for CLAS6.
+    This was mainly used for first looks and testing of the new code (having five executables using these) and \verbb{GACLAS6DataPrepare, GACLAS6Data} do the equivalent for the actual CLAS6 data, though this has not been tested much.
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.9\textwidth]{figures/code_flow_diagram/diagram.pdf}
+        \caption{
+            A class diagram of the new code showing the relations.
+            The reusable classes from the \verbb{GenieAnalysis} folder are shown with a white background, classes from executables are light blue.
+        }\label{fig:code_dia}
     \end{figure}
 
 
