@@ -11,16 +11,24 @@
 \usepackage{physics}
 \usepackage{amsmath}
 \usepackage{siunitx}
+\usepackage{fancyvrb}
 \usepackage{cleveref}
 \usepackage{duckuments}
+\usepackage[toc,page]{appendix}
 
 
 \addbibresource{references.bib}
 
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\Gaus}{Gaus}
+
+\AtBeginEnvironment{appendices}{\crefalias{section}{appendix}}
+
+% My newcommands to save typing
 \newcommand{\efn}{e4$\nu$}
 \newcommand{\eGEN}{$e\text{-GENIE}$}
 
-\newcommand{\verbb}[1]{\text{\verb|#1}}
+\newcommand{\verbb}[1]{\text{\Verb|#1|}}
 
 \newcommand{\Mu}{$\mu$}
 \newcommand{\Tau}{$\tau$}
@@ -49,10 +57,6 @@
     \end{figure}
 }
 
-\DeclareMathOperator{\diag}{diag}
-\DeclareMathOperator{\Gaus}{Gaus}
-
-
 \begin{document}
 \pagestyle{empty}
 \par\noindent\includegraphics[width=12cm]{PandA_crest.pdf}
@@ -74,6 +78,7 @@
 \vspace*{5mm}
 
 \begin{abstract}
+    \noindent
     This report outlines the need for a better understanding of neutrino-nucleus interactions and how studying electron-nucleus interaction can be just as illuminating as working directly with neutrinos.
     It covers some of the prerequisites to understand such studies, including the most commonly studied interaction types and the use of Monte Carlo event generators like GENIE.
     An introduction to the CLAS6 data used by the \efn\ collaboration is presented and a new codebase using modern C\texttt{++} to analyse the data was developed.
@@ -83,19 +88,19 @@
 
 \vspace*{1cm}
 
-\subsubsection*{Declaration}
+\begin{center}
+    \textbf{\normalsize Declaration}
 
-\begin{quotation}
-  I declare that this project and report is my own work.
-\end{quotation}
+      I declare that this project and report is my own work.
+\end{center}
 
-\vspace*{2cm}
-Signature:\hspace*{8cm}Date:  31/10/2021
+\vspace*{4cm}
+Signature:\hfill Date:  31/3/2023
 
 \vfill
 {\bf Supervisor:} Dr. Cheryl Patrick
 \hfill
-10 Weeks
+Completed in 10 Weeks
 \newpage
 
 \tableofcontents
@@ -440,7 +445,7 @@ Along collection of measured events we also have a collection of GENIE generated
     }
 \end{figure}
 
-\subsection{CLAS6}
+\subsection{CLAS6}\label{sec:CLAS6}
 The CLAS6 detector, active from 1998 to 2012 when the work on CLAS12 has began, is largely built around a set of six toroidal magnets distributed along the azimuthal angle $\phi$.
 These curve the trajectories of charged particles in their $\phi$ plane and allow for charged particle momentum measurements in drift chambers.
 They also give rise to distinct six sectors visible in \cref{fig:CLAS} and deadspace between them from particles hitting the magnets.
@@ -513,7 +518,7 @@ The main \efn\ code is available on github \cite{E4nuE4nuanalysiscodePlaceholder
 As a result there are various versions kept by people and on github of a large, somewhat bloated and very difficult to understand code, most the logic of the analysis being in a single 4000 line file.
 A main goal of this project was to redevelop and streamline this code in order to lower the entry barrier for others, make it easier to spot analysis flaws and reduce boilerplate code.
 
-The newly developed code is also available on github \cite{kockahonzaSHPGenieData2023}, it uses C\textt{++}17 features and ROOT 6.12 as available on the GENIE machine at Fermilab used by us.
+The newly developed code is also available on github \cite{kockahonzaSHPGenieData2023}, it uses C\texttt{++}17 features and ROOT 6.12 as available on the GENIE machine at Fermilab used by us.
 It heavily uses classes and the features are best described by describing the code.
 The main class \verbb{GenieAnalysis} will expect an input file with a \verbb{gst} dataset, has two virtual methods to be overriden \verbb{double passesCuts()} and \verbb{void useEntry(double weight)} and one method that is expected to be used \verbb{void runAnalysis(int number\_of\_entries)}\footnotemark.
 \footnote{I am somewhat loose with the code for the sake of brevity, for example replacing the ROOT types with the normal C\texttt{++} ones.}
@@ -582,22 +587,22 @@ Data for all 4 of these combinations was collected though as they are largely th
 The 4 different event sets are the Primary State (PS), Final State with no Rescattering (FSR), any Final State (FS) and Detector Like (DL) runs.
 For all of them we use the CLAS6 fiducial cuts, for PS, FSR and FS the first part is the same, we check if the electron 3 momentum passes the fiducial cuts and the event is only used if it does.
 
-\paragraph{Primary State} is the closest to the "truth"/physics we get here.
+\paragraph{Primary State (PS)} is the closest to the "truth"/physics we get here.
 After checking the electron fiducials, particle data from the GENIE reported primary state (GENIE label, means before FSI) is used.
 The code then goes through all the produced hadrons and only charged pions and protons that pass their fiducials are considered, along with all neutrons (we don't have fiducials for them as they weren't detected in the e2a CLAS6 data).
 Only if there are exactly 1 charged pion and 1 nucleon of the required types and 0 of the others, is the event used.
 Notably there is another way the fiducials could be applied, we could only consider event where all charged pions and protons pass their fiducials and only then check their numbers.
 This method was also tried and resulted in near identical results and so it suggests the decision isn't a major one.
 
-\paragraph{Final State with no Rescattering} should in theory and we observe it to be almost the same as PS.
+\paragraph{Final State with no Rescattering (FSR)} should in theory and we observe it to be almost the same as PS.
 GENIE also reports for each particle in the primary state a \verbb{resc} code specifying if and in what way did that primary state particle rescatter in FSI.
 In FSR the final state (means post FSI) particle properties and 3 momenta are used, however only events where all the \verbb{resc} codes indicated no rescattering.
 The final state particles are then processed in the same way as in PS, only particles passing fiducials are considered and the counts of charged pions and nucleons must exactly match.
 
-\paragraph{Final State with no Rescattering} means we use final state particles and their properties just as in FSR, but do no checking of \verbb{resc}.
+\paragraph{Final State (FS)} means we use final state particles and their properties just as in FSR, but do no checking of \verbb{resc}.
 This should result in increased noise and for example getting pion plus nucleon events even from QE scattering as they can be produced in FSI.
 
-\paragraph{Detector Like} This is to get some insight into what level of precision we might expect from detector data.
+\paragraph{Detector Like (DL)} This is to get some insight into what level of precision we might expect from detector data.
 This event set introduces an additional element of Monte Carlo methods, starting with the electron, if it passes the fiducial cuts its acceptance is calculated.
 Then according to the acceptance likelihood it is randomly either accepted or rejected, if accepted the 3 momentum magnitude will be smeared in the same way that previous \efn\ work has used.
 This is done by drawing a number from a Gaussian distribution with mean of the original distribution and $\sigma$ of 0.005 times the original magnitude.
@@ -628,21 +633,22 @@ If we then only consider events in some range of $W$ values we can change the re
 This process can of course be done with any event property, we choose $W$ as previous work by Lucas Taling in his MSc thesis has shown that it is the ideal choice for separating $\Delta$ resonances.
 We then choose the optimal cut value by considering purity, the number of passing $\Delta$ events over all passing events, and efficiency, the number of passing $\Delta$ events over all $\Delta$ events.
 \Cref{fig:W_cut_metr} shows a sample plot of these quantities along with their product which we choose as our metric for choosing the cut.
-Only one such plot is shown, but all the others are very similar and give values of $1.4 \pm 0.05 \si{GeV}$ for the optimal cut thus we use 1.4\si{GeV}.
+Only one such plot is shown, but all the others are very similar and give values of $1.4 \pm 0.02 \si{GeV}$ for the optimal cut thus we use 1.4\si{GeV}.
 
 \begin{figure}[H]
     \centering
     \includegraphics{figures/python/W_cut_metr.pdf}
     \caption{
         The performance of the $W$ cut for the PS, $1\pi^-1p$ no $W$ cut event set, purity and efficiency as defined above in text.
-        Data is calculated directly from the $W$ histogram hence the steps.
+        Numbers are calculated directly from the $W$ histogram, hence the steps.
         Carbon target and 2.26\si{GeV} beam energy.
     }\label{fig:W_cut_metr}
 \end{figure}
 
-\subsection{First results}
+\subsection{Primary state results}
 The first useful quantities come from the PS run where we can also check the \verbb{resc} codes of the pion and nucleon and see how often they do rescatter in FSI.
-See \cref{tab:FSI_re} for these results, these are plausible within other literature numbers, \cite{stevendytmanFinalStateInteractions2009} quotes a 20\% chance of a pion being absorbed in a carbon nucleus (20\%, 21\% for \md, \pd\ for our data, other rescattering mechanisms accounting for the rest).
+See \cref{tab:FSI_re} for these results, these are plausible within other literature numbers, \cite{stevendytmanFinalStateInteractions2009} quotes a 20\% chance of a pion being absorbed in a carbon nucleus.
+In our data we see 20\% and 21\% for \md\ and \pd\ respectively, other rescattering mechanisms accounting for the rest.
 
 \begin{table}[H]
     \begin{center}
@@ -657,25 +663,154 @@ See \cref{tab:FSI_re} for these results, these are plausible within other litera
     \caption{FSI rescattering rates for PS event sets without $W$ cut, of carbon target at beam energy 2.26\si{GeV}.}\label{tab:FSI_re}
 \end{table}
 
+\begin{figure}[H]
+    \centering
+    \includegraphics{figures/python/vs_pp_C_m_ps.pdf}
+    \caption{
+        Correlation of actual and reconstructed pion momentum magnitude for the \md, PS, no $W$ cut data.
+        The $\Delta$ events have a near constant width due to the original nucleon nonzero momentum and no off diagonal events.
+        Other resonant events and DIS both have the same width and also off diagonal events as they will more commonly produce other unaccounted for particles including photons and mesons.
+        Carbon target and 2.26\si{GeV} beam energy.
+    }\label{fig:vs_pp_ps1}
+\end{figure}
+
+For a qualitative look at the pion momentum reconstruction performance, 2D histograms of events with respect to actual and reconstructed pion momentum magnitude are the most useful (such plots for $\cos(\theta)$ and $\phi$ were generated but didn't show anything interesting).
+\Cref{fig:vs_pp_ps1,fig:vs_pp_ps2} show these for the PS, \md\ and \pd\ event sets.
+Also note that there is no separate diagram for QE events, for PS and FSR event sets there are none as pions are only created in FSI for QE events.
+Some QE events did appear for FS and DL event sets however at most 1\% (see \cref{fig:extra1} in \cref{app:extra}) and only constitute noise.
+
+The main difference between \cref{fig:vs_pp_ps1,fig:vs_pp_ps2} is that the \pd\ has more events and less of the events are from $\Delta$ resonances.
+This shows that the fiducials already significantly help separating other resonant and especially DIS events.
+The main result from both is that all $\Delta$ events are distributed along the diagonal, meaning the reconstruction works as it should with the width being due to the nonzero struck nucleon momentum\footnotemark, an initial state effect and showing this can act a probe of nuclear structure.
+\footnotetext{The fact that visually the width seems to decrease is just an effect from there being less events at higher momenta.}
+
+Finally, the FSR event set should yield exactly the same event properties as PS except it will not accept any where rescattering later occurred.
+As such the same plots are shown in \cref{app:extra}, \cref{fig:vs_pp_fsr}, the only notable difference being a significant drop in event counts near pion momentum $\sim 270\si{MeV}$.
+This is points to pions or nucleons experiencing an increase in FSI interactions near the area and also shows up in FS and DL data.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics{figures/python/vs_pp_C_p_ps.pdf}
+    \caption{
+        Correlation of actual and reconstructed pion momentum magnitude for the \md, PS, no $W$ cut data.
+        Same observations apply as to \cref{fig:vs_pp_ps1} though are many more events here due to the lack of fiducials for $n$.
+        Carbon target and 2.26\si{GeV} beam energy.
+    }\label{fig:vs_pp_ps2}
+\end{figure}
+
+\subsection{Detector like and other results}
+Moving on to data more likely to reflect experiment, FS and DL show similar features and no other differences between \md\ and \pd\ than that pointed out before appear so I only focus on the DL, \md\ event set.
+Without the $W$ cut we get similar results as in \cref{fig:vs_pp_ps1} but with added noise and the mentioned lack of events near pion momentum of 270\si{MeV}, notably however only 16\% of the events are $\Delta$ resonances and 64\% are very noisy DIS events.
+The post $W$ data is shown in \cref{fig:vs_pp_dl_W} \ldots yadada \ldost tomorrow morning
+
+\begin{figure}[H]
+    \centering
+    \includegraphics{figures/python/vs_pp_C_m_dl_W.pdf}
+    \caption{
+        Correlation of actual and reconstructed pion momentum magnitude for the \md, DL, data with the $W$ cut applied.
+        Carbon target and 2.26\si{GeV} beam energy.
+    }\label{fig:vs_pp_dl_W}
+\end{figure}
 
 
-% \begin{figure}[H]
-%     \centering
-%     \includegraphics{fiure/}
-%     \caption{
-%         TEST
-%     }\label{fig:W_cut_metr}
-% \end{figure}
+Another metric worth inspecting is the actual an reconstructed pions 3 momentum magnitude difference, call it $\Delta p = |\vb{p}_{reco}| - |\vb{p}_{actual}|$.
+While it could be somewhat misleading in terms of us subtracting magnitudes of vectors as opposed to getting the magnitude of the vector difference.
+However the direction reconstruction performs to a similar degree as the magnitude (see \cref{app:extra,fig:vs_dir_dl}) and so the two vectors are in a similar direction.
+Overall this number provides a good qualitative metric of how good the reconstruction is.
+isn't fully explained yet but the plot is showing in out most "detector like" setup we can reconstruct it to within ~400MeV for most events.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics{figures/python/metr_m_dl_W.pdf}
+    \caption{
+        % Correlation of actual and reconstructed pion momentum magnitude for the \md, DL, data with the $W$ cut applied.
+        Carbon target and 2.26\si{GeV} beam energy.
+    }\label{fig:p_test_dl_W}
+\end{figure}
 
 
 \newpage
 
-\begin{itemize}
-    \item Kinematics and pion reconstruction
-    \item The 4 different event sets we use
-    \item Start presenting data and results, commenting on physics
-\end{itemize}
-
 \printbibliography
+
+\newpage
+
+\begin{appendices}
+    \section{Additional Data and Plots}\label{app:extra}
+    \begin{table}[H]
+        \begin{center}
+            \begin{tabular}{ c | c | c | c | c | c | c }
+                $\pi$, nucleon & Event set & Uses $W$ cut & QE [\%] & $\Delta_{1232}$ RES [\%] & Other RES [\%] & DIS [\%] \\
+                \hline
+                $1\pi^-1p$ & PS & no & 0.00 & 21.13 & 22.78 & 56.09 \\
+                $1\pi^-1p$ & PS & yes & 0.00 & 59.36 & 8.28 & 32.36 \\
+                $1\pi^-1p$ & FSR & no & 0.00 & 14.30 & 18.25 & 67.45 \\
+                $1\pi^-1p$ & FSR & yes & 0.00 & 50.51 & 6.41 & 43.08 \\
+                $1\pi^-1p$ & FS & no & 0.18 & 16.49 & 20.54 & 62.78 \\
+                $1\pi^-1p$ & FS & yes & 0.72 & 54.21 & 6.97 & 38.09 \\
+                $1\pi^-1p$ & DL & no & 0.16 & 15.71 & 20.52 & 63.59 \\
+                $1\pi^-1p$ & DL & yes & 0.71 & 54.23 & 7.15 & 37.89 \\
+                $1\pi^+1n$ & PS & no & 0.00 & 15.82 & 31.28 & 52.90 \\
+                $1\pi^+1n$ & PS & yes & 0.00 & 55.06 & 17.80 & 27.14 \\
+                $1\pi^+1n$ & FSR & no & 0.00 & 12.87 & 26.47 & 60.66 \\
+                $1\pi^+1n$ & FSR & yes & 0.00 & 49.93 & 15.34 & 34.73 \\
+                $1\pi^+1n$ & FS & no & 0.20 & 13.02 & 27.59 & 59.19 \\
+                $1\pi^+1n$ & FS & yes & 1.00 & 50.47 & 15.51 & 33.02 \\
+                $1\pi^+1n$ & DL & no & 0.12 & 12.06 & 30.67 & 57.16 \\
+                $1\pi^+1n$ & DL & yes & 0.69 & 51.53 & 18.98 & 28.80
+            \end{tabular}
+        \end{center}
+        \caption{
+            Shows how many of each presented type of events there were in each data run for \md\ and \pd runs.
+            The percentages are of all passing events from the run so they don't necessarily have to add to 100\% if any other unmentioned types occurred, however from these the minimum was 99.987\% meaning our select types of events are very close to covering all occurring types.
+        }\label{fig:extra1}
+    \end{table}
+
+    \begin{figure}[H]
+        \centering
+        \begin{subfigure}{\textwidth}
+            \centering
+            \includegraphics{figures/python/vs_pp_C_m_fsr.pdf}
+            \caption{\md\ event set}
+        \end{subfigure}
+        \\
+        \begin{subfigure}{\textwidth}
+            \centering
+            \includegraphics{figures/python/vs_pp_C_p_fsr.pdf}
+            \caption{\pd\ event set}
+        \end{subfigure}{\textwidth}
+        \caption{
+            Correlation of actual and reconstructed pion momentum magnitude for the FSR, no $W$ cut data.
+            Both similar to their counterparts \cref{fig:vs_pp_ps1,fig:vs_pp_ps2} with a notable difference being a gap at actual pion momentum near 270\si{MeV}.
+            This points to FSI being prominent at these momenta as the only difference between PS and FSR event sets is that events with FSI will not be present in FSR.
+            Data to test this specifically however was not collected.
+            Carbon target and 2.26\si{GeV} beam energy.
+        }\label{fig:vs_pp_fsr}
+    \end{figure}
+
+    \begin{figure}[H]
+        \centering
+        \begin{subfigure}{\textwidth}
+            \centering
+            \includegraphics{figures/python/vs_ct_C_m_dl.pdf}
+            \caption{$\cos(\theta)$ reconstruction performance}
+        \end{subfigure}
+        \\
+        \begin{subfigure}{\textwidth}
+            \centering
+            \includegraphics{figures/python/vs_phi_C_m_dl.pdf}
+            \caption{$\phi$ reconstruction performance}
+        \end{subfigure}{\textwidth}
+        \caption{
+            Performance of the directional part of pion 3 momentum reconstruction for the DL, \md, no $W$ cut data.
+            Other event sets performed very similarly.
+            The $\phi$ plot clearly shows how only pions passing the fiducials cuts are accepted (showing the 6 sectors from \cref{sec:CLAS6}).
+            The "flare" going left and slightly up from the dominant cluster of events in the $\cos(\theta)$ is likely due to not true \md events with undetected particles.
+            Carbon target and 2.26\si{GeV} beam energy.
+        }\label{fig:vs_dir_dl}
+    \end{figure}
+
+
+\end{appendices}
 
 \end{document}
