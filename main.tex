@@ -1,7 +1,7 @@
 \documentclass[a4paper,12pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage{fullpage}
-\usepackage[bibencoding=utf8,style=phys,maxbibnames=6]{biblatex}
+\usepackage[block=space,bibencoding=utf8,style=phys,maxbibnames=6]{biblatex}
 \usepackage[skip=0em,indent=2em]{parskip}
 \usepackage[pdftex]{graphicx}
 \usepackage{float}
@@ -17,7 +17,8 @@
 \usepackage[toc,page]{appendix}
 
 
-\addbibresource{references.bib}
+\addbibresource{references_final.bib}
+\setcounter{biburllcpenalty}{8000}
 
 \DeclareMathOperator{\diag}{diag}
 \DeclareMathOperator{\Gaus}{Gaus}
@@ -649,7 +650,7 @@ As we have selected only pre FSI pion production events there are no QE events, 
 The peak of the non-$\Delta$ RES corresponds to the $N$ masses and DIS events typically come in behind them and with a sharp drop off near 2\si{GeV} as the incident electrons have energy 2.26\si{GeV}.
 If we then only consider events in some range of $W$ values we can change the relative dominance of the interaction types.
 
-This process can of course be done with any event property, we choose $W$ as previous work by Lucas Taling in his MSc thesis has shown that it is the ideal choice for separating $\Delta$ resonances.
+This process can of course be done with any event property, we choose $W$ as previous work by Lucas Taling in his MSc thesis\cite{lucassThesis} has shown that it is the ideal choice for separating $\Delta$ resonances.
 We then choose the optimal cut value by considering purity, the number of passing $\Delta$ events over all passing events, and efficiency, the number of passing $\Delta$ events over all $\Delta$ events.
 \Cref{fig:W_cut_metr} shows a sample plot of these quantities along with their product which we choose as our metric for choosing the cut.
 Only one such plot is shown, but all the others are very similar and give values of $1.4 \pm 0.02 \si{GeV}$ for the optimal cut thus we use 1.4\si{GeV}.
@@ -877,8 +878,9 @@ Likely more concerning are however the remaining $\sim 15\%$ of misidentified \d
     \section{Some more detail on the code}\label{app:code}
     To touch on the project structure, the classes mentioned in \cref{sec:code} and the following ones are implemented in the \verbb{GenieAnalysis} folder, then there are executables, these are \verbb{.cpp} files in the root folder which specify a given run.
     For the other, see \cref{fig:code_dia}, the \verbb{GACLAS6Common} file (and namespace) defines specific properties specific to the CLAS6 data (like target and beam energy enums) and a wrapper around the original fiducials code.
-    The \verbb{GACLAS6MCCuts, GACLAS6MC} classes do equivalent analysis to that which the original code (as inherited from Lucas Taling, a previous MSc student) did on the GENIE data for CLAS6.
+    The \verbb{GACLAS6MCCuts, GACLAS6MC} classes do equivalent analysis to that which the original code (as inherited from Taling\cite{lucassThesis}) did on the GENIE data for CLAS6.
     This was mainly used for first looks and testing of the new code (having five executables using these) and \verbb{GACLAS6DataPrepare, GACLAS6Data} do the equivalent for the actual CLAS6 data, though this has not been tested much.
+
 
     \begin{figure}[H]
         \centering
@@ -888,8 +890,6 @@ Likely more concerning are however the remaining $\sim 15\%$ of misidentified \d
             The reusable classes from the \verbb{GenieAnalysis} folder are shown with a white background, classes from executables are light blue.
         }\label{fig:code_dia}
     \end{figure}
-
-
 \end{appendices}
 
 \end{document}
