@@ -28,6 +28,7 @@
 % My newcommands to save typing
 \newcommand{\efn}{e4$\nu$}
 \newcommand{\eGEN}{$e\text{-GENIE}$}
+\newcommand{\CC}{C\texttt{++}}
 
 \newcommand{\verbb}[1]{\text{\Verb|#1|}}
 
@@ -63,47 +64,62 @@
 \par\noindent\includegraphics[width=12cm]{PandA_crest.pdf}
 \par\noindent
 
-\vspace*{2cm}
+\vspace{0.5cm}
 
 \begin{center}
         \Large\bf \Large\bf Senior Honours Project \\
+        \vspace{0.2cm}
         \LARGE\bf Nuclear Transparency of $1\pi1\text{\normalfont nucleon}$ Events from $2.26\si{GeV}$ Electron-Carbon Scattering
         % \LARGE\bf Nuclear Transparency of $1\pi1\text{\normalfont nucleon}$ Events from $\sim2\si{GeV}$ electron-carbon scattering
 \end{center}
 
-\vspace*{0.5cm}
+\vspace{0.2cm}
 
 \begin{center}
         \bf Jan Kocka \\
         31$^\text{th}$ of March 2023
 \end{center}
-\vspace*{5mm}
+
+\vspace{0.2cm}
 
 \begin{abstract}
     \noindent
     We outline the need for a better understanding of neutrino-nucleus interactions and how studying electron-nucleus interaction can be used for the purpose.
     It covers some of the prerequisites to understand such studies, including the most commonly studied interaction types and the use of Monte Carlo event generators like GENIE.
-    An introduction to the CLAS6 data used by the \efn\ collaboration is presented and a new codebase using modern C\texttt{++} to analyse the data was developed.
+    An introduction to the CLAS6 data used by the \efn\ collaboration is presented and a new codebase using modern \CC\ to analyse the data was developed.
     Finally we use this code to conduct a study of nuclear effects on the reconstruction of pion momentum of 1 pion 1 nucleon events (mainly from $\Delta_{1232}$ resonances) from GENIE generated 2.26\si{GeV} incident electron - carbon nucleus scattering.
-    We identify errors of the reconstruction due to initial state effects and final state interactions, and show that even when accounting for detector precision such resolution may be possible to within 400 \si{Mev/c}.
+    We identify errors of the reconstruction due to initial state effects and final state interactions, and show that even when accounting for detector precision such reconstruction may be possible to within a 400 \si{Mev/c} bin.
 \end{abstract}
 
-\vspace*{1cm}
+\vspace{0.5cm}
 
 \begin{center}
-    \textbf{\normalsize Declaration}
-
-      I declare that this project and report is my own work.
+    \textbf{\normalsize Declaration} \\
+    \small
+    I declare that this project and report is my own work.
 \end{center}
 
-\vspace*{3cm}
-Signature:\hfill Date:  31/3/2023
+\vspace{0.5cm}
 
-\vfill
+\begin{center}
+    \textbf{\normalsize Acknowledgements} \\
+    % I would like to thank my supervisor Cheryl Patrick for welcoming me to the topic, always answering my many questions and her patience when dealing with me.
+    % I would also like to thank Steven Dytman for further help in guiding the project, explaining the physics involved and connections to experiment.
+    \small
+    I would like to thank my supervisor Cheryl Patrick for always being very welcoming and helpful with my many questions, and her patience throughout the project.
+    I would also like to thank Steven Dytman for further help guiding the project and the physics of the project.
+\end{center}
+
+\vspace{1.5cm}
+\hfill Date:  31/3/2023
+
 {\bf Supervisor:} Dr. Cheryl Patrick
 \hfill
 Completed in 10 Weeks
 \newpage
+
+% \section*{Acknowledgements}
+% I would like to thank my supervisor Cheryl Patrick and the \efn\ collaboration members specifically  for all being very welcoming
 
 \tableofcontents
 
@@ -133,7 +149,7 @@ The answers to these questions could significantly further our understanding of 
     }\label{fig:nu_feyn}
 \end{figure}
 
-\subsection{Neutrino Oscillations}
+\subsection{Neutrino oscillations}
 In particle physics oscillations is a phenomenon that takes place when the particle mass eigenstates which govern its evolution in time are not the same as the states in which it can be observed.
 This phenomenon is not exclusive to neutrinos, the neutral Kaon has been known to oscillate to its own antiparticle and vice-versa since before neutrino oscillations were discovered \cite{burkhardtWavelengthNeutrinoNeutral2003}.
 % However it might seem a bit abstract, but as we know from basic quantum mechanics when we make an observation, the observed system will collapse into some particular state depending on the result of our observation.
@@ -165,7 +181,7 @@ where $E$ is it's energy, $L$ the distance between our measurements and $\Delta 
 This is then our main entry point for studying the PMNS matrix from oscillation experiments as we can measure these probabilities $P$ and so get insight into the $U_{\alpha i}$ elements along with the mass differences $\Delta m_{ij}$.
 Though notably, even if we knew precisely all the oscillation probabilities we would not have all the information to fully determine $U$ as there may be Majorana phase components that doesn't influence $P$, these need to be studied by other experiments like neutrinoless $\beta$ decay \cite{degouveaManifestCPViolation2003}.
 
-\subsection{Oscillation Experiments and Energy Reconstruction}\label{sec:exanderec}
+\subsection{Oscillation experiments and energy reconstruction}\label{sec:exanderec}
 There are many active experiments (NOvA\cite{pattersonNOvAExperimentStatus2013} and T2K\cite{abeT2KExperiment2011} currently running and DUNE\cite{falconeDeepUndergroundNeutrino2022} and Hyper-Kamiokande\cite{yokoyamaHyperKamiokandeExperiment2017} under development) working on precise neutrino oscillation measurements to determine the neutrino masses and PMNS matrix elements.
 % There are active experiments (including Super-Kamiokande, OPERA, MINOS, DUNE and Hyper-Kamiokande\footnote{**maybe change which ones I mention and add references to them}) working on precise neutrino oscillation measurements to determine the neutrino masses and PMNS matrix elements.
 In these (long-baseline) experiments, neutrinos from a source which has known fractions of the three flavours are beamed across large distances (for oscillations of $\sim 1\si{GeV}$ \Nm\ an $L$ of order $\sim 1000\si{km}$ is needed \cite{mezzettoThreeFlavorOscillationsAccelerator2020}) so that they oscillate and then some of the flavours (electron, \Mu\ or both) are observed and counted.
@@ -212,7 +228,7 @@ See \cite{golanEffectsFinalstateInteractions2012,stevendytmanFinalStateInteracti
 
 % However, as there are no monoenergetic neutrino beams it is very difficult to experimentally study these effects directly on neutrinos, so instead we study electron-nucleus interactions which are subject to the same quantum field theory interactions.
 
-\section{Neutrino(Electron)-nucleus interactions}\label{sec:nenuc_inter}
+\section{Neutrino(Electron)-Nucleus Interactions}\label{sec:nenuc_inter}
 Firstly, throughout the report antineutrinos are largely not mentioned, their interaction do have some specifics to them, however are mostly directly analogous to the described neutrino processes.
 As the interactions are not yet fully, fundamentally understood, we to a large degree resort to classifications which allows us to make prediction under certain conditions.
 Both neutrino and electron nucleus scattering can be described by
@@ -402,12 +418,12 @@ Finally at high energies ($>3\si{GeV}$) DIS events start to dominate, in these t
 This typically results in a jet of multiple hadrons (can be pions, Kaons, strange sigma baryons\ldots in the final state) and so $W$ values are larger than in QE or RES, often over 2 \si{GeV} is mentioned\cite{morfinRecentDevelopmentsNeutrino2012}.
 They can take place through both NC and CC channels and there is again a connection to electron scattering, the models are similar and electron DIS scattering is one of the key probes of nuclear structure\cite{taylorDeepInelasticScattering1991}.
 
-\subsection{The GENIE Event Generator \cite{andreopoulosGENIENeutrinoMonte2010}}\label{sec:genie}
+\subsection{The GENIE event generator \cite{andreopoulosGENIENeutrinoMonte2010}}\label{sec:genie}
 Due to the amount expertise required to understand either the theory or the experimental aspects of neutrino interactions, it becomes difficult to package theories in a way that they can be easily understood and tested by experiments.
 Partly due to this the Neutrino Scattering Theory-Experiment Collaboration (NuSTEC \cite{alvarez-rusoNuSTEC11NeutrinoScattering2018}) has been started recently.
 As a result, Monte Carlo (MC) neutrino event generators are used to package theoretical models in a way that predictions can be made.
 GENIE is the most widely adopted such MC generator, first released for use in 2007 it aims to be a canonical generator accurately reflecting the state-of-art theories for a wide range of energies and targets.
-It is a large codebase of modern C\texttt{++} code using the popular ROOT framework\cite{brunROOTObjectOriented1997} and is particularly well tuned to a tested on the few \si{GeV} energy neutrinos that are of interest to oscillation experiments.
+It is a large codebase of modern \CC\ code using the popular ROOT framework\cite{brunROOTObjectOriented1997} and is particularly well tuned to a tested on the few \si{GeV} energy neutrinos that are of interest to oscillation experiments.
 
 As is described in \cite{andreopoulosGENIENeutrinoMonte2010,andreopoulosGENIENeutrinoMonte2015}, there are three main steps of models in GENIE.
 Nuclear physics models describe the nuclei and their composition as experienced by the incoming neutrino (initial state effects).
@@ -477,10 +493,10 @@ This is what we do in this report though we only look at MC data.
 We do this in two ways, first we use \emph{fiducial} cuts.
 These are a set of conditions for each particle type to match, they depend on the particles momentum and direction and are boolean, either pass or fail.
 They reflect the harder boundaries in which we would expect out detector to work, we apply these to both measured and MC data and they define what events we consider our signal.
-These we inherited from previous \efn\ and e2a analysis as a collection of C\texttt{++} files, projections for some are shown in \cref{fig:fid_map} (the gaps reflects detector defects on the day of the run) and see \cite{mclauchlanDeltaElectroproduction12C} appendix C for more detail.
+These we inherited from previous \efn\ and e2a analysis as a collection of \CC\ files, projections for some are shown in \cref{fig:fid_map} (the gaps reflects detector defects on the day of the run) and see \cite{mclauchlanDeltaElectroproduction12C} appendix C for more detail.
 
 % We do this in two steps, first we specify a fairly wide range of directions and momenta, we apply \emph{fiducial} cuts to filter these and define these as our signal in both experimental and MC data.
-% These reflect the harder limits of the CLAS6 detector, the precise fiducials depend on the beam energy and we have them inherited from previous \efn\ work and e2a as a collection of C\texttt{++} code, see \cite{papadopoulouLeptonNucleusScatteringMeasurements2023,mclauchlanDeltaElectroproduction12C}.
+% These reflect the harder limits of the CLAS6 detector, the precise fiducials depend on the beam energy and we have them inherited from previous \efn\ work and e2a as a collection of \CC\ code, see \cite{papadopoulouLeptonNucleusScatteringMeasurements2023,mclauchlanDeltaElectroproduction12C}.
 % They are different for each particle type and cut on their 3 momentum size and direction, see \cref{fig:fid_map} for an example.
 % The six distinct zones/segments are a result of the mentioned magnets obstructing the areas in between an the gaps are due to some components not performing up to specification on the day of the experiment.
 % An example is that we only consider pions with momentum over 150 \si{MeV}.
@@ -537,17 +553,17 @@ These datasets are each in a ROOT file in a GENIE format called \verbb{gst}, thi
 % As this is a GENIE format, there are fields for many properties not measured in experiments, for the CLAS6 data these are empty.
 Some of the more notable fields are the outgoing electron 4 momentum, information about all the particles after the neutrino-nucleus interaction (referred to as primary or initial state) as well as the same information about post FSI particles (final state).
 Some of these properties, especially the ones that never could be measured (and so empty in measured data), are referred to as the "truth" as they reflect the true physics.
-There are also flags to separate QE, different RES and DIS events and information on what FSI has taken place, this is best described in the GENIE manual\cite{andreopoulosGENIENeutrinoMonte2015} though it is somewhat outdated..
+There are also flags to separate QE, different RES and DIS events and information on what FSI has taken place, this is best described in the GENIE manual\cite{andreopoulosGENIENeutrinoMonte2015} though it is somewhat outdated.
 
-As there are $\sim100$ different properties per event up to hundreds of millions of events, a moderately sophisticated analysis code is needed.
+As there are $\sim100$ different properties per event and up to hundreds of millions of events, a moderately sophisticated analysis code is needed.
 The main \efn\ code is available on github \cite{E4nuE4nuanalysiscodePlaceholder} as developed by Afrodite Papadopoulou for her thesis\cite{papadopoulouLeptonNucleusScatteringMeasurements2023}, however it has since been used by various scientists each adding their own functionality.
 As a result there are various versions kept by people of a large and very difficult to understand code, most the logic of the analysis being in a single 4000 line file.
 A main goal of this project was to redevelop this code in order to lower the entry barrier for others (including future students), make it easier to spot analysis flaws and reduce boilerplate code.
 
-The newly developed code is also available on github \cite{kockahonzaSHPGenieData2023}, it uses C\texttt{++}17 features and ROOT 6.12 as available on the GENIE machine at Fermilab used by us.
+The newly developed code is also available on github \cite{kockahonzaSHPGenieData2023}, it uses \CC17 features and ROOT 6.12 as available on the GENIE machine at Fermilab used by us.
 It heavily uses classes and the features are best described by describing the code.
 The main class \verbb{GenieAnalysis} will expect an input file with a \verbb{gst} dataset, has two virtual methods to be overriden \verbb{double passesCuts()} and \verbb{void useEntry(double weight)} and one method that is expected to be used \verbb{void runAnalysis(int number\_of\_entries)}\footnotemark.
-\footnotetext{I am somewhat loose with the code for the sake of brevity, for example replacing the ROOT types with the normal C\texttt{++} ones.}
+\footnotetext{I am somewhat loose with the code for the sake of brevity, for example replacing the ROOT types with the normal \CC\ ones.}
 The last of which will start an analysis, it will go through the first \verbb{number\_of\_entries} events from the input file and for each \verbb{passesCuts} will be ran, its return value being used as the weight, so if it is zero that event is not used at all.
 If non-zero, \verbb{useEntry(weight)} is called with that weight, this method does nothing in this class, it is expected to be overriden by inheriting classes to for example count the events, or write some properties to a histogram.
 % Overall then the code will check for each event if they should be used and if so use them all in the same way.
@@ -774,10 +790,10 @@ Hopefully significantly decreasing the entry barrier for future projects, the fr
 
 The framework was then used for a nuclear transparency study of $1\pi1\text{nucleon}$ events on 2.26\si{GeV} electrons scattering off of carbon nuclei, using the GENIE MC generated data from the \efn\ CLAS6 dataset.
 For that purpose we used a simple 4 momentum conservation method to reconstruct the pion momentum from the electron and nucleon kinematics.
-This targets simple pion production events not producing any other particles, we in particular focused on the $\Delta$ resonant pion production of \md\ states.
+This targets simple pion production events not producing any other particles, we in particular focused on the $\Delta$ resonant \md\ production events.
 We also used the CLAS6 fiducial maps and a $W$ cut at 1.4\si{GeV} in order to maximize the number of such events in our data.
 
-The reconstruction shows promising results with 85\% of the events being reconstructed within $\pm 180\si{MeV}$ for \md\ events with the $W$ cut, where we accounted for detector uncertainties using acceptance maps.
+The reconstruction shows promising results with 85\% of the events being reconstructed to within $\pm 180\si{MeV}$ for \md\ events with the $W$ cut, where we accounted for detector uncertainties using acceptance maps.
 There are two main error contributions, nuclear initial state effects are responsible for the correctly identified states having a mean error of $\sim 150 \si{MeV}$ in the momentum reconstruction.
 Likely more concerning are however the remaining $\sim 15\%$ of misidentified \dm\ events, mainly coming from FSI and DIS events,
 For these the reconstruction does not work and further event selection may be required in order use the reconstruction on experimental data.
@@ -792,7 +808,7 @@ For these the reconstruction does not work and further event selection may be re
 \newpage
 
 \begin{appendices}
-    \section{Additional Data and Plots}\label{app:extra}
+    \section{Additional data and plots}\label{app:extra}
     \begin{table}[H]
         \begin{center}
             \begin{tabular}{ c | c | c | c | c | c | c }
@@ -876,7 +892,8 @@ For these the reconstruction does not work and further event selection may be re
         }\label{fig:vs_dir_dl}
     \end{figure}
 
-    \section{Some more detail on the code}\label{app:code}
+    \newpage
+    \section{A couple more notes on the code}\label{app:code}
     To touch on the project structure, the classes mentioned in \cref{sec:code} and the following ones are implemented in the \verbb{GenieAnalysis} folder, then there are executables, these are \verbb{.cpp} files in the root folder which specify a given run.
     For the other, see \cref{fig:code_dia}, the \verbb{GACLAS6Common} file (and namespace) defines specific properties specific to the CLAS6 data (like target and beam energy enums) and a wrapper around the original fiducials code.
     The \verbb{GACLAS6MCCuts, GACLAS6MC} classes do equivalent analysis to that which the original code (as inherited from Taling\cite{lucassThesis}) did on the GENIE data for CLAS6.
